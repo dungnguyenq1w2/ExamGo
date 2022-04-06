@@ -5,7 +5,11 @@ import PropTypes from "prop-types";
 const Header = () => {
 	return (
 		<div className="header">
-			<img className="header__logo" src="examgo_logo.png" alt="logo" />
+			<img
+				className="header__logo"
+				src={window.location.origin + "/images/examgo_logo.png"}
+				alt="logo"
+			/>
 			<div className="header__feature">
 				<ul>
 					<li>About</li>
