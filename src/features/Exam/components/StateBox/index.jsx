@@ -1,8 +1,16 @@
 import React from "react";
-import PropTypes from "prop-types";
+import "./style.scss";
 
-function StateBox(props) {
-	return <div>StateBox</div>;
+function StateBox({ answers }) {
+	return (
+		<div>
+			{answers?.map((e, i) => (
+				<span className="box" key={i}>
+					{e == 0 ? "A" : e == 1 ? "B" : e == 2 ? "C" : e == 3 ? "D" : null}
+				</span>
+			))}
+		</div>
+	);
 }
 
 StateBox.propTypes = {};
