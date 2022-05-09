@@ -1,6 +1,6 @@
-import React from "react";
-import "./style.scss";
-import PropTypes from "prop-types";
+import React from 'react';
+import './style.scss';
+import PropTypes from 'prop-types';
 
 const Footer = () => {
 	return (
@@ -9,7 +9,7 @@ const Footer = () => {
 				<div>
 					<img
 						className="footer__logo"
-						src={window.location.origin + "/images/examgo_logo.png"}
+						src={window.location.origin + '/images/examgo_logo.png'}
 						alt="logo"
 					/>
 				</div>
@@ -23,22 +23,19 @@ const Footer = () => {
 						</ul>
 					</div>
 					<div className="footer__bottom">
-						<span>© Team SE</span>
+						<span>© Team DKD</span>
 					</div>
 				</div>
 			</div>
 			<div className="footer__right">
 				<div className="footer__icon">
 					<img
-						src={window.location.origin + "/images/facebook_icon.png"}
+						src={window.location.origin + '/images/facebook_icon.png'}
 						alt="Facebook icon"
 					/>
+					<img src={window.location.origin + '/images/gmail_icon.png'} alt="Gmail icon" />
 					<img
-						src={window.location.origin + "/images/gmail_icon.png"}
-						alt="Gmail icon"
-					/>
-					<img
-						src={window.location.origin + "/images/github_icon.png"}
+						src={window.location.origin + '/images/github_icon.png'}
 						alt="Github icon"
 					/>
 				</div>

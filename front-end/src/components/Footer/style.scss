@@ -1,3 +1,6 @@
+@import '../../scss/mixins';
+@import '../../scss/variables';
+
 .footer {
 	display: flex;
 	padding: 30px 120px;
@@ -12,6 +15,9 @@
 
 	&__logo {
 		height: 40px;
+		@include screen($md) {
+			height: 30px;
+		}
 	}
 
 	&__feature {
@@ -32,7 +38,13 @@
 				margin: 0px 10px;
 				font-size: 18px;
 				cursor: pointer;
+				@include screen($md) {
+					font-size: 16px;
+				}
 			}
+		}
+		@include screen($sm) {
+			display: none;
 		}
 	}
 
@@ -55,6 +67,15 @@
 			height: 28px;
 			margin: 0px 5px;
 			cursor: pointer;
+			@include screen($sm) {
+				height: 20px;
+			}
+		}
+		@include screen($md) {
+			padding: 5px 15px;
+		}
+		@include screen($sm) {
+			padding: 5px 5px;
 		}
 	}
 
@@ -63,5 +84,15 @@
 		border-bottom-left-radius: 10px;
 		border-bottom-right-radius: 40px;
 		background: #e7810d8f;
+		@include screen($sm) {
+			font-size: small;
+		}
+	}
+
+	@include screen($lg) {
+		padding: 30px 20px;
+	}
+	@include screen($sm) {
+		padding: 10px 20px;
 	}
 }
