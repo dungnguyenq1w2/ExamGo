@@ -1,5 +1,0 @@
-@mixin screen($type) {
-	@media screen and (max-width: $type) {
-		@content;
-	}
-}
