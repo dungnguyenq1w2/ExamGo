@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Route, Routes } from "react-router-dom";
-import ListPage from "./pages/ListPage";
-import ProfilePage from "./pages/ProfilePage";
-import OwnerProfilePage from "./pages/OwnerProfilePage";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Route, Routes } from 'react-router-dom';
+import ListPage from './pages/ListPage';
+import ProfilePage from './pages/ProfilePage';
+import OwnerProfilePage from './pages/OwnerProfilePage';
 
 function UserFeature(props) {
 	return (

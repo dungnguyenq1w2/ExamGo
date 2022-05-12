@@ -1,11 +1,12 @@
 import { Route, Routes } from 'react-router-dom';
 import Footer from './components/Footer';
 import Header from './components/Header';
-import ExamFeature from './features/Exam';
+import AdminFeature from './features/Admin';
 import AuthFeature from './features/Auth';
+import ExamFeature from './features/Exam';
 import HomeFeature from './features/Home';
-import UserFeature from './features/User';
 import ManageExamFeature from './features/ManageExam';
+import UserFeature from './features/User';
 
 function App() {
 	return (
