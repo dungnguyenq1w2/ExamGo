@@ -1,10 +1,10 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
-import ExamDetail from "./pages/ExamDetail";
-import ExamList from "./pages/ExamList";
-import ExamResult from "./pages/ExamResult";
-import ExamResultDetail from "./pages/ExamResultDetail";
-import TakeExam from "./pages/TakeExam";
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import ExamDetail from './pages/ExamDetail';
+import ExamList from './pages/ExamList';
+import ExamResult from './pages/ExamResult';
+import ExamResultDetail from './pages/ExamResultDetail';
+import TakeExam from './pages/TakeExam';
 
 function ExamFeature(props) {
 	return (
