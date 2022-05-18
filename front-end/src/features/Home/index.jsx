@@ -1,5 +1,7 @@
-import React from "react";
+import React from 'react';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 function HomeFeature(props) {
+	const navigate = useNavigate();
 	return (
 		<div className="home">
 			<section className="bg-home h-60 bg-cover bg-no-repeat sm:h-80 md:h-[500px] lg:h-[700px] xl:h-[918px] lg:bg-cover flex justify-center items-center">
@@ -8,8 +10,8 @@ function HomeFeature(props) {
 						LUYỆN THI ĐẠI HỌC
 					</h1>
 					<p className="text-sm text-gray-700 px-5 font-medium md:text-lg md:px-10 lg:text-lg lg:px-22 xl:px-32">
-						Đây là những giờ phút vô cùng quan trọng của cuộc đời, hãy tập trung
-						ôn thi và đừng để bất cứ điều gì làm xao nhãng bạn nhé.
+						Đây là những giờ phút vô cùng quan trọng của cuộc đời, hãy tập trung ôn thi
+						và đừng để bất cứ điều gì làm xao nhãng bạn nhé.
 					</p>
 				</div>
 			</section>
@@ -21,14 +23,14 @@ function HomeFeature(props) {
 				<div className="grid px-2 sm:px-0 grid-cols-1 sm:grid-cols-2 gap-3 place-items-center">
 					<div
 						className="border border-gray-300 cursor-pointer"
-						// onClick={() =>
-						// 	router.push({
-						// 		pathname: "exam",
-						// 		query: {
-						// 			subject: "Toán",
-						// 		},
-						// 	})
-						// }
+						onClick={() =>
+							navigate({
+								pathname: '/exam',
+								search: createSearchParams({
+									subject: 'math',
+								}).toString(),
+							})
+						}
 					>
 						<div className=" overflow-hidden">
 							<img
@@ -43,14 +45,14 @@ function HomeFeature(props) {
 					</div>
 					<div
 						className="border border-gray-300 cursor-pointer"
-						// onClick={() =>
-						// 	router.push({
-						// 		pathname: "exam",
-						// 		query: {
-						// 			subject: "Tiếng anh",
-						// 		},
-						// 	})
-						// }
+						onClick={() =>
+							navigate({
+								pathname: 'exam',
+								search: createSearchParams({
+									subject: 'english',
+								}).toString(),
+							})
+						}
 					>
 						<div className=" overflow-hidden">
 							<img
@@ -65,14 +67,14 @@ function HomeFeature(props) {
 					</div>
 					<div
 						className="border border-gray-300 cursor-pointer"
-						// onClick={() =>
-						// 	router.push({
-						// 		pathname: "exam",
-						// 		query: {
-						// 			subject: "Vật lý",
-						// 		},
-						// 	})
-						// }
+						onClick={() =>
+							navigate({
+								pathname: 'exam',
+								search: createSearchParams({
+									subject: 'physics',
+								}).toString(),
+							})
+						}
 					>
 						<div className=" overflow-hidden">
 							<img
@@ -87,14 +89,14 @@ function HomeFeature(props) {
 					</div>
 					<div
 						className="border border-gray-300 cursor-pointer"
-						// onClick={() =>
-						// 	router.push({
-						// 		pathname: "exam",
-						// 		query: {
-						// 			subject: "Hóa học",
-						// 		},
-						// 	})
-						// }
+						onClick={() =>
+							navigate({
+								pathname: 'exam',
+								search: createSearchParams({
+									subject: 'chemistry',
+								}).toString(),
+							})
+						}
 					>
 						<div className=" overflow-hidden">
 							<img
@@ -109,14 +111,14 @@ function HomeFeature(props) {
 					</div>
 					<div
 						className="border border-gray-300 cursor-pointer"
-						// onClick={() =>
-						// 	router.push({
-						// 		pathname: "exam",
-						// 		query: {
-						// 			subject: "Sinh học",
-						// 		},
-						// 	})
-						// }
+						onClick={() =>
+							navigate({
+								pathname: 'exam',
+								search: createSearchParams({
+									subject: 'biology',
+								}).toString(),
+							})
+						}
 					>
 						<div className=" overflow-hidden">
 							<img
@@ -131,14 +133,14 @@ function HomeFeature(props) {
 					</div>
 					<div
 						className="border border-gray-300 cursor-pointer"
-						// onClick={() =>
-						// 	router.push({
-						// 		pathname: "exam",
-						// 		query: {
-						// 			subject: "Lịch sử",
-						// 		},
-						// 	})
-						// }
+						onClick={() =>
+							navigate({
+								pathname: 'exam',
+								search: createSearchParams({
+									subject: 'history',
+								}).toString(),
+							})
+						}
 					>
 						<div className=" overflow-hidden">
 							<img
@@ -153,14 +155,14 @@ function HomeFeature(props) {
 					</div>
 					<div
 						className="border border-gray-300 cursor-pointer"
-						// onClick={() =>
-						// 	router.push({
-						// 		pathname: "exam",
-						// 		query: {
-						// 			subject: "Địa lý",
-						// 		},
-						// 	})
-						// }
+						onClick={() =>
+							navigate({
+								pathname: 'exam',
+								search: createSearchParams({
+									subject: 'geography',
+								}).toString(),
+							})
+						}
 					>
 						<div className=" overflow-hidden">
 							<img
@@ -176,14 +178,14 @@ function HomeFeature(props) {
 
 					<div
 						className="border border-gray-300 cursor-pointer"
-						// onClick={() =>
-						// 	router.push({
-						// 		pathname: "exam",
-						// 		query: {
-						// 			subject: "Giáo dục công dân",
-						// 		},
-						// 	})
-						// }
+						onClick={() =>
+							navigate({
+								pathname: 'exam',
+								search: createSearchParams({
+									subject: 'civiceducation',
+								}).toString(),
+							})
+						}
 					>
 						<div className=" overflow-hidden">
 							<img

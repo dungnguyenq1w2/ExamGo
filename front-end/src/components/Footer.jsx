@@ -32,15 +32,21 @@ const Footer = () => {
 						src={window.location.origin + '/images/facebook_icon.png'}
 						alt="Facebook icon"
 					/>
+					<a
+						href="https://github.com/t4n-du4ng/ExamGo"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<img
+							className="h-7 md:h-8 mx-1 cursor-pointer"
+							src={window.location.origin + '/images/github_icon.png'}
+							alt="Github icon"
+						/>
+					</a>
 					<img
 						className="h-7 md:h-8 mx-1 cursor-pointer"
 						src={window.location.origin + '/images/gmail_icon.png'}
 						alt="Gmail icon"
-					/>
-					<img
-						className="h-7 md:h-8 mx-1 cursor-pointer"
-						src={window.location.origin + '/images/github_icon.png'}
-						alt="Github icon"
 					/>
 				</div>
 				<div className="text-lg md:text-xl bg-yellow-700 rounded-br-full px-2 py-1 md:px-4">

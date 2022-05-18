@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
-function ExamResulDetail() {
-	return <div>ExamResulDetail</div>;
+function ExamResultDetail() {
+	return <div>ExamResultDetail</div>;
 }
 
-export default ExamResulDetail;
+export default ExamResultDetail;

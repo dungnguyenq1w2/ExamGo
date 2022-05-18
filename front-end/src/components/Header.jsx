@@ -2,23 +2,22 @@ import SearchIcon from '@mui/icons-material/Search';
 import { IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import React, { useEffect, useState } from 'react';
-
-// const Menu = () => {
-// 	return (
-
-// 	);
-// };
+import { Link, useNavigate } from 'react-router-dom';
 
 const Header = () => {
+	const navigate = useNavigate();
 	const [menu, setMenu] = useState(true);
 
 	return (
 		<div className="relative flex flex-nowrap items-center justify-between my-[10px] mx-[10px] py-[5px] px-[10px] lg:my-[20px] lg:mx-[10px] xl:my-[40px] xl:mx-[75px]">
-			<img
-				className="h-[25px] mb-[10px] md:h-[25px] lg:h-[30px]"
-				src={window.location.origin + '/images/examgo_logo.png'}
-				alt="logo"
-			/>
+			<Link to="/">
+				<img
+					className="h-[25px] mb-[10px] md:h-[25px] lg:h-[30px]"
+					src={window.location.origin + '/images/examgo_logo.png'}
+					alt="logo"
+				/>
+			</Link>
+
 			<div
 				className={`${
 					menu
@@ -55,10 +54,16 @@ const Header = () => {
 					</div>
 				</div>
 				<div className="flex justify-center mt-5 md:mt-0 md:justify-end">
-					<button className="border border-yellow-400 mx-1 min-w-20 py-1 px-4 sm:px-8 text-lg sm:text-xl md:px-4 md:text-lg lg:px-8 lg:text-xl rounded-full text-center cursor-pointer transition-all hover:bg-yellow-300 hover:text-white hover:border-white hover:shadow-sm">
+					<button
+						onClick={() => navigate('/auth/signin', { replace: true })}
+						className="border border-yellow-400 mx-1 min-w-20 py-1 px-4 sm:px-8 text-lg sm:text-xl md:px-4 md:text-lg lg:px-8 lg:text-xl rounded-full text-center cursor-pointer transition-all hover:bg-yellow-300 hover:text-white hover:border-white hover:shadow-sm"
+					>
 						<span>Đăng nhập</span>
 					</button>
-					<button className="bg-blue-500 text-white mx-1 min-w-20 py-1 px-4 sm:px-8 text-lg sm:text-xl md:px-4 md:text-lg lg:px-8 lg:text-xl rounded-full text-center cursor-pointer transition-all hover:bg-blue-600 hover:shadow-sm">
+					<button
+						onClick={() => navigate('/auth/signup', { replace: true })}
+						className="bg-blue-500 text-white mx-1 min-w-20 py-1 px-4 sm:px-8 text-lg sm:text-xl md:px-4 md:text-lg lg:px-8 lg:text-xl rounded-full text-center cursor-pointer transition-all hover:bg-blue-600 hover:shadow-sm"
+					>
 						<span>Đăng ký</span>
 					</button>
 				</div>

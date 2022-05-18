@@ -15,7 +15,7 @@ function App() {
 			<div className="min-h-[97.5vh]">
 				<Routes>
 					<Route path="/" element={<HomeFeature />} />
-					<Route path="user/*" element={<UserFeature />} />
+					<Route path="user" element={<UserFeature />} />
 					<Route path="exam/*" element={<ExamFeature />} />
 					<Route path="manageexam/*" element={<ManageExamFeature />} />
 					<Route path="auth/*" element={<AuthFeature />} />
