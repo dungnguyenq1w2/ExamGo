@@ -10,7 +10,7 @@ function ExamFeature(props) {
 	return (
 		<div className="exam">
 			<Routes>
-				<Route path="/:" element={<ExamList />} />
+				<Route path="/" element={<ExamList />} />
 				<Route path=":examId" element={<ExamDetail />} />
 				<Route path="take/:examId" element={<TakeExam />} />
 				<Route path="result/:examId" element={<ExamResult />} />

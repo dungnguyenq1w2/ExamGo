@@ -9,7 +9,10 @@ const Header = () => {
 	const [menu, setMenu] = useState(true);
 
 	return (
-		<div className="relative flex flex-nowrap items-center justify-between my-[10px] mx-[10px] py-[5px] px-[10px] lg:my-[20px] lg:mx-[10px] xl:my-[40px] xl:mx-[75px]">
+		<div
+			style={{ fontFamily: 'Yanone Kaffeesatz' }}
+			className="relative flex flex-nowrap items-center justify-between my-[10px] mx-[10px] py-[5px] px-[10px] lg:my-[20px] lg:mx-[10px] xl:my-[40px] xl:mx-[75px]"
+		>
 			<Link to="/">
 				<img
 					className="h-[25px] mb-[10px] md:h-[25px] lg:h-[30px]"
