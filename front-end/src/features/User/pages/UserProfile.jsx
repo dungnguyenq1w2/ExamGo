@@ -73,15 +73,17 @@ function UserProfile(props) {
 
 	return (
 		<div className="px-12 flex flex-col sm:text-[16px] bg-[#ECF0F4] py-6">
-			<div className="flex justify-between w-full">
+			<div className="flex flex-wrap justify-between w-full">
 				<div className="flex flex-col basis-[30%] md:min-h-full">
 					<p className='font-bold text-red-400 mb-2'>Sơ lược</p>
 					<div className="rounded-lg shadow-lg p-8 flex-1 bg-white">
 						<div className='text-center mb-4'>
-							<div className='relative flex justify-center'>
-								<img className='h-full rounded-full' src="/logo192.png" alt="avatar" />
-								<div className='absolute top-[10%] right-[20%] px-2 py-1 rounded-full bg-purple-400 border-purple text-white'>{userInfo.grade}</div>
-								<div className='absolute top-[60%] right-[20%] px-2 rounded-full bg-orange-400 text-purple-800'>{userInfo.gender ? ">" : "<"}</div>
+							<div className='relative inline-flex flex justify-center'>
+								<img className='h-full rounded-full border-4' src="/logo192.png" alt="avatar" />
+								<div className='absolute top-[10%] right-[5%] px-2 py-1 rounded-full bg-purple-400 border-2 border-black text-white'>{userInfo.grade}</div>
+								<div className='absolute top-[80%] right-[5%] px-2 py-2 rounded-full bg-orange-400 border-2 border-black text-purple-800'>
+									<img src={userInfo.gender ? '/images/icon-male.png' : '/images/icon-female.png'} alt="gender"/>
+								</div>
 							</div>
 							<p className='font-bold text-2xl'>{userInfo.name}</p>
 							<p className='italic text-red-500'>{userInfo.quote}</p>
@@ -149,7 +151,7 @@ function UserProfile(props) {
 					</button>
 				</div>
 			</div>
-			<div className="flex justify-between mt-8 w-full ">
+			<div className="flex flex-wrap justify-between mt-8 w-full ">
 				<div className="basis-[30%]">
 					<p className='font-bold text-red-400 mb-2'>Thành tích cá nhân</p>
 					<ul className="rounded-lg shadow-lg p-8 bg-white">

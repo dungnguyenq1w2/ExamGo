@@ -5,9 +5,9 @@ import ViewQuestionResult from '../components/ViewQuestionResult';
 
 function ExamResultDetail() {
 	const [exam, setExam] = useState();
-	useEffect(() => {
-		setExam(JSON.parse(router.query.examResult));
-	}, [router.query.examResult]);
+	// useEffect(() => {
+	// 	setExam(JSON.parse(router.query.examResult));
+	// }, [router.query.examResult]);
 	const takingTime = moment.utc(exam?.secondTaken * 1000).format('HH:mm:ss');
 
 	const arrDiff = takingTime.split(':');

@@ -15,7 +15,7 @@ function EditInfo(props) {
     const navigate = useNavigate()
     const [userInfoInput, setUserInfoInput] = useState(userInfo);
     const handleOnInputChange = (e) => {
-        setUserInfoInput(prev =>{
+        setUserInfoInput(prev => {
             return {
                 ...prev,
                 [e.target.id]: e.target.value
@@ -32,10 +32,12 @@ function EditInfo(props) {
                     <p className='font-bold text-red-400 mb-2'>Sơ lược</p>
                     <div className="rounded-lg shadow-lg p-8 bg-white">
                         <div className='text-center mb-4'>
-                            <div className='relative flex justify-center'>
-                                <img className='h-full rounded-full' src="/logo192.png" alt="avatar" />
-                                <div className='absolute top-[10%] right-[20%] px-2 py-1 rounded-full bg-purple-400 border-purple text-white'>{userInfo.grade}</div>
-                                <div className='absolute top-[60%] right-[20%] px-2 rounded-full bg-orange-400 text-purple-800'>{userInfo.gender ? ">" : "<"}</div>
+                            <div className='relative inline-flex flex justify-center'>
+                                <img className='h-full rounded-full border-4' src="/logo192.png" alt="avatar" />
+                                <div className='absolute top-[10%] right-[5%] px-2 py-1 rounded-full bg-purple-400 border-2 border-black text-white'>{userInfo.grade}</div>
+                                <div className='absolute top-[80%] right-[5%] px-2 py-2 rounded-full bg-orange-400 border-2 border-black text-purple-800'>
+                                    <img src={userInfo.gender ? '/images/icon-male.png' : '/images/icon-female.png'} alt="gender" />
+                                </div>
                             </div>
                             <p className='font-bold text-2xl'>{userInfo.name}</p>
                             <p className='italic text-red-500'>{userInfo.quote}</p>
@@ -113,7 +115,7 @@ function EditInfo(props) {
                             <button className="flex mt-2 px-4 py-2 rounded hover:bg-green-400 bg-green-500 text-white" onClick={handleSubmit()}>
                                 Lưu thay đổi
                             </button>
-                            <button className="flex ml-4 mt-2 px-4 py-2 rounded hover:bg-red-400 bg-red-500 text-white" onClick={() => {navigate("/user/me")}}>
+                            <button className="flex ml-4 mt-2 px-4 py-2 rounded hover:bg-red-400 bg-red-500 text-white" onClick={() => { navigate("/user/me") }}>
                                 Hủy
                             </button>
                         </div>
