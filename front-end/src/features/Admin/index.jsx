@@ -8,10 +8,10 @@ import UserList from './pages/UserList';
 
 function AdminFeature(props) {
 	return (
-		<div className="flex">
-			<div className="basis-[30%]">
+		<div className="flex space-x-60">
+			<div className="basis-[20%]">
 				<ul>
-					<li>
+					<li className="px-6 py-2 border-b border-gray-200 w-full hover:bg-gray-500 hover:text-white">
 						<NavLink
 							to="/admin"
 							// style={({ isActive }) => (isActive ? activeStyle : undefined)}
@@ -19,7 +19,7 @@ function AdminFeature(props) {
 							Trang chủ
 						</NavLink>
 					</li>
-					<li>
+					<li className="px-6 py-2 border-b border-gray-200 w-full hover:bg-gray-500 hover:text-white">
 						<NavLink
 							to="/admin/users"
 							// style={({ isActive }) => (isActive ? activeStyle : undefined)}
@@ -27,7 +27,7 @@ function AdminFeature(props) {
 							Quản lý người dùng
 						</NavLink>
 					</li>
-					<li>
+					<li className="px-6 py-2 border-b border-gray-200 w-full hover:bg-gray-500 hover:text-white">
 						<NavLink
 							to="/admin/statistics"
 							// style={({ isActive }) => (isActive ? activeStyle : undefined)}

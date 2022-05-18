@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 function EditUser() {
     return (
@@ -85,10 +86,20 @@ function EditUser() {
                 </div>
                 <div className="flex items-center justify-center space-x-4">
                     <button className="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-b-4 border-green-700 hover:border-green-500 rounded">
-                        Lưu thay đổi
+                        <NavLink
+                            to="/admin/users"
+                            // style={({ isActive }) => (isActive ? activeStyle : undefined)}
+                        >
+                            Lưu thay đổi
+                        </NavLink>
                     </button>
                     <button className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-red-500 rounded">
-                        Hủy
+                        <NavLink
+                            to="/admin/users"
+                            // style={({ isActive }) => (isActive ? activeStyle : undefined)}
+                        >
+                            Hủy
+                        </NavLink>
                     </button>
                 </div>
             </form>

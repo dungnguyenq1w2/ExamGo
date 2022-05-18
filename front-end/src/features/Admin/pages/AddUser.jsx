@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 function AddUser() {
     return (
@@ -85,7 +86,12 @@ function AddUser() {
                 </div>
                 <div className="flex items-center justify-center">
                     <button className="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-b-4 border-green-700 hover:border-green-500 rounded">
-                        Thêm tài khoản
+                        <NavLink
+                            to="/admin/users"
+                            // style={({ isActive }) => (isActive ? activeStyle : undefined)}
+                        >
+                            Thêm tài khoản
+                        </NavLink>
                     </button>
                 </div>
             </form>
