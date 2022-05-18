@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Loading from '../../../components/Loading';
 import moment from 'moment';
 import ExamItem from '../components/ExamItem';
+import { useNavigate } from 'react-router-dom';
 
 function ExamList() {
 	const [exams, setExams] = useState([
@@ -31,6 +32,7 @@ function ExamList() {
 		},
 	]);
 	const [loading, setLoading] = useState(true);
+	const navigate = useNavigate();
 	return (
 		<div>
 			<section className="flex py-5 px-5 min-h-screen">
@@ -64,14 +66,14 @@ function ExamList() {
 								>
 									<div
 										className="w-full"
-										// onClick={() =>
-										// 	router.push({
-										// 		pathname: e.isDone ? 'result' : 'takeExam',
-										// 		query: {
-										// 			idExam: e._id,
-										// 		},
-										// 	})
-										// }
+										onClick={() =>
+											navigate({
+												pathname: 'take/1',
+												// search: createSearchParams({
+												//     subject: 'civiceducation',
+												// }).toString(),
+											})
+										}
 									>
 										<ExamItem
 											id={e._id}
