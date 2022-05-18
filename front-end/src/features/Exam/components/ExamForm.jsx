@@ -1,8 +1,8 @@
-import { Modal } from '@mui/material';
 import React from 'react';
 import { useState } from 'react';
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
+import Modal from 'react-modal/lib/components/Modal';
 import Question from './Question';
 
 const customStyles = {
@@ -24,10 +24,11 @@ function ExamForm({ questions, handleChooseAnswer }) {
 	const [submit, setSubmit] = useState(false); // Xử lý hết thời gian
 	const { register, handleSubmit, watch, setValue } = useForm();
 	const onSubmit = (data) => {
+		console.log(data);
 		// const startTime = localStorage.getItem(`startTime_${idExam}`);
 		// const takingTime = diffTime(startTime);
 		// data = modifiedOption(data, takingTime);
-		// setLoading(true);
+		setLoading(true);
 		// const handleSubmitExam = async () => {
 		// 	try {
 		// 		const res = await axios.post(
@@ -69,9 +70,8 @@ function ExamForm({ questions, handleChooseAnswer }) {
 	};
 
 	const buttonSubmit = useRef(); // sử dụng useRef để lấy ra button submit (tương tự document.getElement...)
-
 	return (
-		<div>
+		<div className="w-4/5">
 			<form
 				onSubmit={handleSubmit(onSubmit)}
 				onKeyDown={(e) => checkKeyDown(e)} // Chặn user ấn Enter
@@ -79,11 +79,12 @@ function ExamForm({ questions, handleChooseAnswer }) {
 				{questions?.map((question, idxQuestion) => (
 					<Question
 						key={question._id}
-						constent={question.content}
+						content={question.content}
 						idxQuestion={idxQuestion}
 						answers={question.answers}
-						handleChooseOption={handleChooseAnswer}
+						handleChooseAnswer={handleChooseAnswer}
 						register={register}
+						label={`answer${idxQuestion}`}
 					/>
 					// <div key={question._id}>
 					// 	<h4>{question.content}</h4>
@@ -109,7 +110,7 @@ function ExamForm({ questions, handleChooseAnswer }) {
 				</button>
 			</form>
 			{/* button submit giả cho user click để hiện Modal xác nhận nộp bài*/}
-			<div className="flex justify-center mr-44">
+			<div className="flex justify-center ">
 				<button
 					className="bg-blue-400 py-2 px-8 mt-4 font-bold text-gray-50 text-xl rounded-lg"
 					onClick={() => setSubmit(true)}

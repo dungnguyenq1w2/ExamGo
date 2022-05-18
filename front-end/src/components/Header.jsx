@@ -1,12 +1,12 @@
+import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { IconButton } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Header = () => {
 	const navigate = useNavigate();
-	const [menu, setMenu] = useState(true);
+	const [menu, setMenu] = useState(false);
 
 	return (
 		<div
