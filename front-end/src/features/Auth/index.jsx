@@ -7,7 +7,7 @@ function AuthFeature(props) {
 	return (
 		<Routes>
 			<Route path="signin" element={<SignIn />} />
-			<Route path="singup" element={<SignUp />} />
+			<Route path="signup" element={<SignUp />} />
 		</Routes>
 	);
 }
