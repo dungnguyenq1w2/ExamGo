@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 const userInfo = {
     name: "Stone Worker",
     quote: "Yêu hoa lá thích bổ củi",
@@ -11,6 +12,7 @@ const userInfo = {
 }
 
 function EditInfo(props) {
+    const navigate = useNavigate()
     const [userInfoInput, setUserInfoInput] = useState(userInfo);
     const handleOnInputChange = (e) => {
         setUserInfoInput(prev =>{
@@ -20,7 +22,9 @@ function EditInfo(props) {
             }
         })
     }
-
+    const handleSubmit = async () => {
+        // 
+    }
     return (
         <div className="px-12 flex flex-col sm:text-[16px] bg-[#ECF0F4] py-6">
             <div className="flex justify-between w-full">
@@ -106,10 +110,10 @@ function EditInfo(props) {
                             <input id="quote" name='quote' className='basis-[80%] border px-2 py-1' value={userInfoInput.quote} onChange={e => handleOnInputChange(e)} />
                         </div>
                         <div className='flex justify-center'>
-                            <button className="flex mt-2 px-4 py-2 rounded hover:bg-green-400 bg-green-500 text-white">
+                            <button className="flex mt-2 px-4 py-2 rounded hover:bg-green-400 bg-green-500 text-white" onClick={handleSubmit()}>
                                 Lưu thay đổi
                             </button>
-                            <button className="flex ml-4 mt-2 px-4 py-2 rounded hover:bg-red-400 bg-red-500 text-white">
+                            <button className="flex ml-4 mt-2 px-4 py-2 rounded hover:bg-red-400 bg-red-500 text-white" onClick={() => {navigate("/user/me")}}>
                                 Hủy
                             </button>
                         </div>

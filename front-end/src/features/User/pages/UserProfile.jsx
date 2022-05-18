@@ -1,4 +1,7 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import Pagination from 'rc-pagination';
+
 const userInfo = {
 	name: "Stone Worker",
 	quote: "Yêu hoa lá thích bổ củi",
@@ -61,6 +64,7 @@ const examsInfo = [
 	},
 ]
 function UserProfile(props) {
+	const navigate = useNavigate();
 	const styleTableHeader = "px-2 py-1"
 	const styleTableData = "py-1 px-2 border-b"
 	const handlePaginationClick = () => {
@@ -140,7 +144,7 @@ function UserProfile(props) {
 							<div className='basis-[70%]'>{userInfo.quote}</div>
 						</li>
 					</ul>
-					<button className="flex ml-auto mt-2 px-4 py-2 rounded bg-blue-500 text-white">
+					<button className="flex ml-auto mt-2 px-4 py-2 rounded bg-blue-500 text-white" onClick={() => { navigate("/user/edit") }}>
 						Chỉnh sửa hồ sơ
 					</button>
 				</div>
@@ -249,5 +253,13 @@ function UserProfile(props) {
 		</div>
 	);
 }
-
+{/* <div className="flex items-center justify-center mt-6">
+							<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded mr-1 text-sky-600 font-semibold">Prev</button>
+							<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded mr-1 font-bold bg-indigo-600 text-white">1</button>
+							<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded mr-1 font-bold">2</button>
+							<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded mr-1 font-bold">3</button>
+							<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded mr-1 font-bold">4</button>
+							<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded text-sky-600 font-semibold">Next</button>
+						</div> */}
 export default UserProfile;
+
