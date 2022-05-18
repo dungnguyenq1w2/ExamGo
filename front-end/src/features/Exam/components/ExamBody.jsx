@@ -1,6 +1,9 @@
 // import { useRouter } from 'next/dist/client/router';
 // import Modal from 'react-modal';
 // import { useSelector } from 'react-redux';
+import Modal from 'react-modal/lib/components/Modal';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import ExamForm from './ExamForm';
 
 // Done form: question-answer-rightAnswer - 14-10-2021
@@ -20,29 +23,32 @@ const customStyles = {
 };
 
 function ExamBody({ exam }) {
-	// const { timeout } = useSelector((state) => state.time);
-	// const router = useRouter();
+	const { timeout } = useSelector((state) => state.time);
+	const navigate = useNavigate();
 	return (
-		<div className="w-full md:w-3/4">
-			<div className="">
-				<div>
-					<span className="text-3xl font-bold text-green-800 ">{exam?.subject} |</span>
-					<span className="text-yellow-500 text-2xl font-semibold mt-3">
-						| {exam?.name}
-					</span>
+		<div className="flex-1 flex flex-col mx-6 sm:mx-10 px-2 sm:px-10 py-10 bg-gray-200 bg-opacity-30 shadow-lg">
+			<div className="w-full md:w-3/4">
+				<div className="">
+					<div>
+						<span className="text-3xl font-bold text-green-800 ">
+							{exam?.subject} |
+						</span>
+						<span className="text-yellow-500 text-2xl font-semibold mt-3">
+							| {exam?.name}
+						</span>
+					</div>
+					<div className="flex flex-col w-full items-center">
+						<span className=" text-xl font-semibold mt-3">Lớp: {exam?.grade}</span>
+						<span className=" text-lg font-semibold mt-3">
+							Thời gian: {exam?.minuteLimit} phút
+						</span>
+						<span className=" text-lg font-semibold mt-3">
+							Người ra đề: {exam?.creator?.name}
+						</span>
+					</div>
 				</div>
-				<div className="flex justify-between w-3/5 full items-center">
-					<span className=" text-xl font-semibold mt-3">Lớp: {exam?.grade}</span>
-					<span className=" text-lg font-semibold mt-3">
-						Thời gian: {exam?.minuteLimit} phút
-					</span>
-					<span className=" text-lg font-semibold mt-3">
-						Người ra đề: {exam?.creator?.name}
-					</span>
-				</div>
-			</div>
-			{/* <ExamForm questions={exam?.questions} idExam={exam?._id} /> */}
-			{/* <Modal
+				<ExamForm timeout={timeout} questions={exam?.questions} idExam={exam?._id} />
+				<Modal
 					isOpen={timeout}
 					style={customStyles}
 					contentLabel="Modal"
@@ -54,18 +60,19 @@ function ExamBody({ exam }) {
 						<button
 							className="bg-green-400 py-2 px-8 mt-4 mr-3 font-bold text-gray-50 text-lg rounded-lg"
 							onClick={() => {
-								router.push({
-									pathname: 'result',
-									query: {
-										idExam: exam?._id,
-									},
+								navigate({
+									pathname: 'result/1',
+									// search: createSearchParams({
+									//     subject: 'civiceducation',
+									// }).toString(),
 								});
 							}}
 						>
 							Xem kết quả
 						</button>
 					</div>
-				</Modal> */}
+				</Modal>
+			</div>
 		</div>
 	);
 }

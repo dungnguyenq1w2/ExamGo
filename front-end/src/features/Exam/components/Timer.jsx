@@ -5,8 +5,11 @@
 
 import moment from 'moment';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
-function Timer({ hours, minutes, seconds }) {
+function Time({ hours, minutes, seconds }) {
+	const { examId } = useParams();
 	const remainTimeSaved = {
 		hours: hours,
 		minutes: minutes,
@@ -16,29 +19,23 @@ function Timer({ hours, minutes, seconds }) {
 	const currentTimeSaved = moment().format('DD/MM/YYYY HH:mm:ss');
 
 	// Hàm lưu thời gian
-	// const saveTime = () => {
-	// 	localStorage.setItem(
-	// 		`remainTimeSaved_${router.query.idExam}`,
-	// 		JSON.stringify(remainTimeSaved),
-	// 	);
-	// 	localStorage.setItem(
-	// 		`currentTimeSaved_${router.query.idExam}`,
-	// 		JSON.stringify(currentTimeSaved),
-	// 	);
-	// };
+	const saveTime = () => {
+		localStorage.setItem(`remainTimeSaved_${examId}`, JSON.stringify(remainTimeSaved));
+		localStorage.setItem(`currentTimeSaved_${examId}`, JSON.stringify(currentTimeSaved));
+	};
 
 	// Lưu thời gian lại khi user refresh (F5), tắt tab, thay đổi route
-	// useEffect(() => {
-	// 	window.addEventListener('beforeunload', saveTime);
-	// 	return () => {
-	// 		window.removeEventListener('beforeunload', saveTime);
-	// 	};
-	// });
+	useEffect(() => {
+		window.addEventListener('beforeunload', saveTime);
+		return () => {
+			window.removeEventListener('beforeunload', saveTime);
+		};
+	});
 
-	// // Lưu thời gian lại khi user ấn back hoặc forward
-	// useEffect(() => {
-	// 	window.onpopstate = saveTime;
-	// });
+	// Lưu thời gian lại khi user ấn back hoặc forward
+	useEffect(() => {
+		window.onpopstate = saveTime;
+	});
 
 	return (
 		<div className="py-10 w-52 flex justify-center">
@@ -64,4 +61,4 @@ function Timer({ hours, minutes, seconds }) {
 	);
 }
 
-export default Timer;
+export default Time;

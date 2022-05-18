@@ -68,7 +68,7 @@ function ExamList() {
 										className="w-full"
 										onClick={() =>
 											navigate({
-												pathname: 'take/1',
+												pathname: 'take/61e3f41a3b7773d24d08c683',
 												// search: createSearchParams({
 												//     subject: 'civiceducation',
 												// }).toString(),
