@@ -14,7 +14,7 @@ function ExamFeature(props) {
 				<Route path=":examId" element={<ExamDetail />} />
 				<Route path="take/:examId" element={<TakeExam />} />
 				<Route path="result/:examId" element={<ExamResult />} />
-				<Route path="resultdetail/:examId" element={<ExamResultDetail />} />
+				<Route path="resultdetail/" element={<ExamResultDetail />} />
 			</Routes>
 		</div>
 	);

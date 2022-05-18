@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { useNavigate } from 'react-router-dom';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 
 function ViewResult({ examReview }) {
 	const navigate = useNavigate();
@@ -99,10 +99,10 @@ function ViewResult({ examReview }) {
 						className="bg-green-400 py-2 px-8 mt-4 mr-3 font-bold text-gray-50 text-lg rounded-lg"
 						onClick={() =>
 							navigate({
-								pathname: '/resultDetail',
-								search: {
+								pathname: '/exam/resultDetail',
+								search: createSearchParams({
 									examResult: JSON.stringify(examReview),
-								},
+								}).toString(),
 							})
 						}
 					>

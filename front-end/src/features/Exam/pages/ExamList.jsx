@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-import Loading from '../../../components/Loading';
 import moment from 'moment';
-import ExamItem from '../components/ExamItem';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../../../components/Loading';
+import ExamItem from '../components/ExamItem';
 
 function ExamList() {
+	// const location = useLocation();
+	// console.log(location);
+
 	const [exams, setExams] = useState([
 		{
 			_id: '61e3f41a3b7773d24d08c683',

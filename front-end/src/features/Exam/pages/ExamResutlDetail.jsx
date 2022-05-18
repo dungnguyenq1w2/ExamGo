@@ -1,13 +1,21 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import AnswersResultBox from '../components/AnswersResultBox';
 import ViewQuestionResult from '../components/ViewQuestionResult';
 
 function ExamResultDetail() {
 	const [exam, setExam] = useState();
+	const [searchParams, setSearchParams] = useSearchParams();
+	useEffect(() => {
+		setExam(JSON.parse(searchParams.get('examResult')));
+	}, [searchParams]);
+
 	// useEffect(() => {
-	// 	setExam(JSON.parse(router.query.examResult));
-	// }, [router.query.examResult]);
+	// 	// console.log(JSON.parse(location.search.slice(1)));
+	// 	// console.log(location.search.slice(1));
+	// 	// setExam(JSON.parse(location.search.slice(10)));
+	// }, [location]);
 	const takingTime = moment.utc(exam?.secondTaken * 1000).format('HH:mm:ss');
 
 	const arrDiff = takingTime.split(':');
