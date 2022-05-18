@@ -9,7 +9,7 @@ import UserList from './pages/UserList';
 function AdminFeature(props) {
 	return (
 		<div className="flex">
-			<div>
+			<div className="basis-[30%]">
 				<ul>
 					<li>
 						<NavLink
