@@ -1,5 +1,5 @@
-import { useSelector } from "react-redux";
-import AnswerBox from "./AnswerBox";
+import { useSelector } from 'react-redux';
+import AnswerBox from './AnswerBox';
 function AnswersBox() {
 	const answers = useSelector((state) => state.answers);
 	return (

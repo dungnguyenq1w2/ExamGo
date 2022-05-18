@@ -1,6 +1,7 @@
-import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import AnswersResultBox from '../components/AnswersResultBox';
+import ViewQuestionResult from '../components/ViewQuestionResult';
 
 function ExamResultDetail() {
 	const [exam, setExam] = useState();

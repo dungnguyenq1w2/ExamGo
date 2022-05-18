@@ -170,7 +170,7 @@ function TakeExam() {
 						access_token:
 							'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWQ1MmNmYTc2YTcxNzJlMDFiMTY2ZTgiLCJpYXQiOjE2NTI4NDc2NDcsImV4cCI6MTY1MzEwNjg0N30.7C1fIm7vVjaHBHRhaB7KaxnKDljXXNSnwEvPVvdJztM',
 					},
-				});
+				}); 
 
 				localStorage.setItem(`time_${examId}`, res.data.minuteLimit);
 				if (!localStorage.getItem(`startTime_${examId}`))
