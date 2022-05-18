@@ -1,25 +1,16 @@
-import React from "react";
+import React from 'react';
+import AnswerBox from './AnswerBox';
 
 function StateBox({ answers }) {
-    return (
-        <div>
-            {answers?.map((e, i) => (
-                <span className="box" key={i}>
-                    {e == 0
-                        ? "A"
-                        : e == 1
-                        ? "B"
-                        : e == 2
-                        ? "C"
-                        : e == 3
-                        ? "D"
-                        : null}
-                </span>
-            ))}
-        </div>
-    );
+	return (
+		<div className="">
+			<div className="grid grid-flow-row grid-cols-5 gap-3 p-2">
+				{answers?.map((value, index) => (
+					<AnswerBox key={index} question={index + 1} answer={value} />
+				))}
+			</div>
+		</div>
+	);
 }
-
-StateBox.propTypes = {};
 
 export default StateBox;
