@@ -1,6 +1,6 @@
-import { useForm } from "react-hook-form";
-import axios from "axios";
-import { useState } from "react";
+import { useForm } from 'react-hook-form';
+import axios from 'axios';
+import { useState } from 'react';
 // import { ErrorMessage } from "@hookform/error-message";
 // import { yupResolver } from "@hookform/resolvers/yup";
 // import * as Yup from "yup";
@@ -9,6 +9,7 @@ import { useState } from "react";
 // import { useDispatch } from "react-redux";
 
 function SignUp() {
+	//test
 	// const dispatch = useDispatch();
 	const [error, setError] = useState();
 
@@ -30,15 +31,15 @@ function SignUp() {
 	// 	formState: { errors },
 	// } = useForm(formOptions);
 	const onSubmit = (data) => {
-		console.log("data register", data);
+		//console.log("data register", data);
 		const handleRegister = async () => {
 			try {
 				const res = await axios.post(
-                    `${process.env.NEXT_PUBLIC_API_URL}/users/register`,
-                    data
-                );
+					`${process.env.NEXT_PUBLIC_API_URL}/users/register`,
+					data,
+				);
 
-				if (res.data.message === "Success") {
+				if (res.data.message === 'Success') {
 					const handleLogin = async () => {
 						try {
 							const url = `${process.env.NEXT_PUBLIC_API_URL}/login`;
@@ -48,8 +49,8 @@ function SignUp() {
 							};
 							const res = await axios.post(url, accountLogin);
 
-							if (res.data.message === "Success") {
-								localStorage.setItem("REFRESH_TOKEN", res.data.refreshToken);
+							if (res.data.message === 'Success') {
+								localStorage.setItem('REFRESH_TOKEN', res.data.refreshToken);
 								// const cookies = new Cookies();
 
 								// cookies.set("access_token", res.data.refreshToken, {
@@ -62,15 +63,15 @@ function SignUp() {
 							} else {
 							}
 						} catch (error) {
-							console.log("Failed to login", error);
+							console.log('Failed to login', error);
 						}
 					};
 					handleLogin();
 				} else {
 				}
 			} catch (error) {
-				if (error.toString().includes("401")) setError("Tài khoản đã tồn tại");
-				console.log("Failed to fetch exam:", error);
+				if (error.toString().includes('401')) setError('Tài khoản đã tồn tại');
+				console.log('Failed to fetch exam:', error);
 			}
 		};
 		handleRegister();
@@ -79,13 +80,13 @@ function SignUp() {
 	return (
 		<div>
 			<div className="mx-auto rounded-lg shadow-lg mt-12 max-w-lg">
-				<div className="w-full text-center uppercase text-white py-1 rounded-t-lg bg-blue-500">Đăng ký</div>
+				<div className="w-full text-center uppercase text-white py-1 rounded-t-lg bg-blue-500">
+					Đăng ký
+				</div>
 				<form
 					// onSubmit={handleSubmit(onSubmit)}
 					className="bg-white shadow-md rounded-b-lg px-6 pt-3 pb-4 mb-2"
 				>
-					
-
 					<div className="mb-2">
 						<label
 							className="block text-gray-700 text-sm font-bold mb-2"
@@ -244,4 +245,3 @@ function SignUp() {
 }
 
 export default SignUp;
-
