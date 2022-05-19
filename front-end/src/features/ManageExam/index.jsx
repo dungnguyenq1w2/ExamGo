@@ -10,7 +10,7 @@ function ManageExamFeature(props) {
 		<Routes>
 			<Route path="/" element={<ManageExam />} />
 			<Route path="/create" element={<CreateExam />} />
-			<Route path="/edit" element={<EditExam />} />
+			<Route path="/edit/:id" element={<EditExam />} />
 		</Routes>
 	);
 }

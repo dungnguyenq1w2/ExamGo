@@ -2,7 +2,7 @@ import React from 'react';
 
 function TeacherInfo() {
 	return (
-		<div className="flex-[0.2] py-10 px-6 border-r-2">
+		<div className="hidden lg:block flex-[0.2] py-10 px-6 border-r-2">
 			<div className="flex flex-col items-center mb-8">
 				<img
 					className="rounded-full h-40 w-40 object-cover"
