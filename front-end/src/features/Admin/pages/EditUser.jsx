@@ -8,7 +8,7 @@ function EditUser() {
                 <div className="mb-4">
                     <label
                         className="block text-gray-700 text-sm font-bold mb-2"
-                        for="name"
+                        htmlFor="name"
                     >
                         Họ và tên
                     </label>
@@ -22,7 +22,7 @@ function EditUser() {
                 <div className="mb-4">
                     <label
                         className="block text-gray-700 text-sm font-bold mb-2"
-                        for="email"
+                        htmlFor="email"
                     >
                         Email
                     </label>
@@ -36,7 +36,7 @@ function EditUser() {
                 <div className="mb-4">
                     <label
                         className="block text-gray-700 text-sm font-bold mb-2"
-                        for="password"
+                        htmlFor="password"
                     >
                         Mật khẩu
                     </label>
@@ -62,7 +62,7 @@ function EditUser() {
                             />
                             <label
                                 className="form-check-label inline-block text-gray-800 align-top"
-                                for="student"
+                                htmlFor="student"
                             >
                                 <span>Học sinh</span>
                             </label>
@@ -77,7 +77,7 @@ function EditUser() {
                             />
                             <label
                                 className="form-check-label inline-block text-gray-800"
-                                for="teacher"
+                                htmlFor="teacher"
                             >
                                 <span>Giáo viên</span>
                             </label>
