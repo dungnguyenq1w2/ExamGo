@@ -1,10 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-function Dropdown() {
+function DropdownTeacher({ handleClickItem }) {
 	return (
 		<div className="absolute top-16 right-2 bg-white rounded-lg shadow-md">
 			<div>
-				<div className="flex items-center mt-2 py-1 pl-6 pr-12 cursor-pointer hover:bg-blue-300">
+				<Link
+					to="/manageexam"
+					className="flex items-center mt-2 py-1 pl-6 pr-12 cursor-pointer hover:bg-blue-300"
+					onClick={handleClickItem}
+				>
 					<svg
 						className="mr-4 pl-0.5"
 						xmlns="http://www.w3.org/2000/svg"
@@ -28,8 +33,12 @@ function Dropdown() {
 						/>
 					</svg>
 					<span className="mt-1">Xem trang cá nhân</span>
-				</div>
-				<div className="flex items-center py-1 pl-6 pr-12 cursor-pointer hover:bg-blue-300">
+				</Link>
+				<Link
+					to="/user/edit"
+					className="flex items-center py-1 pl-6 pr-12 cursor-pointer hover:bg-blue-300"
+					onClick={handleClickItem}
+				>
 					<svg
 						className="mr-2 pr-1"
 						xmlns="http://www.w3.org/2000/svg"
@@ -40,23 +49,27 @@ function Dropdown() {
 					>
 						<path
 							stroke="#000"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							strokeWidth="2"
 							d="m16.474 5.408 2.118 2.117-2.118-2.117Zm1.362-1.865L12.109 9.27a2.118 2.118 0 0 0-.58 1.082L11 13l2.648-.53c.41-.082.786-.283 1.082-.579l5.727-5.727a1.854 1.854 0 0 0-2.621-2.62v0Z"
 						/>
 						<path
 							stroke="#000"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							strokeWidth="2"
 							d="M19 15v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h3"
 						/>
 					</svg>
 
 					<span className="mt-1">Cập nhật thông tin</span>
-				</div>
-				<div className="flex items-center py-1 pl-6 pr-12 cursor-pointer hover:bg-blue-300">
+				</Link>
+				<Link
+					to="/user/change-pass"
+					className="flex items-center py-1 pl-6 pr-12 cursor-pointer hover:bg-blue-300"
+					onClick={handleClickItem}
+				>
 					<svg
 						className="mr-3"
 						xmlns="http://www.w3.org/2000/svg"
@@ -72,11 +85,15 @@ function Dropdown() {
 					</svg>
 
 					<span className="mt-1">Đổi mật khẩu</span>
-				</div>
+				</Link>
 			</div>
 			<hr />
 			<div>
-				<div className="flex items-center py-1 pl-6 pr-12 cursor-pointer hover:bg-blue-300">
+				<Link
+					to="/manageexam"
+					className="flex items-center py-1 pl-6 pr-12 cursor-pointer hover:bg-blue-300"
+					onClick={handleClickItem}
+				>
 					<svg
 						className="mr-2"
 						xmlns="http://www.w3.org/2000/svg"
@@ -92,8 +109,12 @@ function Dropdown() {
 					</svg>
 
 					<span className="mt-1 ">Quản lý đề thi</span>
-				</div>
-				<div className="flex items-center py-1 pl-6 pr-12 cursor-pointer hover:bg-blue-300">
+				</Link>
+				<Link
+					to="/manageexam/create"
+					className="flex items-center py-1 pl-6 pr-12 cursor-pointer hover:bg-blue-300"
+					onClick={handleClickItem}
+				>
 					<svg
 						className="mr-3 pl-0.5"
 						xmlns="http://www.w3.org/2000/svg"
@@ -104,7 +125,7 @@ function Dropdown() {
 					>
 						<path
 							stroke="#000"
-							stroke-width="1.5"
+							strokeWidth="1.5"
 							d="M14.467 2.19 19.5 7.013v13.8h-15V2.188h9.956c.008 0 .011.003.011.002Z"
 						/>
 						<path
@@ -114,8 +135,12 @@ function Dropdown() {
 					</svg>
 
 					<span className="mt-1">Thêm đề thi</span>
-				</div>
-				<div className="flex items-center py-1 pl-6 pr-12 cursor-pointer hover:bg-blue-300">
+				</Link>
+				<Link
+					to="admin/statistics"
+					className="flex items-center py-1 pl-6 pr-12 cursor-pointer hover:bg-blue-300"
+					onClick={handleClickItem}
+				>
 					<svg
 						className="mr-3 pl-1"
 						xmlns="http://www.w3.org/2000/svg"
@@ -126,31 +151,30 @@ function Dropdown() {
 					>
 						<path
 							stroke="#000"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-miterlimit="5.759"
-							stroke-width="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							strokeMiterlimit="5.759"
+							strokeWidth="2"
 							d="M2.75 3v16c0 .53.193 1.04.537 1.414.344.375.81.586 1.296.586H19.25"
 						/>
 						<path
 							stroke="#000"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-miterlimit="5.759"
-							stroke-width="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							strokeMiterlimit="5.759"
+							strokeWidth="2"
 							d="m6.417 14 3.666-4 3.667 4 5.5-6"
 						/>
 						<path
 							stroke="#000"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							strokeWidth="2"
 							d="M16.5 8h2.75v3"
 						/>
 					</svg>
-
 					<span className="mt-1">Xem thống kê</span>
-				</div>
+				</Link>
 			</div>
 			<div className="bg-blue-700 text-center rounded-b-lg py-2 cursor-pointer">
 				<span className="text-white text-2xl">Đăng xuất</span>
@@ -159,4 +183,4 @@ function Dropdown() {
 	);
 }
 
-export default Dropdown;
+export default DropdownTeacher;

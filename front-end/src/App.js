@@ -12,7 +12,7 @@ function App() {
 	return (
 		<div>
 			<Header />
-			<div className="min-h-[97.5vh]">
+			<div className="min-h-[76vh]">
 				<Routes>
 					<Route path="/" element={<HomeFeature />} />
 					<Route path="user/*" element={<UserFeature />} />

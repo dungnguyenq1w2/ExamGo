@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../store/slices/userSlice';
-import Dropdown from './Dropdown';
+import DropdownTeacher from './DropdownTeacher';
 
 const Header = () => {
 	const navigate = useNavigate();
@@ -18,7 +18,9 @@ const Header = () => {
 		dispatch(logout());
 		localStorage.removeItem('REFRESH_TOKEN');
 	};
-	const handleOpenDropdown = () => {};
+	const handleClickDropdownItem = () => {
+		setIsDropdown(!isDropdown);
+	};
 
 	return (
 		<div
@@ -75,7 +77,7 @@ const Header = () => {
 						<div className="flex items-center rounded-xl ">
 							<img
 								// src={user?.avatar}
-								src="images/math.jpg"
+								src="/images/math.jpg"
 								alt="avatar"
 								className="w-10 h-10 rounded-full mr-2"
 							/>
@@ -87,7 +89,7 @@ const Header = () => {
 						</div>
 						<div
 							className="cursor-pointer ml-1 border border-black rounded-full"
-							onClick={() => setIsDropdown(!isDropdown)}
+							onClick={handleClickDropdownItem}
 						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -104,7 +106,9 @@ const Header = () => {
 								/>
 							</svg>
 						</div>
-						{isDropdown && <Dropdown />}
+						{isDropdown && (
+							<DropdownTeacher handleClickItem={handleClickDropdownItem} />
+						)}
 					</div>
 				) : (
 					<div className="flex justify-center mt-5 md:mt-0 md:justify-end">

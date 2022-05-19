@@ -2,7 +2,10 @@ import React from 'react';
 
 const Footer = () => {
 	return (
-		<div className="flex justify-between items-center bg-[#04793f] p-3 md:px-10 lg:py-[30px] lg:px-[120px] shadow-[0_3px_6px_6px_rgba(0,0,0,0.5)]">
+		<div
+			style={{ fontFamily: 'Yanone Kaffeesatz' }}
+			className="flex justify-between items-center bg-[#04793f] p-3 md:px-10 lg:py-[20px] lg:px-[120px] shadow-[0_3px_6px_6px_rgba(0,0,0,0.5)]"
+		>
 			<div className="flex">
 				<div className="flex items-center">
 					<img

@@ -7,13 +7,11 @@ import ManageExam from './pages/ManageExam';
 
 function ManageExamFeature(props) {
 	return (
-		<div>
-			<Routes>
-				<Route path="/" element={<ManageExam />} />
-				<Route path="/create" element={<CreateExam />} />
-				<Route path="/edit" element={<EditExam />} />
-			</Routes>
-		</div>
+		<Routes>
+			<Route path="/" element={<ManageExam />} />
+			<Route path="/create" element={<CreateExam />} />
+			<Route path="/edit" element={<EditExam />} />
+		</Routes>
 	);
 }
 
