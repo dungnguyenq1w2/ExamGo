@@ -22,7 +22,7 @@ function UserList() {
 
     const [confirmDeleteState, setConfirmDeleteState] = useState(false);
     return (
-        <div className="flex justify-center ml-48 mt-2">
+        <div className="flex justify-center ml-44 mt-2">
             <div className="flex flex-col">
                 <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
@@ -96,16 +96,16 @@ function UserList() {
                                 </thead>
                                 <tbody>
                                     <tr className="bg-white border-b hover:bg-gray-100">
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        <td className="px-6 py-4 whitespace-nowrap text-base font-base text-gray-900">
                                             1
                                         </td>
-                                        <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                                        <td className="text-base text-gray-900 font-base px-6 py-4 whitespace-nowrap">
                                             admin
                                         </td>
-                                        <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                                        <td className="text-base text-gray-900 font-base px-6 py-4 whitespace-nowrap">
                                             nguyenvana@gmail.com
                                         </td>
-                                        <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                                        <td className="text-base text-gray-900 font-base px-6 py-4 whitespace-nowrap">
                                             Quản trị viên
                                         </td>
                                         <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
@@ -130,16 +130,16 @@ function UserList() {
                                         </td>
                                     </tr>
                                     <tr className="bg-white border-b hover:bg-gray-100">
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        <td className="px-6 py-4 whitespace-nowrap text-base font-base text-gray-900">
                                             2
                                         </td>
-                                        <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                                        <td className="text-base text-gray-900 font-base px-6 py-4 whitespace-nowrap">
                                             Nguyễn Văn C
                                         </td>
-                                        <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                                        <td className="text-base text-gray-900 font-base px-6 py-4 whitespace-nowrap">
                                             nvc@yahoo.com
                                         </td>
-                                        <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                                        <td className="text-base text-gray-900 font-base px-6 py-4 whitespace-nowrap">
                                             Học sinh
                                         </td>
                                         <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
@@ -164,16 +164,16 @@ function UserList() {
                                         </td>
                                     </tr>
                                     <tr className="bg-white border-b hover:bg-gray-100">
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        <td className="px-6 py-4 whitespace-nowrap text-base font-base text-gray-900">
                                             3
                                         </td>
-                                        <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                                        <td className="text-base text-gray-900 font-base px-6 py-4 whitespace-nowrap">
                                             Christine Palmer
                                         </td>
-                                        <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                                        <td className="text-base text-gray-900 font-base px-6 py-4 whitespace-nowrap">
                                             christine.so.cute1010@gmail.com
                                         </td>
-                                        <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                                        <td className="text-base text-gray-900 font-base px-6 py-4 whitespace-nowrap">
                                             Giáo viên
                                         </td>
                                         <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
@@ -198,16 +198,16 @@ function UserList() {
                                         </td>
                                     </tr>
                                     <tr className="bg-white border-b hover:bg-gray-100">
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        <td className="px-6 py-4 whitespace-nowrap text-base font-base text-gray-900">
                                             4
                                         </td>
-                                        <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                                        <td className="text-base text-gray-900 font-base px-6 py-4 whitespace-nowrap">
                                             Nguyễn Thị B
                                         </td>
-                                        <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                                        <td className="text-base text-gray-900 font-base px-6 py-4 whitespace-nowrap">
                                             ntb@yahoo.com
                                         </td>
-                                        <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                                        <td className="text-base text-gray-900 font-base px-6 py-4 whitespace-nowrap">
                                             Học sinh
                                         </td>
                                         <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
@@ -232,16 +232,16 @@ function UserList() {
                                         </td>
                                     </tr>
                                     <tr className="bg-white border-b border-orange-400 hover:bg-gray-100">
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        <td className="px-6 py-4 whitespace-nowrap text-base font-base text-gray-900">
                                             5
                                         </td>
-                                        <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                                        <td className="text-base text-gray-900 font-base px-6 py-4 whitespace-nowrap">
                                             Eternal Socrates
                                         </td>
-                                        <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                                        <td className="text-base text-gray-900 font-base px-6 py-4 whitespace-nowrap">
                                             socrates@yahoo.com
                                         </td>
-                                        <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                                        <td className="text-base text-gray-900 font-base px-6 py-4 whitespace-nowrap">
                                             Giáo viên
                                         </td>
                                         <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">

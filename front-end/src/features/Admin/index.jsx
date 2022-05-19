@@ -15,20 +15,23 @@ import UserList from "./pages/UserList";
 // 	</NavLink>
 // </li>
 function AdminFeature(props) {
-    let activeStyle = {
-        textDecoration: "underline",
-    };
+    // let activeStyle = {
+    //     textDecoration: "underline",
+    // };
     return (
         <div className="flex">
             <div className="h-screen min-w-[20%] max-w-[20%] bg-gray-100 pt-2 border border-gray-200">
                 <ul>
                     <NavLink
-                        to="/admin"
+                        to=""
                         className={({ isActive }) =>
-                            isActive ? "activeStyle" : undefined
+                            isActive
+                                ? "block bg-blue-500 text-white"
+                                : "font-xl"
                         }
+                        end
                     >
-                        <li className="flex items-center px-6 py-2 border-b border-gray-300 w-full hover:bg-gray-500 hover:text-white">
+                        <li className="flex text-xl items-center px-6 py-2 border-b border-gray-300 w-full">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 className="h-6 w-6 mr-2"
@@ -43,10 +46,12 @@ function AdminFeature(props) {
                     <NavLink
                         to="users"
                         className={({ isActive }) =>
-                            isActive ? "activeStyle" : undefined
+                            isActive
+                                ? "block bg-blue-500 text-white"
+                                : "font-xl"
                         }
                     >
-                        <li className="flex items-center px-6 py-2 border-b border-gray-300 w-full hover:bg-gray-500 hover:text-white">
+                        <li className="flex text-xl items-center px-6 py-2 border-b border-gray-300 w-full">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 className="h-6 w-6 mr-2"
@@ -61,10 +66,12 @@ function AdminFeature(props) {
                     <NavLink
                         to="statistics"
                         className={({ isActive }) =>
-                            isActive ? "activeStyle" : "undefined"
+                            isActive
+                                ? "block bg-blue-500 text-white"
+                                : "font-xl"
                         }
                     >
-                        <li className="flex items-center px-6 py-2 border-b border-gray-300 w-full hover:bg-gray-500 hover:text-white">
+                        <li className="flex text-xl items-center px-6 py-2 border-b border-gray-300 w-full">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 className="h-6 w-6 mr-2"
@@ -77,8 +84,8 @@ function AdminFeature(props) {
                         </li>
                     </NavLink>
                 </ul>
-                <div className="flex px-6 py-5">
-                    <button className="border px-2 py-1 border-orange-500 rounded-lg text-orange-500 hover:text-white hover:bg-orange-500">
+                <div className="flex px-6 py-5 justify-center">
+                    <button className="text-xl border px-2 py-1 border-orange-500 rounded-lg text-orange-500 hover:text-white hover:bg-orange-500">
                         Đăng xuất
                     </button>
                 </div>
