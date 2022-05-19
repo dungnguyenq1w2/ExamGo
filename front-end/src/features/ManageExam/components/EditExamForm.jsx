@@ -1,6 +1,4 @@
-import React from 'react';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 // import { modifiedQuestion } from "../utils/modifiedQuestion";
 import EditQuestion from './EditQuestion';
@@ -231,13 +229,13 @@ function EditExamForm({ exam }) {
 								label={`questions.${index}.`}
 								content={item.content}
 								correctOption={
-									item.correctOption == ''
+									item.correctOption === ''
 										? ''
-										: item.correctOption?._id == item.options[0]?._id
+										: item.correctOption?._id === item.options[0]?._id
 										? '0'
-										: item.correctOption?._id == item.options[1]?._id
+										: item.correctOption?._id === item.options[1]?._id
 										? '1'
-										: item.correctOption?._id == item.options[2]?._id
+										: item.correctOption?._id === item.options[2]?._id
 										? '2'
 										: '3'
 								}

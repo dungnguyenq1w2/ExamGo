@@ -2,7 +2,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { IconButton } from '@mui/material';
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../store/slices/userSlice';
 import DropdownTeacher from './DropdownTeacher';
@@ -12,7 +12,7 @@ const Header = () => {
 	const [isMenu, setIsMenu] = useState(false);
 	const [isDropdown, setIsDropdown] = useState(false);
 	const dispatch = useDispatch();
-	const user = 1;
+	const [user, setUser] = useState(1);
 
 	const handleLogout = () => {
 		dispatch(logout());
