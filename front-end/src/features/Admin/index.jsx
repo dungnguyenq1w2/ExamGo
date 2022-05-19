@@ -15,11 +15,19 @@ import UserList from "./pages/UserList";
 // 	</NavLink>
 // </li>
 function AdminFeature(props) {
+    let activeStyle = {
+        textDecoration: "underline",
+    };
     return (
         <div className="flex">
-            <div className="h-screen min-w-[20%] max-w-[20%] bg-gray-100 rounded-lg pt-2">
+            <div className="h-screen min-w-[20%] max-w-[20%] bg-gray-100 pt-2 border border-gray-200">
                 <ul>
-                    <NavLink to="/admin">
+                    <NavLink
+                        to="/admin"
+                        className={({ isActive }) =>
+                            isActive ? "activeStyle" : undefined
+                        }
+                    >
                         <li className="flex items-center px-6 py-2 border-b border-gray-300 w-full hover:bg-gray-500 hover:text-white">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -32,7 +40,12 @@ function AdminFeature(props) {
                             Trang chủ
                         </li>
                     </NavLink>
-                    <NavLink to="/admin/users">
+                    <NavLink
+                        to="users"
+                        className={({ isActive }) =>
+                            isActive ? "activeStyle" : undefined
+                        }
+                    >
                         <li className="flex items-center px-6 py-2 border-b border-gray-300 w-full hover:bg-gray-500 hover:text-white">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +58,12 @@ function AdminFeature(props) {
                             Quản lý người dùng
                         </li>
                     </NavLink>
-                    <NavLink to="/admin/statistics">
+                    <NavLink
+                        to="statistics"
+                        className={({ isActive }) =>
+                            isActive ? "activeStyle" : "undefined"
+                        }
+                    >
                         <li className="flex items-center px-6 py-2 border-b border-gray-300 w-full hover:bg-gray-500 hover:text-white">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"

@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 function UserList() {
@@ -18,6 +19,8 @@ function UserList() {
     //     </div>
     //     <input type="text" placeholder="Search"></input>
     // </div>
+
+    const [confirmDeleteState, setConfirmDeleteState] = useState(false);
     return (
         <div className="flex justify-center ml-48 mt-2">
             <div className="flex flex-col">
@@ -107,15 +110,20 @@ function UserList() {
                                         </td>
                                         <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
                                             <div className="flex items-center justify-center space-x-4">
-                                                <button className="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-green-700 hover:border-green-500 rounded-lg">
-                                                    <NavLink
-                                                        to="/admin/edit"
-                                                        // style={({ isActive }) => (isActive ? activeStyle : undefined)}
-                                                    >
+                                                <NavLink to="/admin/edit">
+                                                    <button className="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-green-700 hover:border-green-500 rounded-lg">
                                                         Chỉnh sửa
-                                                    </NavLink>
-                                                </button>
-                                                <button className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-red-700 hover:border-red-500 rounded-lg">
+                                                    </button>
+                                                </NavLink>
+                                                <button
+                                                    className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-red-700 hover:border-red-500 rounded-lg"
+                                                    type="button"
+                                                    onClick={() =>
+                                                        setConfirmDeleteState(
+                                                            true
+                                                        )
+                                                    }
+                                                >
                                                     Xóa
                                                 </button>
                                             </div>
@@ -136,15 +144,20 @@ function UserList() {
                                         </td>
                                         <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
                                             <div className="flex items-center justify-center space-x-4">
-                                                <button className="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-green-700 hover:border-green-500 rounded-lg">
-                                                    <NavLink
-                                                        to="/admin/edit"
-                                                        // style={({ isActive }) => (isActive ? activeStyle : undefined)}
-                                                    >
+                                                <NavLink to="/admin/edit">
+                                                    <button className="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-green-700 hover:border-green-500 rounded-lg">
                                                         Chỉnh sửa
-                                                    </NavLink>
-                                                </button>
-                                                <button className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-red-700 hover:border-red-500 rounded-lg">
+                                                    </button>
+                                                </NavLink>
+                                                <button
+                                                    className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-red-700 hover:border-red-500 rounded-lg"
+                                                    type="button"
+                                                    onClick={() =>
+                                                        setConfirmDeleteState(
+                                                            true
+                                                        )
+                                                    }
+                                                >
                                                     Xóa
                                                 </button>
                                             </div>
@@ -165,15 +178,20 @@ function UserList() {
                                         </td>
                                         <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
                                             <div className="flex items-center justify-center space-x-4">
-                                                <button className="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-green-700 hover:border-green-500 rounded-lg">
-                                                    <NavLink
-                                                        to="/admin/edit"
-                                                        // style={({ isActive }) => (isActive ? activeStyle : undefined)}
-                                                    >
+                                                <NavLink to="/admin/edit">
+                                                    <button className="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-green-700 hover:border-green-500 rounded-lg">
                                                         Chỉnh sửa
-                                                    </NavLink>
-                                                </button>
-                                                <button className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-red-700 hover:border-red-500 rounded-lg">
+                                                    </button>
+                                                </NavLink>
+                                                <button
+                                                    className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-red-700 hover:border-red-500 rounded-lg"
+                                                    type="button"
+                                                    onClick={() =>
+                                                        setConfirmDeleteState(
+                                                            true
+                                                        )
+                                                    }
+                                                >
                                                     Xóa
                                                 </button>
                                             </div>
@@ -194,15 +212,20 @@ function UserList() {
                                         </td>
                                         <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
                                             <div className="flex items-center justify-center space-x-4">
-                                                <button className="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-green-700 hover:border-green-500 rounded-lg">
-                                                    <NavLink
-                                                        to="/admin/edit"
-                                                        // style={({ isActive }) => (isActive ? activeStyle : undefined)}
-                                                    >
+                                                <NavLink to="/admin/edit">
+                                                    <button className="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-green-700 hover:border-green-500 rounded-lg">
                                                         Chỉnh sửa
-                                                    </NavLink>
-                                                </button>
-                                                <button className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-red-700 hover:border-red-500 rounded-lg">
+                                                    </button>
+                                                </NavLink>
+                                                <button
+                                                    className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-red-700 hover:border-red-500 rounded-lg"
+                                                    type="button"
+                                                    onClick={() =>
+                                                        setConfirmDeleteState(
+                                                            true
+                                                        )
+                                                    }
+                                                >
                                                     Xóa
                                                 </button>
                                             </div>
@@ -223,15 +246,20 @@ function UserList() {
                                         </td>
                                         <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
                                             <div className="flex items-center justify-center space-x-4">
-                                                <button className="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-green-700 hover:border-green-500 rounded-lg">
-                                                    <NavLink
-                                                        to="/admin/edit"
-                                                        // style={({ isActive }) => (isActive ? activeStyle : undefined)}
-                                                    >
+                                                <NavLink to="/admin/edit">
+                                                    <button className="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-green-700 hover:border-green-500 rounded-lg">
                                                         Chỉnh sửa
-                                                    </NavLink>
-                                                </button>
-                                                <button className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-red-700 hover:border-red-500 rounded-lg">
+                                                    </button>
+                                                </NavLink>
+                                                <button
+                                                    className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-red-700 hover:border-red-500 rounded-lg"
+                                                    type="button"
+                                                    onClick={() =>
+                                                        setConfirmDeleteState(
+                                                            true
+                                                        )
+                                                    }
+                                                >
                                                     Xóa
                                                 </button>
                                             </div>
@@ -290,19 +318,85 @@ function UserList() {
                                 </a>
                             </div>
                             <div className="flex items-center justify-center">
-                                <button className="bg-blue-500 hover:bg-blue-400 text-white text-base font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
-                                    <NavLink
-                                        to="/admin/add"
-                                        // style={({ isActive }) => (isActive ? activeStyle : undefined)}
-                                    >
+                                <NavLink to="/admin/add">
+                                    <button className="bg-blue-500 hover:bg-blue-400 text-white text-base font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
                                         Thêm tài khoản
-                                    </NavLink>
-                                </button>
+                                    </button>
+                                </NavLink>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            {confirmDeleteState ? (
+                <div className="">
+                    <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+                        <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                                <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                                    <span className="text-xl font-bold">
+                                        Thông báo
+                                    </span>
+                                    <NavLink to="/admin/users">
+                                        <button
+                                            className="p-1 ml-auto bg-transparent border-0 text-black  float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                            onClick={() =>
+                                                setConfirmDeleteState(false)
+                                            }
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="h-6 w-6"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                                strokeWidth={2}
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M6 18L18 6M6 6l12 12"
+                                                />
+                                            </svg>
+                                        </button>
+                                    </NavLink>
+                                </div>
+                                <div className="relative px-6 flex-auto">
+                                    <p className="my-4 text-slate-500 text-lg leading-relaxed">
+                                        Bạn có chắc chắn muốn xóa tài khoản này
+                                        chứ?
+                                    </p>
+                                </div>
+                                <div className="flex items-center justify-center border-t border-solid border-slate-200 rounded-b">
+                                    <NavLink to="/admin/users">
+                                        <button
+                                            className="bg-transparent text-red-500 font-bold text-xl px-6 py-3 rounded outline-none"
+                                            type="button"
+                                            onClick={() =>
+                                                setConfirmDeleteState(false)
+                                            }
+                                        >
+                                            Có
+                                        </button>
+                                    </NavLink>
+                                    <NavLink to="/admin/users">
+                                        <button
+                                            className="bg-transparent text-gray-500 font-bold text-xl px-6 py-3 rounded outline-none"
+                                            type="button"
+                                            onClick={() =>
+                                                setConfirmDeleteState(false)
+                                            }
+                                        >
+                                            Không
+                                        </button>
+                                    </NavLink>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                </div>
+            ) : null}
         </div>
     );
 }
