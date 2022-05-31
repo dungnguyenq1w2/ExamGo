@@ -1,4 +1,5 @@
-﻿using System;
+﻿using back_end.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,5 +13,7 @@ namespace back_end.Data
         public int UserId { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+
+        public virtual User User { get; set; }
     }
 }

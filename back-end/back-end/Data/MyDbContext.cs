@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using back_end.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace back_end.Data
         }
 
         public DbSet<Account> Account { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<UserType> UserType { get; set; }
     }
 }
