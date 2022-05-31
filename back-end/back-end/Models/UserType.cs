@@ -10,6 +10,7 @@ namespace back_end.Models
     {
         [Key]
         public int Id { get; set; }
-        public string Name { get; set; } = null!;
+        [Required]
+        public string Name { get; set; } 
     }
 }

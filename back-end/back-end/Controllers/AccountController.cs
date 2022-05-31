@@ -23,7 +23,12 @@ namespace back_end.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Account>>> GetAccount()
         {
-            return await _context.Account.ToListAsync();
+            return await _context.Account.Select(e => new Account { 
+                UserId = e.UserId,
+                Username = e.Username,
+                Password = e.Password,
+                User = e.User,
+            }).ToListAsync();
         }
 
         [HttpGet("{id}")]

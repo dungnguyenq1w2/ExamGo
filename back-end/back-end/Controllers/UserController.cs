@@ -28,10 +28,10 @@ namespace back_end.Controllers
                 Id = e.Id,
                 Name = e.Name,
                 Email = e.Email,
-                Phone = e.Phone == null ? e.Phone : null,
-                DateOfBirth = e.DateOfBirth == DateTime.MinValue ? e.DateOfBirth : DateTime.MinValue,
-                CitizenId = e.CitizenId == null ? e.CitizenId : null,
-                Address = e.Address == null ? e.Address : null,
+                //Phone = e.Phone == null ? e.Phone : null,
+                //DateOfBirth = e.DateOfBirth == DateTime.MinValue? e.DateOfBirth : DateTime.MinValue,
+                //CitizenId = e.CitizenId == null ? e.CitizenId : null,
+                //Address = e.Address == null ? e.Address : null,
                 UserTypeId = e.UserTypeId,
                 UserType = e.UserType,
                 //Account = e.Account,
@@ -41,17 +41,7 @@ namespace back_end.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-            var user = await _context.User.Select(e => new User
-            {
-                Id = e.Id,
-                Name = e.Name,
-                Email = e.Email,
-                Phone = e.Phone == null ? e.Phone : null,
-                DateOfBirth = e.DateOfBirth == DateTime.MinValue ? e.DateOfBirth : DateTime.MinValue,
-                CitizenId = e.CitizenId == null ? e.CitizenId : null,
-                Address = e.Address == null ? e.Address : null,
-                UserTypeId = e.UserTypeId,
-            }).FirstOrDefaultAsync(s => s.Id == id);
+            var user = await _context.User.FirstOrDefaultAsync(s => s.Id == id);
 
             if (user == null)
             {
