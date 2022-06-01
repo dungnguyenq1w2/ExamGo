@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using System.Text.Json.Serialization;
 namespace back_end
 {
     public class Startup
@@ -35,6 +35,10 @@ namespace back_end
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "back_end", Version = "v1" });
             });
+            services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve
+            );
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,4 +1,5 @@
 ﻿using back_end.Data;
+using back_end.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace back_end.Controllers
 {
@@ -44,6 +46,61 @@ namespace back_end.Controllers
             }
 
             return exam;
+        }
+
+        [HttpGet("take/{id}")]
+        public async Task<ActionResult<Exam>> TakeExam(int id)
+        {
+            List<Question> listQuestions = (
+            from e in _context.Exam
+            join q in _context.Question on e.Id equals q.ExamId
+            where e.Id == id
+            select q
+            ).ToList();
+            foreach (var question in listQuestions)
+            {
+                List<Answer> answers = (
+                from a in _context.Answer
+                join q in _context.Question on a.QuestionId equals q.Id
+                where q.Id == question.Id
+                select a
+                ).ToList();
+                question.ListAnswers = answers;
+                Console.WriteLine("Answer: "+ answers[0].Content.ToString());
+            }
+            var exam = await _context.Exam.FindAsync(id);
+
+            //var exam = await _context.Exam.Select(e => new Exam {
+            //    Id = e.Id,
+            //    Name = e.Name,
+            //    MaxDuration = e.MaxDuration,
+            //    CreatedTime = e.CreatedTime,
+            //    TeacherId = e.TeacherId,
+            //    SubjectId = e.SubjectId,
+            //}).FindAsync(id);
+            if (exam == null)
+            {
+                return NotFound();
+            }
+            Exam testExam = new Exam
+            {
+                Id = exam.Id,
+                Name = exam.Name,
+                MaxDuration = exam.MaxDuration,
+                TeacherId = exam.TeacherId,
+                SubjectId = exam.SubjectId,
+                Questions = listQuestions,
+            };
+            //var x = JsonSerializer.Serialize(testExam);
+            return new Exam
+            {
+                Id = exam.Id,
+                Name = exam.Name,
+                MaxDuration = exam.MaxDuration,
+                TeacherId = exam.TeacherId,
+                SubjectId = exam.SubjectId,
+                Questions = listQuestions,
+            };
         }
 
         [HttpPut("{id}")]

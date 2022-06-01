@@ -1,4 +1,5 @@
 ﻿using back_end.Models;
+using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -23,5 +24,7 @@ namespace back_end.Data
         public int TeacherId { get; set; }
         [ForeignKey("subjectId")]
         public int SubjectId { get; set; }
+        public List<Question> Questions { get; set; }
+        //public virtual ICollection<ExamDetail> ExamDetail { get; set; }
     }
 }

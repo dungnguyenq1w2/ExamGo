@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace back_end.Models
@@ -18,13 +19,13 @@ namespace back_end.Models
         public string Content { get; set; }
 
         [Required]
-        public string CorrectAnswer { get; set; }
+        public int CorrectAnswerId { get; set; }
         //[Required]
         //public int CorrectAnswer { get; set; }
 
         [Required]
         public int ExamId { get; set; }
-
+        public List<Answer> ListAnswers { get; set; }
         //[ForeignKey("ExamId")]
         //public virtual Exam Exam { get; set; }
     }
