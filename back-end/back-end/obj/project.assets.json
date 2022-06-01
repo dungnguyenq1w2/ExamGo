@@ -1991,19 +1991,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\LENOVO\\.nuget\\packages\\": {}
+    "C:\\Users\\DELL\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\3rd Year - HCMUS\\2nd Semester\\Software Design\\ExamGo\\back-end\\back-end\\back-end.csproj",
+      "projectUniqueName": "C:\\Users\\DELL\\Desktop\\Hoctap\\Năm 3\\HKII\\TKPM\\ExamGo\\back-end\\back-end\\back-end.csproj",
       "projectName": "back-end",
-      "projectPath": "D:\\3rd Year - HCMUS\\2nd Semester\\Software Design\\ExamGo\\back-end\\back-end\\back-end.csproj",
-      "packagesPath": "C:\\Users\\LENOVO\\.nuget\\packages\\",
-      "outputPath": "D:\\3rd Year - HCMUS\\2nd Semester\\Software Design\\ExamGo\\back-end\\back-end\\obj\\",
+      "projectPath": "C:\\Users\\DELL\\Desktop\\Hoctap\\Năm 3\\HKII\\TKPM\\ExamGo\\back-end\\back-end\\back-end.csproj",
+      "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\DELL\\Desktop\\Hoctap\\Năm 3\\HKII\\TKPM\\ExamGo\\back-end\\back-end\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\LENOVO\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -2076,7 +2076,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.104\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }
