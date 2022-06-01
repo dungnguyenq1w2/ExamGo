@@ -16,5 +16,6 @@ namespace back_end.Data
         public DbSet<Account> Account { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<UserType> UserType { get; set; }
+        public DbSet<Subject> Subject { get; set; }
     }
 }
