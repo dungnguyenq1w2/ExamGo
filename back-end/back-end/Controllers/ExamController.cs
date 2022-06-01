@@ -82,16 +82,6 @@ namespace back_end.Controllers
             {
                 return NotFound();
             }
-            Exam testExam = new Exam
-            {
-                Id = exam.Id,
-                Name = exam.Name,
-                MaxDuration = exam.MaxDuration,
-                TeacherId = exam.TeacherId,
-                SubjectId = exam.SubjectId,
-                Questions = listQuestions,
-            };
-            //var x = JsonSerializer.Serialize(testExam);
             return new Exam
             {
                 Id = exam.Id,
@@ -102,7 +92,6 @@ namespace back_end.Controllers
                 Questions = listQuestions,
             };
         }
-
         [HttpPut("{id}")]
         public async Task<IActionResult> PutExam(int id, Exam exam)
         {
@@ -135,30 +124,55 @@ namespace back_end.Controllers
         // POST: api/Exam
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
-        public async Task<ActionResult<Exam>> PostExam(Exam exam)
-        {
-            DateTime now = DateTime.Now;
-            var newExam = new Exam
-            {
-                Id = exam.Id,
-                Name = exam.Name,
-                MaxDuration = exam.MaxDuration,
-                CreatedTime = now,
-                TeacherId = exam.TeacherId,
-                SubjectId = exam.SubjectId
-            };
-            //_context.Exam.Add(exam);
-            _context.Exam.Add(newExam);
+        //[HttpPost]
+        //public async Task<ActionResult<Exam>> PostExam(Exam exam)
+        //{
+        //    DateTime now = DateTime.Now;
+        //    var newExam = new Exam
+        //    {
+        //        Id = exam.Id,
+        //        Name = exam.Name,
+        //        MaxDuration = exam.MaxDuration,
+        //        CreatedTime = now,
+        //        TeacherId = exam.TeacherId,
+        //        SubjectId = exam.SubjectId
+        //    };
+        //    //_context.Exam.Add(exam);
+        //    _context.Exam.Add(newExam);
 
+        //    await _context.SaveChangesAsync();
+
+        //    return CreatedAtAction(nameof(GetExam), new
+        //    {
+        //        id = exam.Id
+        //    }, newExam);
+        //}
+        [HttpPost("take")]
+        public async Task<ActionResult<StudentExam>> PostExam(ExamSubmit exam)
+        {
+            //DateTime now = DateTime.Now;
+            //var newExam = new Exam
+            //{
+            //    Id = exam.Id,
+            //    Name = exam.Name,
+            //    MaxDuration = exam.MaxDuration,
+            //    CreatedTime = now,
+            //    TeacherId = exam.TeacherId,
+            //    SubjectId = exam.SubjectId
+            //};
+            //_context.Exam.Add(exam);
+            _context.Student_Exam.Add(exam.StudentExam);
+            foreach (var choice in exam.StudentChoices)
+            {
+                _context.Student_Exam_Choices.Add(choice);
+            }
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetExam), new
             {
                 id = exam.Id
-            }, newExam);
+            }, exam.StudentExam);
         }
-
         // DELETE: api/Exam/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Exam>> DeleteExam(int id)
