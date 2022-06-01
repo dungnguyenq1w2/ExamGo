@@ -17,5 +17,7 @@ namespace back_end.Data
         public DbSet<User> User { get; set; }
         public DbSet<UserType> UserType { get; set; }
         public DbSet<Subject> Subject { get; set; }
+        public DbSet<Question> Question { get; set; }
+        public DbSet<Answer> Answer { get; set; }
     }
 }
