@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace back_end.Models
 {
-    public class StudentExamChoices
+    public class StudentExamChoice
     {
         [Key]
         [Column(Order=0)]

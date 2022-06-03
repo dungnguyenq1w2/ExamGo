@@ -13,6 +13,6 @@ namespace back_end.Models
         [Required]
         public StudentExam StudentExam { get; set; }
         [Required]
-        public List<StudentExamChoices> StudentChoices { get; set; }
+        public List<StudentExamChoice> StudentChoices { get; set; }
     }
 }

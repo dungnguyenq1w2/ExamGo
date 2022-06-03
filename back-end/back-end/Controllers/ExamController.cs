@@ -66,7 +66,6 @@ namespace back_end.Controllers
                 select a
                 ).ToList();
                 question.ListAnswers = answers;
-                Console.WriteLine("Answer: "+ answers[0].Content.ToString());
             }
             var exam = await _context.Exam.FindAsync(id);
 
@@ -92,6 +91,75 @@ namespace back_end.Controllers
                 Questions = listQuestions,
             };
         }
+
+        [HttpGet("result/{id}")]
+        //public async Task<ActionResult<StudentExamResult>> GetStudentExamResult(int examId, int studentId)
+        public async Task<ActionResult<StudentExamResult>> GetStudentExamResult(int id) //id <=> examID
+        {
+            int studentId = 1;
+            int examId = id;
+            //List<QuestionResult> questionResultList = null;
+            //foreach (var question in _context.Question)
+            //{
+            //    QuestionResult temp = null;
+            //    temp.Id = question.Id;
+            //    temp.Content = question.Content;
+            //    temp.CorrectAnswerId = question.CorrectAnswerId;
+            //    temp.ExamId = question.ExamId;
+            //    temp.ListAnswers = question.ListAnswers;
+            //    //questionResultList
+            //}    
+            List<QuestionResult> listQuestionResults = (
+            from sec in _context.Student_Exam_Choice
+            join q in _context.Question on sec.QuestionId equals q.Id
+            where sec.ExamId == examId && sec.StudentId == studentId
+            select (new QuestionResult{
+                Id = q.Id,
+                Content = q.Content,
+                CorrectAnswerId = q.CorrectAnswerId,
+                ChosenAnswerId = sec.ChosenAnswerId
+            })
+            ).ToList();
+            foreach (var question in listQuestionResults)
+            {
+                List<Answer> answers = (
+                from a in _context.Answer
+                join q in _context.Question on a.QuestionId equals q.Id
+                where q.Id == question.Id
+                select a
+                ).ToList();
+                question.ListAnswers = answers;
+            }
+            var examResult = await _context.Student_Exam.FindAsync(studentId, examId); // student
+            var exam = await _context.Exam.FindAsync(examId);
+            var teacher = await _context.User.FindAsync(exam.TeacherId); 
+            var subject = await _context.Subject.FindAsync(exam.SubjectId);
+            //var exam = await _context.Exam.Select(e => new Exam {
+            //    Id = e.Id,
+            //    Name = e.Name,
+            //    MaxDuration = e.MaxDuration,
+            //    CreatedTime = e.CreatedTime,
+            //    TeacherId = e.TeacherId,
+            //    SubjectId = e.SubjectId,
+            //}).FindAsync(id);
+            if (examResult == null)
+            {
+                return NotFound();
+            }
+            return new StudentExamResult
+            {
+                Id = examResult.ExamId,
+                Name = exam.Name,
+                Teacher = teacher.Name,
+                Subject = subject.Name,
+                Point = examResult.Point,
+                MaxDuration = exam.MaxDuration,
+                Duration = examResult.Duration,
+                StartTime = examResult.StartTime,
+                QuestionResults = listQuestionResults
+            };
+        }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutExam(int id, Exam exam)
         {
@@ -166,7 +234,7 @@ namespace back_end.Controllers
             _context.Student_Exam.Add(exam.StudentExam);
             foreach (var choice in exam.StudentChoices)
             {
-                _context.Student_Exam_Choices.Add(choice);
+                _context.Student_Exam_Choice.Add(choice);
             }
             await _context.SaveChangesAsync();
 
