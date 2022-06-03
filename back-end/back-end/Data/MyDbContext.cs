@@ -20,6 +20,7 @@ namespace back_end.Data
             modelBuilder.Entity<StudentExamChoices>()
                 .HasKey(st => new { st.StudentId, st.ExamId, st.QuestionId });
             //.HasKey(nameof(back_end.Models.StudentExamChoices.StudentId), nameof(back_end.Models.StudentExamChoices.ExamId), nameof(back_end.Models.StudentExamChoices.QuestionId));
+            modelBuilder.Entity<User>().Property(p => p.Id).ValueGeneratedOnAdd();
         }
         public DbSet<Account> Account { get; set; }
         public DbSet<Exam> Exam { get; set; }

@@ -161,6 +161,8 @@ namespace back_end.Controllers
             //    SubjectId = exam.SubjectId
             //};
             //_context.Exam.Add(exam);
+
+            //System.Diagnostics.Debug.WriteLine(exam.StudentExam);
             _context.Student_Exam.Add(exam.StudentExam);
             foreach (var choice in exam.StudentChoices)
             {
