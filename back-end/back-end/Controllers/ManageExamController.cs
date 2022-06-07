@@ -130,6 +130,78 @@ namespace back_end.Controllers
             }, newExam);
         }
 
-        
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutExam(int id, Exam exam)
+        {
+            if (id != exam.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(exam).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ExamExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // DELETE: api/Exam/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Exam>> DeleteExam(int id)
+        {
+            //var Exam = await _context.Exam.FindAsync(id);
+            //if (Exam == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //_context.Exam.Remove(Exam);
+            //await _context.SaveChangesAsync();
+
+            //return Exam;
+            var exam = await _context.Exam.FindAsync(id);
+            if (id != exam.Id)
+            {
+                return BadRequest();
+            }
+            exam.IsDeleted = 1;
+            _context.Entry(exam).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ExamExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+        private bool ExamExists(int id)
+        {
+            return _context.Exam.Any(e => e.Id == id);
+        }
     }
 }
