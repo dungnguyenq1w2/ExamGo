@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\DELL\\Desktop\\Hoctap\\Năm 3\\HKII\\TKPM\\ExamGo\\back-end\\back-end\\back-end.csproj": {}
+    "D:\\Download\\[github]\\ExamGo\\back-end\\back-end\\back-end.csproj": {}
   },
   "projects": {
-    "C:\\Users\\DELL\\Desktop\\Hoctap\\Năm 3\\HKII\\TKPM\\ExamGo\\back-end\\back-end\\back-end.csproj": {
+    "D:\\Download\\[github]\\ExamGo\\back-end\\back-end\\back-end.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\DELL\\Desktop\\Hoctap\\Năm 3\\HKII\\TKPM\\ExamGo\\back-end\\back-end\\back-end.csproj",
+        "projectUniqueName": "D:\\Download\\[github]\\ExamGo\\back-end\\back-end\\back-end.csproj",
         "projectName": "back-end",
-        "projectPath": "C:\\Users\\DELL\\Desktop\\Hoctap\\Năm 3\\HKII\\TKPM\\ExamGo\\back-end\\back-end\\back-end.csproj",
-        "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\DELL\\Desktop\\Hoctap\\Năm 3\\HKII\\TKPM\\ExamGo\\back-end\\back-end\\obj\\",
+        "projectPath": "D:\\Download\\[github]\\ExamGo\\back-end\\back-end\\back-end.csproj",
+        "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
+        "outputPath": "D:\\Download\\[github]\\ExamGo\\back-end\\back-end\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -44,6 +44,10 @@
               "target": "Package",
               "version": "[5.0.5, )"
             },
+            "Microsoft.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "[6.19.0, )"
+            },
             "MySql.Data": {
               "target": "Package",
               "version": "[8.0.29, )"
@@ -68,6 +72,10 @@
               "target": "Package",
               "version": "[4.8.3, )"
             },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[6.19.0, )"
+            },
             "System.Text.Json": {
               "target": "Package",
               "version": "[5.0.0, )"
@@ -91,7 +99,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.105\\RuntimeIdentifierGraph.json"
         }
       }
     }

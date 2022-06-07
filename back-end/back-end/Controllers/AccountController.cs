@@ -27,7 +27,7 @@ namespace back_end.Controllers
                 UserId = e.UserId,
                 Username = e.Username,
                 Password = e.Password,
-                User = e.User,
+                //User = e.User,
             }).ToListAsync();
         }
 
