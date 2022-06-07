@@ -26,7 +26,7 @@ namespace back_end.Models
         [Required]
         public string Subject { get; set; }
 
-        public List<QuestionResult> QuestionResults { get; set; }
+        public List<QuestionResult> QuestionResultList { get; set; }
         //CorrectAnswers
     }
 }

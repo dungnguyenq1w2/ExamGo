@@ -51,13 +51,13 @@ namespace back_end.Controllers
         [HttpGet("take/{id}")]
         public async Task<ActionResult<Exam>> TakeExam(int id)
         {
-            List<Question> listQuestions = (
+            List<Question> questionList = (
             from e in _context.Exam
             join q in _context.Question on e.Id equals q.ExamId
             where e.Id == id
             select q
             ).ToList();
-            foreach (var question in listQuestions)
+            foreach (var question in questionList)
             {
                 List<Answer> answers = (
                 from a in _context.Answer
@@ -65,7 +65,7 @@ namespace back_end.Controllers
                 where q.Id == question.Id
                 select a
                 ).ToList();
-                question.ListAnswers = answers;
+                question.AnswerList = answers;
             }
             var exam = await _context.Exam.FindAsync(id);
 
@@ -88,7 +88,7 @@ namespace back_end.Controllers
                 MaxDuration = exam.MaxDuration,
                 TeacherId = exam.TeacherId,
                 SubjectId = exam.SubjectId,
-                Questions = listQuestions,
+                QuestionList = questionList,
             };
         }
 
@@ -109,7 +109,7 @@ namespace back_end.Controllers
             //    temp.ListAnswers = question.ListAnswers;
             //    //questionResultList
             //}    
-            List<QuestionResult> listQuestionResults = (
+            List<QuestionResult> questionResultList = (
             from sec in _context.Student_Exam_Choice
             join q in _context.Question on sec.QuestionId equals q.Id
             where sec.ExamId == examId && sec.StudentId == studentId
@@ -120,7 +120,7 @@ namespace back_end.Controllers
                 ChosenAnswerId = sec.ChosenAnswerId
             })
             ).ToList();
-            foreach (var question in listQuestionResults)
+            foreach (var question in questionResultList)
             {
                 List<Answer> answers = (
                 from a in _context.Answer
@@ -128,7 +128,7 @@ namespace back_end.Controllers
                 where q.Id == question.Id
                 select a
                 ).ToList();
-                question.ListAnswers = answers;
+                question.AnswerList = answers;
             }
             var examResult = await _context.Student_Exam.FindAsync(studentId, examId); // student
             var exam = await _context.Exam.FindAsync(examId);
@@ -156,7 +156,7 @@ namespace back_end.Controllers
                 MaxDuration = exam.MaxDuration,
                 Duration = examResult.Duration,
                 StartTime = examResult.StartTime,
-                QuestionResults = listQuestionResults
+                QuestionResultList = questionResultList
             };
         }
 
@@ -232,7 +232,7 @@ namespace back_end.Controllers
 
             //System.Diagnostics.Debug.WriteLine(exam.StudentExam);
             _context.Student_Exam.Add(exam.StudentExam);
-            foreach (var choice in exam.StudentChoices)
+            foreach (var choice in exam.StudentChoiceList)
             {
                 _context.Student_Exam_Choice.Add(choice);
             }

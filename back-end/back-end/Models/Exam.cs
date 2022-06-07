@@ -17,14 +17,15 @@ namespace back_end.Data
         public string Name { get; set; }
         [Required]
         public int MaxDuration { get; set; }
-        [Required]
+       
         public DateTime? CreatedTime { get; set; } = null!;
 
         [ForeignKey("teacherId")]
         public int TeacherId { get; set; }
         [ForeignKey("subjectId")]
         public int SubjectId { get; set; }
-        public List<Question> Questions { get; set; }
+        public int IsDeleted { get; set; }
+        public List<Question> QuestionList { get; set; }
         //public virtual ICollection<ExamDetail> ExamDetail { get; set; }
     }
 }

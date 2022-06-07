@@ -20,6 +20,6 @@ namespace back_end.Models
         [Required]
         public int ChosenAnswerId { get; set; }
 
-        public List<Answer> ListAnswers { get; set; }
+        public List<Answer> AnswerList { get; set; }
     }
 }
