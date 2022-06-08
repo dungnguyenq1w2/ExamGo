@@ -1,22 +1,22 @@
 ﻿using back_end.Data;
 using back_end.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
+using Microsoft.AspNetCore.Cors;
 
 namespace back_end.Controllers
 {
+   
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("MyPolicy")]
     public class ExamController : ControllerBase
-    {
+    { 
         private readonly MyDbContext _context;
-
+        
         public ExamController(MyDbContext context)
         {
             _context = context;

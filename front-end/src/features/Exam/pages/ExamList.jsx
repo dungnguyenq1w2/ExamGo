@@ -1,41 +1,74 @@
 import moment from 'moment';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../../../components/Loading';
 import ExamItem from '../components/ExamItem';
-
+import axios from 'axios'
 function ExamList() {
 	// const location = useLocation();
 	// console.log(location);
 
-	const [exams, setExams] = useState([
-		{
-			_id: '61e3f41a3b7773d24d08c683',
-			name: 'Đề kiểm tra 15 phút Lịch Sử 12',
-			openedAt: '2022-01-16T08:34:24.636Z',
-			closedAt: '2022-01-16T08:34:24.636Z',
-			creator: {
-				_id: '61cf495623ef54e066d11ebb',
-				name: 'Giáo viên 2',
-			},
-			attemptLimit: 1,
-			minuteLimit: 15,
-			questions: [
-				'61e3f4183b7773d24d08c66d',
-				'61e3f4193b7773d24d08c677',
-				'61e3f41a3b7773d24d08c681',
-				'61e3f45bf5ee57a712a93c0a',
-			],
-			subject: 'Lịch sử',
-			grade: 12,
-			isDeleted: false,
-			__v: 0,
-			isEditable: false,
-			isDone: false,
-		},
-	]);
+	const [exams, setExams] = useState([]);
+	//     [
+	// 	{
+	// 		_id: '61e3f41a3b7773d24d08c683',
+	// 		name: 'Đề kiểm tra 15 phút Lịch Sử 12',
+	// 		openedAt: '2022-01-16T08:34:24.636Z',
+	// 		closedAt: '2022-01-16T08:34:24.636Z',
+	// 		creator: {
+	// 			_id: '61cf495623ef54e066d11ebb',
+	// 			name: 'Giáo viên 2',
+	// 		},
+	// 		attemptLimit: 1,
+	// 		minuteLimit: 15,
+	// 		questions: [
+	// 			'61e3f4183b7773d24d08c66d',
+	// 			'61e3f4193b7773d24d08c677',
+	// 			'61e3f41a3b7773d24d08c681',
+	// 			'61e3f45bf5ee57a712a93c0a',
+	// 		],
+	// 		subject: 'Lịch sử',
+	// 		grade: 12,
+	// 		isDeleted: false,
+	// 		__v: 0,
+	// 		isEditable: false,
+	// 		isDone: false,
+	// 	},
+	// ]);
 	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		const fetchExam = async () => {
+			try {
+				const url = `${process.env.REACT_APP_API_URL}/exams/`;
+
+				// const token = localStorage.getItem('REFRESH_TOKEN');
+				// const res = await axios.get(url, {
+				// 	headers: {
+				// 		access_token:
+				// 			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWQ1MmNmYTc2YTcxNzJlMDFiMTY2ZTgiLCJpYXQiOjE2NTI4NDc2NDcsImV4cCI6MTY1MzEwNjg0N30.7C1fIm7vVjaHBHRhaB7KaxnKDljXXNSnwEvPVvdJztM',
+				// 	},
+				// });
+				const res = await axios.get(url);
+
+				// localStorage.setItem(`time_${examId}`, res.data.minuteLimit);
+				// if (!localStorage.getItem(`startTime_${examId}`))
+				// 	localStorage.setItem(
+				// 		`startTime_${examId}`,
+				// 		moment().format('DD/MM/YYYY HH:mm:ss'),
+				// 	);
+				if (res) {
+					console.log(res);
+				}
+				// setExam(res.data);
+				// setLoading(true);
+			} catch (error) {
+				console.log('Failed to fetch exam:', error);
+			}
+		};
+		fetchExam();
+	}, []);
 	return (
 		<div>
 			<section className="flex py-5 px-5 min-h-screen">
@@ -64,31 +97,31 @@ function ExamList() {
 						{loading ? (
 							exams.map((e) => (
 								<div
-									key={e._id}
+									key={e.id}
 									className="flex justify-between border-t-2 cursor-pointer px-4 py-1 hover:bg-gray-200"
 								>
 									<div
 										className="w-full"
-										onClick={() =>
-											navigate({
-												pathname: 'take/61e3f41a3b7773d24d08c683',
-												// search: createSearchParams({
-												//     subject: 'civiceducation',
-												// }).toString(),
-											})
-										}
+										// onClick={() =>
+										// 	navigate({
+										// 		pathname: 'take/61e3f41a3b7773d24d08c683',
+										// 		// search: createSearchParams({
+										// 		//     subject: 'civiceducation',
+										// 		// }).toString(),
+										// 	})
+										// }
 									>
-										<ExamItem
-											id={e._id}
+										{/* <ExamItem
+											id={e.id}
 											name={e.name}
-											minuteLimit={e.minuteLimit}
-											creator={e.creator.name}
-											openDate={moment
-												.utc(e.openedAt)
-												.local()
-												.format('DD/MM/YYYY')}
-											isDone={e.isDone}
-										/>
+											minuteLimit={e.maxDuration}
+											// creator={e.creator.name}
+											// openDate={moment
+											// 	.utc(e.openedAt)
+											// 	.local()
+											// 	.format('DD/MM/YYYY')}
+											// isDone={e.isDone}
+										/> */}
 									</div>
 
 									{/* {e.isEditable && user?.role == 'teacher' && (

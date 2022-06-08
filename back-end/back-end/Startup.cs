@@ -1,19 +1,11 @@
 using back_end.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Text.Json.Serialization;
 namespace back_end
 {
@@ -30,6 +22,10 @@ namespace back_end
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MyDbContext>(options => options.UseMySQL(Configuration.GetConnectionString("DbConnection")));
+            services.AddCors(options =>
+            {
+                options.AddPolicy("MyPolicy", a => a.WithOrigins("https://localhost:3000"));
+            });
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -54,6 +50,8 @@ namespace back_end
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("MyPolicy");
 
             app.UseAuthentication();
 
