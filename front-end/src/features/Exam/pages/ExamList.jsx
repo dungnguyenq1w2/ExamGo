@@ -41,7 +41,7 @@ function ExamList() {
 	useEffect(() => {
 		const fetchExam = async () => {
 			try {
-				const url = `${process.env.REACT_APP_API_URL}/exams/`;
+				const url = `${process.env.REACT_APP_API_URL}/exam`;
 
 				// const token = localStorage.getItem('REFRESH_TOKEN');
 				// const res = await axios.get(url, {

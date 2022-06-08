@@ -24,7 +24,7 @@ namespace back_end
             services.AddDbContext<MyDbContext>(options => options.UseMySQL(Configuration.GetConnectionString("DbConnection")));
             services.AddCors(options =>
             {
-                options.AddPolicy("MyPolicy", a => a.WithOrigins("https://localhost:3000"));
+                options.AddPolicy("MyPolicy", a => a.WithOrigins("http://localhost:3000"));
             });
             services.AddControllers();
             services.AddSwaggerGen(c =>
