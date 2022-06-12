@@ -1,6 +1,7 @@
 ﻿using back_end.Data;
 using back_end.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -19,7 +20,7 @@ namespace back_end.Controllers
     {
         private readonly MyDbContext _context;
         //public static Account account = new Account();
-        public static AccountDto accountDto = new AccountDto();
+        //public static AccountDto accountDto = new AccountDto();
 
         private readonly IConfiguration _configuration;
 
@@ -30,7 +31,7 @@ namespace back_end.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<AccountDto>> Register(Account request)
+        public async Task<ActionResult<Account>> Register(AccountDto request)
         {
             if (AccountExists(request.Username))
             {
@@ -39,9 +40,9 @@ namespace back_end.Controllers
 
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
-            accountDto.Username = request.Username;
-            accountDto.PasswordHash = passwordHash;
-            accountDto.PasswordSalt = passwordSalt;
+            //accountDto.Username = request.Username;
+            request.PasswordHash = passwordHash;
+            request.PasswordSalt = passwordSalt;
 
 
             _context.User.Add(request.User);
@@ -51,40 +52,43 @@ namespace back_end.Controllers
             {
                 UserId = request.User.Id,
                 Username = request.Username,
-                Password = passwordHash.ToString()
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt
             };
 
             _context.Account.Add(newAccount);
             await _context.SaveChangesAsync();
 
-            return Ok(accountDto);
+            return Ok(request);
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(Account request)
+        public async Task<ActionResult<string>> Login(AccountDto request)
         {
-            if (accountDto.Username != request.Username)
+            if (!AccountExists(request.Username))
             {
                 return BadRequest("Account not found.");
             }
 
-            if (!VerifyPasswordHash(request.Password, accountDto.PasswordHash, accountDto.PasswordSalt))
+            var account = await _context.Account.FirstOrDefaultAsync(a => a.Username == request.Username);
+
+            if (!VerifyPasswordHash(request.Password, account.PasswordHash, account.PasswordSalt))
             {
                 return BadRequest("Wrong password.");
             }
 
-            string token = CreateToken(accountDto);
+            string token = CreateToken(account);
             
 
             return Ok(token);
         }
 
 
-        private string CreateToken(AccountDto accountDto)
+        private string CreateToken(Account accountDto)
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, accountDto.Username)
+                new Claim(JwtRegisteredClaimNames.NameId, accountDto.UserId.ToString())
                 //new Claim(ClaimTypes.Role, "Admin")
             };
 

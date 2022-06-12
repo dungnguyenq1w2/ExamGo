@@ -24,7 +24,7 @@ namespace back_end.Controllers
             return await _context.Account.Select(e => new Account { 
                 UserId = e.UserId,
                 Username = e.Username,
-                Password = e.Password,
+                PasswordHash = e.PasswordHash,
                 //User = e.User,
             }).ToListAsync();
         }

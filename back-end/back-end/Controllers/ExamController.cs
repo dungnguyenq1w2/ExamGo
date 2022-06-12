@@ -6,6 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
+using System.IdentityModel.Tokens.Jwt;
+using System;
 
 namespace back_end.Controllers
 {
@@ -48,13 +52,21 @@ namespace back_end.Controllers
             return exam;
         }
 
+        [Authorize]
         [HttpGet("take/{id}")]
         public async Task<ActionResult<Exam>> TakeExam(int id)
         {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+
+            int studentId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+            int examId = id;
+
             List<Question> questionList = (
             from e in _context.Exam
             join q in _context.Question on e.Id equals q.ExamId
-            where e.Id == id
+            where e.Id == examId
             select q
             ).ToList();
             foreach (var question in questionList)
@@ -67,7 +79,7 @@ namespace back_end.Controllers
                 ).ToList();
                 question.AnswerList = answers;
             }
-            var exam = await _context.Exam.FindAsync(id);
+            var exam = await _context.Exam.FindAsync(examId);
 
             //var exam = await _context.Exam.Select(e => new Exam {
             //    Id = e.Id,
@@ -92,11 +104,17 @@ namespace back_end.Controllers
             };
         }
 
+        [Authorize]
         [HttpGet("result/{id}")]
         //public async Task<ActionResult<StudentExamResult>> GetStudentExamResult(int examId, int studentId)
         public async Task<ActionResult<StudentExamResult>> GetStudentExamResult(int id) //id <=> examID
         {
-            int studentId = 1;
+           
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+           
+            int studentId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
             int examId = id;
             //List<QuestionResult> questionResultList = null;
             //foreach (var question in _context.Question)
@@ -160,34 +178,34 @@ namespace back_end.Controllers
             };
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutExam(int id, Exam exam)
-        {
-            if (id != exam.Id)
-            {
-                return BadRequest();
-            }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutExam(int id, Exam exam)
+        //{
+        //    if (id != exam.Id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            _context.Entry(exam).State = EntityState.Modified;
+        //    _context.Entry(exam).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ExamExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!ExamExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
         // POST: api/Exam
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
@@ -215,6 +233,7 @@ namespace back_end.Controllers
         //        id = exam.Id
         //    }, newExam);
         //}
+
         [HttpPost("take")]
         public async Task<ActionResult<StudentExam>> PostExam(ExamSubmit exam)
         {
@@ -232,6 +251,7 @@ namespace back_end.Controllers
 
             //System.Diagnostics.Debug.WriteLine(exam.StudentExam);
             _context.Student_Exam.Add(exam.StudentExam);
+            _context.SaveChanges();
             foreach (var choice in exam.StudentChoiceList)
             {
                 _context.Student_Exam_Choice.Add(choice);
@@ -243,24 +263,24 @@ namespace back_end.Controllers
                 id = exam.Id
             }, exam.StudentExam);
         }
-        // DELETE: api/Exam/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Exam>> DeleteExam(int id)
-        {
-            var Exam = await _context.Exam.FindAsync(id);
-            if (Exam == null)
-            {
-                return NotFound();
-            }
+        //// DELETE: api/Exam/5
+        //[HttpDelete("{id}")]
+        //public async Task<ActionResult<Exam>> DeleteExam(int id)
+        //{
+        //    var Exam = await _context.Exam.FindAsync(id);
+        //    if (Exam == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            _context.Exam.Remove(Exam);
-            await _context.SaveChangesAsync();
+        //    _context.Exam.Remove(Exam);
+        //    await _context.SaveChangesAsync();
 
-            return Exam;
-        }
-        private bool ExamExists(int id)
-        {
-            return _context.Exam.Any(e => e.Id == id);
-        }
+        //    return Exam;
+        //}
+        //private bool ExamExists(int id)
+        //{
+        //    return _context.Exam.Any(e => e.Id == id);
+        //}
     }
 }
