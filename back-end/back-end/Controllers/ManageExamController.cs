@@ -1,9 +1,13 @@
 ﻿using back_end.Data;
 using back_end.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,6 +15,7 @@ namespace back_end.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("MyPolicy")]
     public class ManageExamController : ControllerBase
     {
         private readonly MyDbContext _context;
@@ -20,10 +25,17 @@ namespace back_end.Controllers
             _context = context;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Exam>>> GetRetriveExam()
         {
-            return await _context.Exam.Select(e => new Exam
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+
+            int teacherId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+
+            return await _context.Exam.Where(e => e.TeacherId == teacherId).Select(e => new Exam
             {
                 Id = e.Id,
                 Name = e.Name,
@@ -34,6 +46,7 @@ namespace back_end.Controllers
             }).ToListAsync();
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Exam>> GetExam(int id)
         {
@@ -43,6 +56,7 @@ namespace back_end.Controllers
             where e.Id == id
             select q
             ).ToList();
+
             foreach (var question in questionList)
             {
                 List<Answer> answers = (
@@ -78,16 +92,22 @@ namespace back_end.Controllers
             };
         }
 
-        [HttpPost()]
+        [Authorize]
+        [HttpPost]
         public async Task<ActionResult<Exam>> PostExam(Exam exam)
         {
-            DateTime now = DateTime.Now;
-            var newExam = new Exam
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+
+            int teacherId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+            
+           var newExam = new Exam
             {
                 Name = exam.Name,
                 MaxDuration = exam.MaxDuration,
-                CreatedTime = now,
-                TeacherId = exam.TeacherId,
+                CreatedTime = DateTime.Now,
+                TeacherId = teacherId,
                 SubjectId = exam.SubjectId,
                 IsDeleted = 0
             };
@@ -116,7 +136,7 @@ namespace back_end.Controllers
                     if (correctAnswerId == answer.index)
                         correctAnswerId = newAnswer.Id;
                 }
-              
+
                 newQuestion.CorrectAnswerId = correctAnswerId;
                 _context.Entry(newQuestion).State = EntityState.Modified;
             }
@@ -129,6 +149,7 @@ namespace back_end.Controllers
             }, newExam);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutExam(int id, Exam exam)
         {
@@ -159,6 +180,7 @@ namespace back_end.Controllers
         }
 
         // DELETE: api/Exam/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Exam>> DeleteExam(int id)
         {
@@ -198,6 +220,7 @@ namespace back_end.Controllers
 
             return NoContent();
         }
+
         private bool ExamExists(int id)
         {
             return _context.Exam.Any(e => e.Id == id);

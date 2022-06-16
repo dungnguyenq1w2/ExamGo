@@ -22,6 +22,7 @@ namespace back_end.Data
         [ForeignKey("subjectId")]
         public int SubjectId { get; set; }
         public int IsDeleted { get; set; }
+        public int IsDone { get; set; }
         public List<Question> QuestionList { get; set; }
         //public virtual ICollection<ExamDetail> ExamDetail { get; set; }
     }

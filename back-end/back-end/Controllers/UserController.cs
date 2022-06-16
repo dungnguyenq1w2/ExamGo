@@ -1,8 +1,12 @@
 ﻿using back_end.Data;
 using back_end.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,28 +22,16 @@ namespace back_end.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetAccount()
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<ActionResult<User>> GetUser()
         {
-            return await _context.User.Select(e => new User
-            {
-                Id = e.Id,
-                Name = e.Name,
-                Email = e.Email,
-                //Phone = e.Phone == null ? e.Phone : null,
-                //DateOfBirth = e.DateOfBirth == DateTime.MinValue? e.DateOfBirth : DateTime.MinValue,
-                //CitizenId = e.CitizenId == null ? e.CitizenId : null,
-                //Address = e.Address == null ? e.Address : null,
-                UserTypeId = e.UserTypeId,
-                UserType = e.UserType,
-                //Account = e.Account,
-            }).ToListAsync();
-        }
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
-        {
-            var user = await _context.User.FirstOrDefaultAsync(s => s.Id == id);
+            int userId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+            var user = await _context.User.FirstOrDefaultAsync(s => s.Id == userId);
 
             if (user == null)
             {
@@ -49,15 +41,32 @@ namespace back_end.Controllers
             return user;
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        [HttpPut]
+        public async Task<IActionResult> PutUser(User user)
         {
-            if (id != user.Id)
-            {
-                return BadRequest();
-            }
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
 
-            _context.Entry(user).State = EntityState.Modified;
+            int userId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+
+            // if (userId != user.Id)
+            // {
+            //    return BadRequest();
+            // }
+
+            // _context.Entry(user).State = EntityState.Modified;
+            var newUser = _context.User.FirstOrDefault(e => e.Id == userId);
+
+            if (newUser != null)
+            {
+                newUser.Name = user.Name;
+                newUser.Email = user.Email;
+                newUser.Phone = user.Phone;
+                newUser.DateOfBirth = user.DateOfBirth;
+                newUser.CitizenId = user.CitizenId;
+                newUser.Address = user.Address;
+            }
 
             try
             {
@@ -65,7 +74,7 @@ namespace back_end.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!UserExists(userId))
                 {
                     return NotFound();
                 }
@@ -75,7 +84,7 @@ namespace back_end.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok("Successfully change your information");
         }
 
         // POST: api/Account

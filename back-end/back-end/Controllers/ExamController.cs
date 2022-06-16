@@ -13,23 +13,45 @@ using System;
 
 namespace back_end.Controllers
 {
-   
+
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors("MyPolicy")]
     public class ExamController : ControllerBase
-    { 
+    {
         private readonly MyDbContext _context;
-        
+
         public ExamController(MyDbContext context)
         {
             _context = context;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Exam>>> GetExam()
         {
-            return await _context.Exam.Select(e => new Exam
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            if (accessToken == null)
+            {
+                return await _context.Exam.Select(e => new Exam
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    MaxDuration = e.MaxDuration,
+                    CreatedTime = e.CreatedTime,
+                    TeacherId = e.TeacherId,
+                    SubjectId = e.SubjectId,
+                    IsDeleted = e.IsDeleted,
+                    IsDone = 0
+                }).ToListAsync();
+            }
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+
+            int studentId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+
+            List<Exam> examList = await _context.Exam.Select(e => new Exam
             {
                 Id = e.Id,
                 Name = e.Name,
@@ -38,6 +60,15 @@ namespace back_end.Controllers
                 TeacherId = e.TeacherId,
                 SubjectId = e.SubjectId,
             }).ToListAsync();
+
+            foreach (var exam in examList)
+            {
+                var studentExam = await _context.Student_Exam.FindAsync(studentId, exam.Id);
+
+                exam.IsDone = (studentExam == null ? 0 : 1);
+            }
+
+            return examList;
         }
 
         [HttpGet("{id}")]
@@ -109,11 +140,11 @@ namespace back_end.Controllers
         //public async Task<ActionResult<StudentExamResult>> GetStudentExamResult(int examId, int studentId)
         public async Task<ActionResult<StudentExamResult>> GetStudentExamResult(int id) //id <=> examID
         {
-           
+
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             var handler = new JwtSecurityTokenHandler();
             var jwtSecurityToken = handler.ReadJwtToken(accessToken);
-           
+
             int studentId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
             int examId = id;
             //List<QuestionResult> questionResultList = null;
@@ -131,7 +162,8 @@ namespace back_end.Controllers
             from sec in _context.Student_Exam_Choice
             join q in _context.Question on sec.QuestionId equals q.Id
             where sec.ExamId == examId && sec.StudentId == studentId
-            select (new QuestionResult{
+            select (new QuestionResult
+            {
                 Id = q.Id,
                 Content = q.Content,
                 CorrectAnswerId = q.CorrectAnswerId,
@@ -150,7 +182,7 @@ namespace back_end.Controllers
             }
             var examResult = await _context.Student_Exam.FindAsync(studentId, examId); // student
             var exam = await _context.Exam.FindAsync(examId);
-            var teacher = await _context.User.FindAsync(exam.TeacherId); 
+            var teacher = await _context.User.FindAsync(exam.TeacherId);
             var subject = await _context.Subject.FindAsync(exam.SubjectId);
             //var exam = await _context.Exam.Select(e => new Exam {
             //    Id = e.Id,
@@ -234,10 +266,11 @@ namespace back_end.Controllers
         //    }, newExam);
         //}
 
-        [HttpPost("take")]
-        public async Task<ActionResult<StudentExam>> PostExam(ExamSubmit exam)
+        [Authorize]
+        [HttpPost("take/{id}")]
+        public async Task<ActionResult<StudentExam>> PostExam(ExamSubmit exam, int id)
         {
-            //DateTime now = DateTime.Now;
+            // DateTime now = DateTime.Now;
             //var newExam = new Exam
             //{
             //    Id = exam.Id,
@@ -250,10 +283,25 @@ namespace back_end.Controllers
             //_context.Exam.Add(exam);
 
             //System.Diagnostics.Debug.WriteLine(exam.StudentExam);
+
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+
+            int studentId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+
+            exam.StudentExam.StudentId = studentId;
+            exam.StudentExam.ExamId = id;
+            exam.StudentExam.StartTime = DateTime.Now.AddSeconds((-1) * exam.StudentExam.Duration);
+
             _context.Student_Exam.Add(exam.StudentExam);
-            _context.SaveChanges();
+            //_context.SaveChanges();
+            await _context.SaveChangesAsync();
+
             foreach (var choice in exam.StudentChoiceList)
             {
+                choice.ExamId = id;
+                choice.StudentId = studentId;
                 _context.Student_Exam_Choice.Add(choice);
             }
             await _context.SaveChangesAsync();

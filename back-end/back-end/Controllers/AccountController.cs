@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
+using System.IdentityModel.Tokens.Jwt;
+using System;
 
 namespace back_end.Controllers
 {
@@ -18,17 +22,19 @@ namespace back_end.Controllers
             _context = context;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Account>>> GetAccount()
         {
-            return await _context.Account.Select(e => new Account { 
+           return await _context.Account.Select(e => new Account { 
                 UserId = e.UserId,
                 Username = e.Username,
                 PasswordHash = e.PasswordHash,
                 //User = e.User,
             }).ToListAsync();
         }
-
+        
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Account>> GetAccount(int id)
         {
@@ -42,6 +48,7 @@ namespace back_end.Controllers
             return account;
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAccount(int id, Account account)
         {
@@ -74,6 +81,7 @@ namespace back_end.Controllers
         // POST: api/Account
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Account>> PostAccount(Account account)
         {
@@ -84,6 +92,7 @@ namespace back_end.Controllers
         }
 
         // DELETE: api/Account/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Account>> DeleteAccount(int id)
         {

@@ -1,5 +1,7 @@
 ﻿using back_end.Data;
 using back_end.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -78,11 +80,55 @@ namespace back_end.Controllers
             }
 
             string token = CreateToken(account);
-            
-
+        
             return Ok(token);
         }
 
+        [Authorize]
+        [HttpPut("changePassword")]
+        public async Task<ActionResult<string>> ChangePassword(AccountDto request)
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+
+            int userId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+
+            var account = await _context.Account.FindAsync(userId);
+
+            if (!VerifyPasswordHash(request.Password, account.PasswordHash, account.PasswordSalt))
+            {
+                return BadRequest("Wrong password.");
+            }
+            
+            CreatePasswordHash(request.NewPassword, out byte[] passwordHash, out byte[] passwordSalt);
+
+            var newAccount = _context.Account.FirstOrDefault(e => e.UserId == userId);
+
+            if (newAccount != null)
+            {
+                newAccount.PasswordHash = passwordHash;
+                newAccount.PasswordSalt = passwordSalt;
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AccountExists(account.Username))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return Ok("Successfully change password");
+        }
 
         private string CreateToken(Account accountDto)
         {

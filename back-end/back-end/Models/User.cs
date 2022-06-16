@@ -22,6 +22,7 @@ namespace back_end.Models
 
         [ForeignKey("UserTypeId")]
         public virtual UserType UserType { get; set; }
+
         //public virtual Account Account { get; set; }
     }
 }
