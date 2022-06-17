@@ -3,7 +3,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-function ManageBody({ examList, handleDeleteExam }) {
+function ManageBody({ examList, handleDeleteExam, pageIndex, handlePaging }) {
 	const navigate = useNavigate();
 	return (
 		<div className="flex-1 lg:flex-[0.8]">
@@ -79,7 +79,7 @@ function ManageBody({ examList, handleDeleteExam }) {
 
 										<th
 											scope="col"
-											className="text-sm font-medium text-gray-900 px-6 py-4 text-center"
+											className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
 										>
 											Thông tin đề thi
 										</th>
@@ -94,14 +94,14 @@ function ManageBody({ examList, handleDeleteExam }) {
 								{examList &&
 									examList.map((e, i) => (
 										<tbody key={e.id}>
-											<tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+											<tr className="bg-white border-b transition duration-200 ease-in-out hover:bg-gray-100">
 												<td className="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
 													{i + 1}
 												</td>
 
-												<td className="text-sm text-gray-900 font-light px-6 py-2 whitespace-nowrap">
-													<div className="mr-4">
-														<h5 className="text-lg font-semibold">
+												<td className="text-sm text-gray-900 font-light px-6 py-2 whitespace-nowrap w-10/12">
+													<div className="mr-4 w-full">
+														<h5 className="text-lg font-semibold ">
 															{e.title}
 															{/* {'Đề ôn thi THPT Quốc gia môn Lịch Sử năm 2021 có đáp án (Đề 1) Đề ôn thi THPT Quốc gia môn'
 														.length > 50
@@ -124,7 +124,7 @@ function ManageBody({ examList, handleDeleteExam }) {
 														</div>
 													</div>
 												</td>
-												<td className="text-sm text-gray-900 font-light  py-2 whitespace-nowrap">
+												<td className="text-sm text-gray-900 font-light py-2 whitespace-nowrap">
 													<div className="flex flex-col items-center">
 														<svg
 															onClick={() => navigate(`edit/${e.id}`)}
@@ -166,31 +166,52 @@ function ManageBody({ examList, handleDeleteExam }) {
 						</div>
 					</div>
 				</div>
-				<span className="flex justify-end text-base text-gray-500 font-normal mr-5">
-					Results: 1-5 of 50
-				</span>
-			</div>
-
-			<div>
-				<div className="flex items-center justify-center mt-6 text-base">
-					<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded mr-1 text-sky-600 font-semibold">
-						Prev
-					</button>
-					<button className="border-3 border-stone-400 px-3 py-1 border rounded mr-1 font-bold bg-indigo-600 text-white">
-						1
-					</button>
-					<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded mr-1 font-bold">
-						2
-					</button>
-					<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded mr-1 font-bold">
-						3
-					</button>
-					<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded mr-1 font-bold">
-						4
-					</button>
-					<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded text-sky-600 font-semibold">
-						Next
-					</button>
+				<div>
+					<div className="flex items-center justify-center mb-2 text-base">
+						<div
+							className={`${
+								pageIndex == 1
+									? 'text-gray-400'
+									: 'cursor-pointer hover:border-gray-800'
+							} border-2 rounded-full p-1 mr-2`}
+							onClick={() => handlePaging(pageIndex - 1)}
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								className="h-6 w-6"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								strokeWidth={2}
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M15 19l-7-7 7-7"
+								/>
+							</svg>
+						</div>
+						<span>Trang {pageIndex}</span>
+						<div
+							className={` border-2 rounded-full p-1 cursor-pointer hover:border-gray-800 ml-2`}
+							onClick={() => handlePaging(pageIndex + 1)}
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								className="h-6 w-6"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								strokeWidth={2}
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M9 5l7 7-7 7"
+								/>
+							</svg>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

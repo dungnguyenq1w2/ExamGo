@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -44,10 +45,41 @@ const examListTest = [
 
 function ManageExam() {
 	const [examList, setExamList] = useState();
+	const [pageIndex, setPageIndex] = useState(1);
 
 	useEffect(() => {
-		setExamList(examListTest);
-	}, []);
+		// const fetchExam = async () => {
+		// 	try {
+		// 		const url = `${process.env.REACT_APP_API_URL}/exam?page=${pageIndex}`;
+
+		// 		// const token = localStorage.getItem('REFRESH_TOKEN');
+		// 		// const res = await axios.get(url, {
+		// 		// 	headers: {
+		// 		// 		access_token:
+		// 		// 			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWQ1MmNmYTc2YTcxNzJlMDFiMTY2ZTgiLCJpYXQiOjE2NTI4NDc2NDcsImV4cCI6MTY1MzEwNjg0N30.7C1fIm7vVjaHBHRhaB7KaxnKDljXXNSnwEvPVvdJztM',
+		// 		// 	},
+		// 		// });
+		// 		const res = await axios.get(url);
+
+		// 		// localStorage.setItem(`time_${examId}`, res.data.minuteLimit);
+		// 		// if (!localStorage.getItem(`startTime_${examId}`))
+		// 		// 	localStorage.setItem(
+		// 		// 		`startTime_${examId}`,
+		// 		// 		moment().format('DD/MM/YYYY HH:mm:ss'),
+		// 		// 	);
+		// 		if (res) {
+		// 			console.log(res);
+		// 		}
+		// 		// setExam(res.data);
+		// 		// setLoading(true);
+		// 	} catch (error) {
+		// 		console.log('Failed to fetch exam:', error);
+		// 	}
+		// };
+		// fetchExam();
+		const newExamList = examListTest.slice((pageIndex - 1) * 2, (pageIndex - 1) * 2 + 2);
+		setExamList([...newExamList]);
+	}, [pageIndex]);
 
 	const handleDeleteExam = (examId) => {
 		const idxExam = examList.findIndex((e) => e.id === examId);
@@ -56,10 +88,20 @@ function ManageExam() {
 		setExamList([...newExamList]);
 	};
 
+	const handlePaging = (page) => {
+		if (page < 1) return;
+		setPageIndex(page);
+	};
+
 	return (
 		<div className="flex h-full">
 			<TeacherInfo />
-			<ManageBody examList={examList} handleDeleteExam={handleDeleteExam} />
+			<ManageBody
+				examList={examList}
+				handleDeleteExam={handleDeleteExam}
+				pageIndex={pageIndex}
+				handlePaging={handlePaging}
+			/>
 		</div>
 	);
 }

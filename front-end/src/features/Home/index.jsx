@@ -27,7 +27,7 @@ function HomeFeature(props) {
 							navigate({
 								pathname: '/exam',
 								search: createSearchParams({
-									subject: 'math',
+									subject: 1,
 								}).toString(),
 							})
 						}
@@ -49,7 +49,7 @@ function HomeFeature(props) {
 							navigate({
 								pathname: 'exam',
 								search: createSearchParams({
-									subject: 'english',
+									subject: 2,
 								}).toString(),
 							})
 						}
@@ -71,7 +71,7 @@ function HomeFeature(props) {
 							navigate({
 								pathname: 'exam',
 								search: createSearchParams({
-									subject: 'physics',
+									subject: 3,
 								}).toString(),
 							})
 						}
@@ -93,7 +93,7 @@ function HomeFeature(props) {
 							navigate({
 								pathname: 'exam',
 								search: createSearchParams({
-									subject: 'chemistry',
+									subject: 4,
 								}).toString(),
 							})
 						}
@@ -115,7 +115,7 @@ function HomeFeature(props) {
 							navigate({
 								pathname: 'exam',
 								search: createSearchParams({
-									subject: 'biology',
+									subject: 5,
 								}).toString(),
 							})
 						}
@@ -137,7 +137,7 @@ function HomeFeature(props) {
 							navigate({
 								pathname: 'exam',
 								search: createSearchParams({
-									subject: 'history',
+									subject: 6,
 								}).toString(),
 							})
 						}
@@ -159,7 +159,7 @@ function HomeFeature(props) {
 							navigate({
 								pathname: 'exam',
 								search: createSearchParams({
-									subject: 'geography',
+									subject: 7,
 								}).toString(),
 							})
 						}
@@ -182,7 +182,7 @@ function HomeFeature(props) {
 							navigate({
 								pathname: 'exam',
 								search: createSearchParams({
-									subject: 'civiceducation',
+									subject: 8,
 								}).toString(),
 							})
 						}
