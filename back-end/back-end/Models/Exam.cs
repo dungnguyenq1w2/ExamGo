@@ -14,16 +14,21 @@ namespace back_end.Data
         public string Name { get; set; }
         [Required]
         public int MaxDuration { get; set; }
-       
+
         public DateTime? CreatedTime { get; set; } = null!;
 
-        [ForeignKey("teacherId")]
+        //[ForeignKey("teacherId")]
         public int TeacherId { get; set; }
-        [ForeignKey("subjectId")]
+        //[ForeignKey("subjectId")]
         public int SubjectId { get; set; }
         public int IsDeleted { get; set; }
         public int IsDone { get; set; }
+        public int NumOfQuestions { get; set; }
         public List<Question> QuestionList { get; set; }
         //public virtual ICollection<ExamDetail> ExamDetail { get; set; }
+        [ForeignKey("TeacherId")]
+        public virtual User Teacher { get; set; }
+        [ForeignKey("SubjectId")]
+        public virtual Subject Subject { get; set; }
     }
 }

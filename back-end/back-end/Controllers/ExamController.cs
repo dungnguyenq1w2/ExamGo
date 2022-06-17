@@ -43,7 +43,10 @@ namespace back_end.Controllers
                     TeacherId = e.TeacherId,
                     SubjectId = e.SubjectId,
                     IsDeleted = e.IsDeleted,
-                    IsDone = 0
+                    IsDone = e.IsDone,
+                    NumOfQuestions = e.NumOfQuestions,
+                    Teacher = e.Teacher,
+                    Subject = e.Subject
                 }).ToListAsync();
             }
             var handler = new JwtSecurityTokenHandler();
@@ -59,6 +62,10 @@ namespace back_end.Controllers
                 CreatedTime = e.CreatedTime,
                 TeacherId = e.TeacherId,
                 SubjectId = e.SubjectId,
+                IsDone = e.IsDone,
+                NumOfQuestions = e.NumOfQuestions,
+                Teacher = e.Teacher,
+                Subject = e.Subject
             }).ToListAsync();
 
             foreach (var exam in examList)
@@ -71,16 +78,33 @@ namespace back_end.Controllers
             return examList;
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<Exam>> GetExam(int id)
         {
             var exam = await _context.Exam.FindAsync(id);
+
             if (exam == null)
             {
                 return NotFound();
             }
 
-            return exam;
+            User teacher = await _context.User.FindAsync(exam.TeacherId);
+            Subject subject = await _context.Subject.FindAsync(exam.SubjectId);
+
+            return new Exam
+            {
+                Id = exam.Id,
+                Name = exam.Name,
+                MaxDuration = exam.MaxDuration,
+                CreatedTime = exam.CreatedTime,
+                TeacherId = exam.TeacherId,
+                SubjectId = exam.SubjectId,
+                IsDone = exam.IsDone,
+                NumOfQuestions = exam.NumOfQuestions,
+                Teacher = teacher,
+                Subject = subject
+            };
         }
 
         [Authorize]
