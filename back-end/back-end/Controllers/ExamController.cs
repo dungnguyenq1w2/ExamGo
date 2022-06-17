@@ -20,7 +20,7 @@ namespace back_end.Controllers
     public class ExamController : ControllerBase
     {
         private readonly MyDbContext _context;
-
+        public static int PAGE_SIZE { get; set; } = 10;
         public ExamController(MyDbContext context)
         {
             _context = context;
@@ -28,33 +28,28 @@ namespace back_end.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Exam>>> GetExam()
+        public async Task<ActionResult<IEnumerable<Exam>>> GetExam(string search, int subjectId = 0, int page = 1)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var examList = await _context.Exam.AsQueryable().ToListAsync();
 
-            if (accessToken == null)
+            // Search
+            if (!string.IsNullOrEmpty(search))
             {
-                return await _context.Exam.Select(e => new Exam
-                {
-                    Id = e.Id,
-                    Name = e.Name,
-                    MaxDuration = e.MaxDuration,
-                    CreatedTime = e.CreatedTime,
-                    TeacherId = e.TeacherId,
-                    SubjectId = e.SubjectId,
-                    IsDeleted = e.IsDeleted,
-                    IsDone = e.IsDone,
-                    NumOfQuestions = e.NumOfQuestions,
-                    Teacher = e.Teacher,
-                    Subject = e.Subject
-                }).ToListAsync();
+                examList = examList.Where(e => e.Name.Contains(search)).ToList();
             }
-            var handler = new JwtSecurityTokenHandler();
-            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+            
+            // Filter by Subject
+            if (subjectId > 0)
+            {
+                examList = examList.Where(e => e.SubjectId == subjectId).ToList();
+            }
 
-            int studentId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+            // Pagination
+            examList = examList.Skip((page - 1) * PAGE_SIZE).Take(PAGE_SIZE).ToList();
 
-            List<Exam> examList = await _context.Exam.Select(e => new Exam
+
+            examList = examList.Select(e => new Exam
             {
                 Id = e.Id,
                 Name = e.Name,
@@ -62,11 +57,24 @@ namespace back_end.Controllers
                 CreatedTime = e.CreatedTime,
                 TeacherId = e.TeacherId,
                 SubjectId = e.SubjectId,
+                IsDeleted = e.IsDeleted,
                 IsDone = e.IsDone,
                 NumOfQuestions = e.NumOfQuestions,
                 Teacher = e.Teacher,
                 Subject = e.Subject
-            }).ToListAsync();
+            }).ToList();
+
+
+            if (accessToken == null)
+            {
+                return examList;
+            }
+
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+
+            int studentId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+
 
             foreach (var exam in examList)
             {

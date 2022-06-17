@@ -20,6 +20,8 @@ namespace back_end.Controllers
     {
         private readonly MyDbContext _context;
 
+        public static int PAGE_SIZE { get; set; } = 5;
+
         public ManageExamController(MyDbContext context)
         {
             _context = context;
@@ -27,7 +29,7 @@ namespace back_end.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Exam>>> GetRetriveExam()
+        public async Task<ActionResult<IEnumerable<Exam>>> GetRetriveExam(int page = 1)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             var handler = new JwtSecurityTokenHandler();
@@ -35,7 +37,11 @@ namespace back_end.Controllers
 
             int teacherId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
 
-            return await _context.Exam.Where(e => e.TeacherId == teacherId).Select(e => new Exam
+            var examList = await _context.Exam.AsQueryable().ToListAsync();
+            examList = examList.Where(e => e.TeacherId == teacherId).ToList();
+            examList = examList.Skip((page - 1) * PAGE_SIZE).Take(PAGE_SIZE).ToList();
+
+            return examList.Select(e => new Exam
             {
                 Id = e.Id,
                 Name = e.Name,
@@ -43,7 +49,7 @@ namespace back_end.Controllers
                 CreatedTime = e.CreatedTime,
                 TeacherId = e.TeacherId,
                 SubjectId = e.SubjectId,
-            }).ToListAsync();
+            }).ToList();
         }
 
         [Authorize]
