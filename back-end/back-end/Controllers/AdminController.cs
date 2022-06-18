@@ -3,8 +3,13 @@ using back_end.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SelectPdf;
+using Syncfusion.Pdf.Graphics;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace back_end.Controllers
@@ -19,7 +24,8 @@ namespace back_end.Controllers
         {
             _context = context;
         }
-        
+
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetAccount()
         {
@@ -37,6 +43,150 @@ namespace back_end.Controllers
                 //Account = e.Account,
             }).ToListAsync();
         }
+
+        [Authorize]
+        [HttpGet("createUserListPDF")]
+        public async Task<IActionResult> CreateUserListPDF(int role = 0)
+        {
+            var userList = await _context.User.AsQueryable().ToListAsync();
+
+            if (role != 0)
+            {
+                userList = userList.Where(e => e.UserTypeId == role).ToList();
+            }
+
+            System.Diagnostics.Debug.WriteLine(userList);
+
+
+
+            HtmlToPdf converter = new HtmlToPdf();
+
+            PdfTextSection pageNumberingText = new PdfTextSection(0, 20, "Page {page_number} of {total_pages}", new Font("Arial", 10, FontStyle.Bold));
+            pageNumberingText.HorizontalAlign = PdfTextHorizontalAlign.Center;
+            converter.Footer.Add(pageNumberingText);
+
+            PdfTextSection header = new PdfTextSection(100, 0, "ExamGo - User List", new Font("Arial", 12, FontStyle.Underline));
+            header.HorizontalAlign = PdfTextHorizontalAlign.Left;
+            converter.Header.Add(header);
+
+            // set converter options
+            converter.Options.PdfPageSize = PdfPageSize.A4;
+            converter.Options.PdfPageOrientation = PdfPageOrientation.Landscape;
+            converter.Options.DisplayFooter = true;
+            converter.Options.DisplayHeader = true;
+            converter.Options.MarginLeft = 10;
+            converter.Options.MarginRight = 10;
+            converter.Options.MarginTop = 20;
+            converter.Options.MarginBottom = 20;
+
+            var htmlStringBuilder = new StringBuilder();
+            var roleFilter = (role == 1 ? "Học sinh" : role == 2 ? "Giáo viên" : role == 3 ? "Quản trị viên" : "Tất cả");
+
+            htmlStringBuilder.Append(@"
+                        <html>
+                            <head>
+                                <style>
+                                    table, th, td {
+                                        border: thin solid orange;
+                                        border-collapse: collapse;
+                                    }
+                                    
+                                    table tr:first-child {
+                                        color: white;
+                                        background-color: orange;
+                                    }
+                                    
+                                    .header {
+                                        font-weight: bold;
+                                    }
+
+                                    .header h5 {
+                                        color: red;
+                                        font-size: 20;
+                                        margin-bottom: 0px;
+                                        padding-bottom: 0px;
+                                    }
+                                </style>
+                            </head>");
+
+            htmlStringBuilder.AppendFormat(@"
+                            <body style='text-align: center'>
+                                <div class='header'>
+                                    <h5>Danh sách người dùng</h5>
+                                    <p>Vai trò: {0}</p>
+                                </div>
+                                <table align='center'>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Tên</th>
+                                        <th>Email</th>
+                                        <th>SĐT</th>
+                                        <th>CCCD</th>
+                                        <th>Địa chỉ</th>
+                                        <th>Vai trò</th>
+                                    </tr>"
+                        , roleFilter);
+
+            //foreach (var user in userList)
+            //{
+            //    var userType = (user.UserTypeId == 1 ? "Học sinh" : user.UserTypeId == 2 ? "Giáo viên" : "Quản trị viên");
+
+            //    htmlStringBuilder.AppendFormat(@"
+            //                        <tr>
+            //                            <td>{0}</td>
+            //                            <td>{1}</td>
+            //                            <td>{2}</td>
+            //                            <td>{3}</td>
+            //                            <td>{4}</td>
+            //                            <td>{5}</td>
+            //                            <td>{6}</td>
+            //                        </tr>"
+            //                      , user.Id, user.Name, user.Email, user.Phone, user.CitizenId, user.Address, userType);
+            //}
+
+            for (int i = 0; i < 10; i++)
+            {
+                foreach (var user in userList)
+                {
+                    var userType = (user.UserTypeId == 1 ? "Học sinh" : user.UserTypeId == 2 ? "Giáo viên" : "Quản trị viên");
+
+                    htmlStringBuilder.AppendFormat(@"
+                                    <tr>
+                                        <td>{0}</td>
+                                        <td>{1}</td>
+                                        <td>{2}</td>
+                                        <td>{3}</td>
+                                        <td>{4}</td>
+                                        <td>{5}</td>
+                                        <td>{6}</td>
+                                    </tr>"
+                                      , user.Id, user.Name, user.Email, user.Phone, user.CitizenId, user.Address, userType);
+                }
+            }
+
+            htmlStringBuilder.Append(@"
+                                </table>
+                            </body>
+                        </html>");
+
+            // create a new pdf document converting an html string
+            PdfDocument pdfDocument = converter.ConvertHtmlString(htmlStringBuilder.ToString());
+
+            pdfDocument.AddTemplate(pdfDocument.Pages[0].ClientRectangle.Width, 100);
+            //pdfDocument.AddPage();
+
+            // save pdf document
+            var bytes = pdfDocument.Save();
+
+            // file name: Example: user-list_student_2022-06-18T15-00-19.pdf
+            var fileName = "user-list_" + (role == 1 ? "student" : role == 2 ? "teacher" : role == 3 ? "admin" : "all") + DateTime.Now.ToString("s") + ".pdf";
+
+            // close pdf document
+            pdfDocument.Close();
+
+            return File(bytes, "application/pdf", fileName);
+        }
+
         [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAccount(int id, Account account)
