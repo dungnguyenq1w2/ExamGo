@@ -10,7 +10,7 @@ import UserFeature from './features/User';
 
 function App() {
 	return (
-		<div>
+		<div className="">
 			<Header />
 			<div className="min-h-[76vh]">
 				<Routes>

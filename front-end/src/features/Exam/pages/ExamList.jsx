@@ -1,9 +1,9 @@
 import moment from 'moment';
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Loading from '../../../components/Loading';
 import ExamItem from '../components/ExamItem';
-import axios from 'axios'
+import axios from 'axios';
 function ExamList() {
 	// const location = useLocation();
 	// console.log(location);
@@ -37,11 +37,71 @@ function ExamList() {
 	// ]);
 	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
+	const [searchParams, setSearchParams] = useSearchParams();
 
 	useEffect(() => {
 		const fetchExam = async () => {
 			try {
-				const url = `${process.env.REACT_APP_API_URL}/exam`;
+				const searchParam = searchParams.get('search');
+				const subjectParam = searchParams.get('subject');
+				const pageParam = searchParams.get('page');
+				console.log(searchParam);
+				const url = `${process.env.REACT_APP_API_URL}/exam${
+					searchParam ? `?search=${searchParam}` : ''
+				}${subjectParam ? `?subject=${subjectParam}` : ''}${
+					pageParam ? (subjectParam ? `&page=${pageParam}` : `?page=${pageParam}`) : ''
+				}`;
+
+				const data = {
+					$id: '1',
+					$values: [
+						{
+							$id: '2',
+							id: 15,
+							name: 'Đề thi 15 phút Lịch Sử',
+							maxDuration: 15,
+							createdTime: '2022-06-08T09:36:36',
+							teacherId: 5,
+							subjectId: 4,
+							isDeleted: 0,
+							isDone: 0,
+							numOfQuestions: 1,
+							questionList: null,
+							teacher: null,
+							subject: null,
+						},
+						{
+							$id: '3',
+							id: 16,
+							name: 'Đề thi 45 phút Lịch Sử',
+							maxDuration: 45,
+							createdTime: '2022-06-08T09:37:16',
+							teacherId: 5,
+							subjectId: 4,
+							isDeleted: 0,
+							isDone: 0,
+							numOfQuestions: 1,
+							questionList: null,
+							teacher: null,
+							subject: null,
+						},
+						{
+							$id: '4',
+							id: 17,
+							name: 'Đề thi thử Lịch Sử',
+							maxDuration: 60,
+							createdTime: '2022-06-08T09:37:38',
+							teacherId: 5,
+							subjectId: 4,
+							isDeleted: 0,
+							isDone: 0,
+							numOfQuestions: 1,
+							questionList: null,
+							teacher: null,
+							subject: null,
+						},
+					],
+				};
 
 				// const token = localStorage.getItem('REFRESH_TOKEN');
 				// const res = await axios.get(url, {
@@ -58,8 +118,9 @@ function ExamList() {
 				// 		`startTime_${examId}`,
 				// 		moment().format('DD/MM/YYYY HH:mm:ss'),
 				// 	);
-				if (res) {
-					console.log(res);
+				if (res.data) {
+					console.log(res.data);
+					setExams(res.data.$values);
 				}
 				// setExam(res.data);
 				// setLoading(true);
@@ -102,26 +163,23 @@ function ExamList() {
 								>
 									<div
 										className="w-full"
-										// onClick={() =>
-										// 	navigate({
-										// 		pathname: 'take/61e3f41a3b7773d24d08c683',
-										// 		// search: createSearchParams({
-										// 		//     subject: 'civiceducation',
-										// 		// }).toString(),
-										// 	})
-										// }
+										onClick={() =>
+											navigate({
+												pathname: 'take/' + e.id,
+												// search: createSearchParams({
+												//     subject: 'civiceducation',
+												// }).toString(),
+											})
+										}
 									>
-										{/* <ExamItem
+										<ExamItem
 											id={e.id}
 											name={e.name}
 											minuteLimit={e.maxDuration}
-											// creator={e.creator.name}
-											// openDate={moment
-											// 	.utc(e.openedAt)
-											// 	.local()
-											// 	.format('DD/MM/YYYY')}
-											// isDone={e.isDone}
-										/> */}
+											creator={e.teacher.name}
+											createdTime={e.createdTime}
+											isDone={e.isDone}
+										/>
 									</div>
 
 									{/* {e.isEditable && user?.role == 'teacher' && (
