@@ -15,7 +15,7 @@ namespace back_end.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("MyPolicy")]
+    [EnableCors("AllowAllOrigins")]
     public class ManageExamController : ControllerBase
     {
         private readonly MyDbContext _context;
@@ -29,7 +29,7 @@ namespace back_end.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Exam>>> GetRetriveExam(int page = 1)
+        public async Task<ActionResult<IEnumerable<Exam>>> GetRetrieveExam(int page = 1)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             var handler = new JwtSecurityTokenHandler();
@@ -44,6 +44,7 @@ namespace back_end.Controllers
 
             var examList = await _context.Exam.AsQueryable().ToListAsync();
             examList = examList.Where(e => e.TeacherId == teacherId).ToList();
+
             examList = examList.Skip((page - 1) * PAGE_SIZE).Take(PAGE_SIZE).ToList();
 
             return examList.Select(e => new Exam
@@ -111,6 +112,7 @@ namespace back_end.Controllers
                 TeacherId = exam.TeacherId,
                 SubjectId = exam.SubjectId,
                 QuestionList = questionList,
+                CreatedTime = exam.CreatedTime,
             };
         }
 

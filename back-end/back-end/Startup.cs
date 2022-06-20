@@ -27,10 +27,22 @@ namespace back_end
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MyDbContext>(options => options.UseMySQL(Configuration.GetConnectionString("DbConnection")));
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("MyPolicy", a => a.WithOrigins("http://localhost:3000"));
+            //});
+
             services.AddCors(options =>
             {
-                options.AddPolicy("MyPolicy", a => a.WithOrigins("http://localhost:3000"));
+                options.AddPolicy("AllowAllOrigins",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin();
+                        builder.AllowAnyHeader();
+                        builder.AllowAnyMethod();
+                    });
             });
+
             services.AddControllers();
 
             services.AddAuthentication(x =>

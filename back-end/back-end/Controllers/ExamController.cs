@@ -15,7 +15,7 @@ namespace back_end.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("MyPolicy")]
+    [EnableCors("AllowAllOrigins")]
     public class ExamController : ControllerBase
     {
         private readonly MyDbContext _context;
@@ -27,7 +27,7 @@ namespace back_end.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Exam>>> GetExam(string search, int subjectId = 0, int page = 1)
+        public async Task<ActionResult<IEnumerable<Exam>>> GetExam(string search, int subject = 0, int page = 1)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             var examList = await _context.Exam.AsQueryable().ToListAsync();
@@ -39,9 +39,9 @@ namespace back_end.Controllers
             }
 
             // Filter by Subject
-            if (subjectId > 0)
+            if (subject > 0)
             {
-                examList = examList.Where(e => e.SubjectId == subjectId).ToList();
+                examList = examList.Where(e => e.SubjectId == subject).ToList();
             }
 
             // Pagination
@@ -159,6 +159,9 @@ namespace back_end.Controllers
             {
                 return NotFound();
             }
+
+            User teacher = await _context.User.FindAsync(exam.TeacherId);
+
             return new Exam
             {
                 Id = exam.Id,
@@ -167,6 +170,7 @@ namespace back_end.Controllers
                 TeacherId = exam.TeacherId,
                 SubjectId = exam.SubjectId,
                 QuestionList = questionList,
+                Teacher = teacher,
             };
         }
 
@@ -240,7 +244,7 @@ namespace back_end.Controllers
                 Point = examResult.Point,
                 MaxDuration = exam.MaxDuration,
                 Duration = examResult.Duration,
-                StartTime = examResult.StartTime,
+                StartTime = examResult.SubmitTime,
                 QuestionResultList = questionResultList
             };
         }
@@ -327,7 +331,7 @@ namespace back_end.Controllers
 
             exam.StudentExam.StudentId = studentId;
             exam.StudentExam.ExamId = id;
-            exam.StudentExam.StartTime = DateTime.Now.AddSeconds((-1) * exam.StudentExam.Duration);
+            exam.StudentExam.SubmitTime = DateTime.Now;
 
             _context.Student_Exam.Add(exam.StudentExam);
             //_context.SaveChanges();

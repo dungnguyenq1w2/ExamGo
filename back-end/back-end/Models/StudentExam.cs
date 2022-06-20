@@ -15,7 +15,7 @@ namespace back_end.Models
         [Required]
         public double Point { get; set; }
         [Required]
-        public DateTime StartTime { get; set; }
+        public DateTime SubmitTime { get; set; }
         [Required]
         public int Duration { get; set; }
     }

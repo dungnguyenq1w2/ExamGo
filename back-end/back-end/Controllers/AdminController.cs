@@ -2,6 +2,7 @@
 using back_end.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SelectPdf;
@@ -18,6 +19,7 @@ namespace back_end.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowAllOrigins")]
     public class AdminController : ControllerBase
     {
         private readonly MyDbContext _context;
@@ -37,7 +39,7 @@ namespace back_end.Controllers
 
             int adminId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
             var admin = await _context.User.FindAsync(adminId);
-            if (admin.UserTypeId != 2)
+            if (admin.UserTypeId != 3)
             {
                 return StatusCode(403, $"User '{admin.Name}' is not a admin.");
             }
@@ -67,7 +69,7 @@ namespace back_end.Controllers
 
             int adminId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
             var admin = await _context.User.FindAsync(adminId);
-            if (admin.UserTypeId != 2)
+            if (admin.UserTypeId != 3)
             {
                 return StatusCode(403, $"User '{admin.Name}' is not a admin.");
             }
@@ -151,30 +153,11 @@ namespace back_end.Controllers
                                     </tr>"
                         , roleFilter);
 
-            //foreach (var user in userList)
-            //{
-            //    var userType = (user.UserTypeId == 1 ? "Học sinh" : user.UserTypeId == 2 ? "Giáo viên" : "Quản trị viên");
-
-            //    htmlStringBuilder.AppendFormat(@"
-            //                        <tr>
-            //                            <td>{0}</td>
-            //                            <td>{1}</td>
-            //                            <td>{2}</td>
-            //                            <td>{3}</td>
-            //                            <td>{4}</td>
-            //                            <td>{5}</td>
-            //                            <td>{6}</td>
-            //                        </tr>"
-            //                      , user.Id, user.Name, user.Email, user.Phone, user.CitizenId, user.Address, userType);
-            //}
-
-            for (int i = 0; i < 10; i++)
+            foreach (var user in userList)
             {
-                foreach (var user in userList)
-                {
-                    var userType = (user.UserTypeId == 1 ? "Học sinh" : user.UserTypeId == 2 ? "Giáo viên" : "Quản trị viên");
+                var userType = (user.UserTypeId == 1 ? "Học sinh" : user.UserTypeId == 2 ? "Giáo viên" : "Quản trị viên");
 
-                    htmlStringBuilder.AppendFormat(@"
+                htmlStringBuilder.AppendFormat(@"
                                     <tr>
                                         <td>{0}</td>
                                         <td>{1}</td>
@@ -184,9 +167,9 @@ namespace back_end.Controllers
                                         <td>{5}</td>
                                         <td>{6}</td>
                                     </tr>"
-                                      , user.Id, user.Name, user.Email, user.Phone, user.CitizenId, user.Address, userType);
-                }
+                                  , user.Id, user.Name, user.Email, user.Phone, user.CitizenId, user.Address, userType);
             }
+
 
             htmlStringBuilder.Append(@"
                                 </table>
@@ -221,7 +204,7 @@ namespace back_end.Controllers
 
             int adminId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
             var admin = await _context.User.FindAsync(adminId);
-            if (admin.UserTypeId != 2)
+            if (admin.UserTypeId != 3)
             {
                 return StatusCode(403, $"User '{admin.Name}' is not a admin.");
             }
