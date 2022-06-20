@@ -59,10 +59,14 @@ namespace back_end.Controllers
                 IsDeleted = e.IsDeleted,
                 IsDone = e.IsDone,
                 NumOfQuestions = e.NumOfQuestions,
-                Teacher = e.Teacher,
-                Subject = e.Subject
+                //Teacher = e.Teacher,
             }).ToList();
 
+            foreach (var exam in examList)
+            {
+                var teacher = await _context.User.FindAsync(exam.TeacherId);
+                exam.Teacher = teacher;
+            }
 
             if (accessToken == null)
             {
@@ -74,11 +78,7 @@ namespace back_end.Controllers
 
             int studentId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
 
-            foreach (var exam in examList)
-            {
-                var teacher = await _context.User.FindAsync(exam.TeacherId);
-                exam.Teacher = teacher;
-            }
+
 
             foreach (var exam in examList)
             {
@@ -102,7 +102,7 @@ namespace back_end.Controllers
             }
 
             User teacher = await _context.User.FindAsync(exam.TeacherId);
-            Subject subject = await _context.Subject.FindAsync(exam.SubjectId);
+            //Subject subject = await _context.Subject.FindAsync(exam.SubjectId);
 
             return new Exam
             {
@@ -115,7 +115,6 @@ namespace back_end.Controllers
                 IsDone = exam.IsDone,
                 NumOfQuestions = exam.NumOfQuestions,
                 Teacher = teacher,
-                Subject = subject
             };
         }
 
