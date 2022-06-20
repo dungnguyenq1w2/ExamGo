@@ -4,6 +4,7 @@
 import Modal from 'react-modal/lib/components/Modal';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { subject } from '../../../utils/subject';
 import ExamForm from './ExamForm';
 
 // Done form: question-answer-rightAnswer - 14-10-2021
@@ -23,6 +24,7 @@ const customStyles = {
 };
 
 function ExamBody({ exam }) {
+	console.log(exam);
 	const { timeout } = useSelector((state) => state.time);
 	const navigate = useNavigate();
 	return (
@@ -31,23 +33,22 @@ function ExamBody({ exam }) {
 				<div className="">
 					<div>
 						<span className="text-3xl font-bold text-green-800 ">
-							{exam?.subject} |
+							{subject(exam?.subjectId)} |
 						</span>
 						<span className="text-yellow-500 text-2xl font-semibold mt-3">
 							| {exam?.name}
 						</span>
 					</div>
 					<div className="flex flex-col w-full items-center">
-						<span className=" text-xl font-semibold mt-3">Lớp: {exam?.grade}</span>
 						<span className=" text-lg font-semibold mt-3">
-							Thời gian: {exam?.minuteLimit} phút
+							Thời gian: {exam?.maxDuration} phút
 						</span>
 						<span className=" text-lg font-semibold mt-3">
-							Người ra đề: {exam?.creator?.name}
+							Người ra đề: {exam?.teacher?.name}
 						</span>
 					</div>
 				</div>
-				<ExamForm timeout={timeout} questions={exam?.questions} idExam={exam?._id} />
+				<ExamForm timeout={timeout} questionList={exam?.questionList} idExam={exam?.id} />
 				<Modal
 					isOpen={timeout}
 					style={customStyles}

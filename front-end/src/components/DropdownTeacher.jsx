@@ -6,7 +6,7 @@ function DropdownTeacher({ handleClickItem }) {
 		<div className="absolute top-16 right-2 bg-white rounded-lg shadow-md">
 			<div>
 				<Link
-					to="/manageexam"
+					to="/manageexam?page=1"
 					className="flex items-center mt-2 py-1 pl-6 pr-12 cursor-pointer hover:bg-blue-300"
 					onClick={handleClickItem}
 				>

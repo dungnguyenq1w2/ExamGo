@@ -1,6 +1,6 @@
 import axios from 'axios';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Loading from '../../../components/Loading';
 import ExamBody from '../components/ExamBody';
@@ -13,134 +13,62 @@ function TakeExam() {
 	// const time = useMemo(() => exam.minuteLimit, [exam]);
 	// console.log(time);
 	// const [loading, setLoading] = useState(false);
-	const { examId } = useParams();
+	// const { examId } = useParams();
 
 	// useEffect(() => {
 	// 	const fetchedExam = {
-	// 		_id: '61e3f41a3b7773d24d08c683',
-	// 		name: 'Đề kiểm tra 15 phút Lịch Sử 12',
-	// 		openedAt: '2022-01-16T08:34:24.636Z',
-	// 		closedAt: '2022-01-16T08:34:24.636Z',
-	// 		creator: {
-	// 			_id: '61cf495623ef54e066d11ebb',
-	// 			name: 'Giáo viên 2',
+	// 		$id: '1',
+	// 		id: 16,
+	// 		name: 'Đề thi 45 phút Lịch Sử 12',
+	// 		maxDuration: 10,
+	// 		createdTime: null,
+	// 		teacherId: 10,
+	// 		subjectId: 6,
+	// 		isDeleted: 0,
+	// 		isDone: 0,
+	// 		numOfQuestions: 0,
+	// 		questionList: {
+	// 			$id: '2',
+	// 			$values: [
+	// 				{
+	// 					$id: '3',
+	// 					id: 16,
+	// 					content: 'Câu 1',
+	// 					correctAnswerId: 45,
+	// 					examId: 16,
+	// 					answerList: {
+	// 						$id: '4',
+	// 						$values: [
+	// 							{
+	// 								$id: '5',
+	// 								id: 45,
+	// 								content: 'Đáp án 1',
+	// 								questionId: 16,
+	// 							},
+	// 							{
+	// 								$id: '6',
+	// 								id: 46,
+	// 								content: 'Đáp án 2',
+	// 								questionId: 16,
+	// 							},
+	// 							{
+	// 								$id: '7',
+	// 								id: 47,
+	// 								content: 'Đáp án 3',
+	// 								questionId: 16,
+	// 							},
+	// 							{
+	// 								$id: '8',
+	// 								id: 48,
+	// 								content: 'Đáp án 4',
+	// 								questionId: 16,
+	// 							},
+	// 						],
+	// 					},
+	// 				},
+	// 			],
 	// 		},
-	// 		attemptLimit: 1,
-	// 		minuteLimit: 15,
-	// 		questions: [
-	// 			{
-	// 				_id: '61e3f4183b7773d24d08c66d',
-	// 				content: 'Hội nghị Ianta (1945) có sự tham gia của các nước nào?',
-	// 				answers: [
-	// 					{
-	// 						_id: '61e3f4173b7773d24d08c665',
-	// 						content: 'Anh - Pháp - Mĩ.',
-	// 						__v: 0,
-	// 					},
-	// 					{
-	// 						_id: '61e3f4173b7773d24d08c667',
-	// 						content: 'Anh - Mĩ - Liên Xô.',
-	// 						__v: 0,
-	// 					},
-	// 					{
-	// 						_id: '61e3f457f5ee57a712a933c2',
-	// 						content: 'Anh - Pháp',
-	// 						__v: 0,
-	// 					},
-	// 					{
-	// 						_id: '61e3f4183b7773d24d08c66b',
-	// 						content: 'Mĩ - Liên Xô - Trung Quốc.',
-	// 						__v: 0,
-	// 					},
-	// 				],
-	// 			},
-	// 			{
-	// 				_id: '61e3f4193b7773d24d08c677',
-	// 				content:
-	// 					'Tương lai của Nhật Bản được quyết định như thế nào theo Hội nghị Ianta (2-1945)?',
-	// 				answers: [
-	// 					{
-	// 						_id: '61e3f4183b7773d24d08c66f',
-	// 						content: 'Nhật Bản bị quân đội Mĩ chiếm đóng.',
-	// 						__v: 0,
-	// 					},
-	// 					{
-	// 						_id: '61e3f4183b7773d24d08c671',
-	// 						content: 'Nhật Bản vẫn giữ nguyên trạng.',
-	// 						__v: 0,
-	// 					},
-	// 					{
-	// 						_id: '61e3f4193b7773d24d08c673',
-	// 						content:
-	// 							'Quân đội Liên Xô chiếm 4 đảo thuộc quần đảo Curin của Nhật Bản.',
-	// 						__v: 0,
-	// 					},
-	// 					{
-	// 						_id: '61e3f4193b7773d24d08c675',
-	// 						content: 'Nhật Bản trở thành thuộc địa kiểu mới của Mĩ.',
-	// 						__v: 0,
-	// 					},
-	// 				],
-	// 			},
-	// 			{
-	// 				_id: '61e3f41a3b7773d24d08c681',
-	// 				content:
-	// 					'Hội nghị Ianta được triệu tập vào thời điểm nào của cuộc Chiến tranh thế giới thứ hai (1939 – 1945)?',
-	// 				answers: [
-	// 					{
-	// 						_id: '61e3f4193b7773d24d08c679',
-	// 						content: 'Chiến tranh thế giới thứ hai bùng nổ',
-	// 						__v: 0,
-	// 					},
-	// 					{
-	// 						_id: '61e3f41a3b7773d24d08c67b',
-	// 						content: 'Chiến tranh thế giới thứ hai bước vào giai đoạn ác liệt',
-	// 						__v: 0,
-	// 					},
-	// 					{
-	// 						_id: '61e3f41a3b7773d24d08c67d',
-	// 						content: 'Chiến tranh thế giới thứ hai bước vào giai đoạn kết thúc.',
-	// 						__v: 0,
-	// 					},
-	// 					{
-	// 						_id: '61e3f459f5ee57a712a938fc',
-	// 						content: 'Chiến tranh thế giới thứ hai bắt đầu',
-	// 						__v: 0,
-	// 					},
-	// 				],
-	// 			},
-	// 			{
-	// 				_id: '61e3f45bf5ee57a712a93c0a',
-	// 				content:
-	// 					'Theo quyết định của hội nghị Ianta (2-1945), quốc gia nào cần phải trở thành một quốc gia thống nhất và dân chủ?',
-	// 				answers: [
-	// 					{
-	// 						_id: '61e3f45af5ee57a712a93a08',
-	// 						content: 'Đức',
-	// 						__v: 0,
-	// 					},
-	// 					{
-	// 						_id: '61e3f45af5ee57a712a93aa3',
-	// 						content: 'Mông Cổ',
-	// 						__v: 0,
-	// 					},
-	// 					{
-	// 						_id: '61cb27844e269af4d8615be3',
-	// 						content: 'Trung Quốc',
-	// 						__v: 0,
-	// 					},
-	// 					{
-	// 						_id: '61e3f45af5ee57a712a93bbf',
-	// 						content: 'Triều Tiên',
-	// 						__v: 0,
-	// 					},
-	// 				],
-	// 			},
-	// 		],
-	// 		subject: 'Lịch sử',
-	// 		grade: 12,
-	// 		isDeleted: false,
-	// 		__v: 0,
+	// 		teacher: null,
 	// 	};
 	// 	setExam(fetchedExam);
 	// }, [examId]);
@@ -155,32 +83,89 @@ function TakeExam() {
 	// 	newAnswers[index] = answer;
 	// 	setAnswers(newAnswers);
 	// };
-	const [exam, setExam] = useState({});
-	const [loading, setLoading] = useState(false);
 
+	const { examId } = useParams();
+	console.log(examId);
+	const [exam, setExam] = useState({
+		id: 15,
+		name: 'Đề thi 15 phút Lịch Sử',
+		maxDuration: 15,
+		createdTime: null,
+		teacherId: 5,
+		subjectId: 6,
+		isDeleted: 0,
+		isDone: 0,
+		numOfQuestions: 0,
+		questionList: [
+			{
+				id: 15,
+				content: 'Câu hỏi 1',
+				correctAnswerId: 41,
+				examId: 15,
+				answerList: [
+					{
+						id: 41,
+						content: 'Đáp án 1',
+						questionId: 15,
+					},
+					{
+						id: 42,
+						content: 'Đáp án 2',
+						questionId: 15,
+					},
+					{
+						id: 43,
+						content: 'Đáp án 3',
+						questionId: 15,
+					},
+					{
+						id: 44,
+						content: 'Đáp án 4',
+						questionId: 15,
+					},
+				],
+			},
+		],
+		teacher: {
+			id: 5,
+			name: 'Lê Ngọc Du 1',
+			email: 'du+test1@gmail.com',
+			phone: '0123456789',
+			dateOfBirth: '0001-01-01T00:00:00',
+			citizenId: null,
+			address: null,
+			userTypeId: 2,
+			userType: null,
+		},
+	});
+	const [loading, setLoading] = useState(true);
+	localStorage.setItem(`time_${examId}`, exam.maxDuration);
+	if (!localStorage.getItem(`startTime_${examId}`))
+		localStorage.setItem(`startTime_${examId}`, moment().format('DD/MM/YYYY HH:mm:ss'));
 	//Fetch dữ liệu
 	useEffect(() => {
 		const fetchExam = async () => {
 			try {
-				const url = `${process.env.REACT_APP_API_URL}/exams/${examId}/take`;
+				const url = `${process.env.REACT_APP_API_URL}/exam/take/${examId}`;
 
 				const token = localStorage.getItem('REFRESH_TOKEN');
 				const res = await axios.get(url, {
 					headers: {
-						access_token:
-							'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWQ1MmNmYTc2YTcxNzJlMDFiMTY2ZTgiLCJpYXQiOjE2NTI4NDc2NDcsImV4cCI6MTY1MzEwNjg0N30.7C1fIm7vVjaHBHRhaB7KaxnKDljXXNSnwEvPVvdJztM',
+						Authorization:
+							'Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCIsImN0eSI6IkpXVCJ9.eyJuYW1laWQiOiIxMyIsImV4cCI6MTY1NTgzMDAzOX0.pnZUdii2W7qY8XZ7CllMakPhdFGaEXnM_O05m5alrcCegD1DKaE6uHJrZghlbV1WKk799fSmEGgrkh1SvCQ9bQ',
 					},
-				}); 
+				});
 
-				localStorage.setItem(`time_${examId}`, res.data.minuteLimit);
-				if (!localStorage.getItem(`startTime_${examId}`))
-					localStorage.setItem(
-						`startTime_${examId}`,
-						moment().format('DD/MM/YYYY HH:mm:ss'),
-					);
+				// localStorage.setItem(`time_${examId}`, res.data.minuteLimit);
+				// if (!localStorage.getItem(`startTime_${examId}`))
+				// 	localStorage.setItem(
+				// 		`startTime_${examId}`,
+				// 		moment().format('DD/MM/YYYY HH:mm:ss'),
+				// 	);
 
-				setExam(res.data);
-				setLoading(true);
+				// setExam(res.data);
+				// setLoading(true);
+				console.log(res);
 			} catch (error) {
 				console.log('Failed to fetch exam:', error);
 			}
@@ -227,7 +212,7 @@ function TakeExam() {
 			{loading ? (
 				<div className="flex justify-between my-10 flex-col md:flex-row">
 					<ExamBody exam={exam} />
-					<StateBox id={exam._id} />
+					{/* <StateBox id={exam.id} /> */}
 				</div>
 			) : (
 				<Loading />

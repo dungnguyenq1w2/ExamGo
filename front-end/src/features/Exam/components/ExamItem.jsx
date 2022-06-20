@@ -1,4 +1,6 @@
-function ExamItem({ id, name, minuteLimit, creator, openDate, isDone }) {
+import moment from 'moment';
+
+function ExamItem({ id, name, minuteLimit, creator, createdTime, isDone }) {
 	return (
 		<div className="py-2">
 			<div className="flex jutify-between items-center">
@@ -38,7 +40,9 @@ function ExamItem({ id, name, minuteLimit, creator, openDate, isDone }) {
 				</h4>
 				<h4 className="text-sm sm:text-md xl:text-lg text-gray-600 font-semibold">
 					Ngày đăng:
-					<span className="text-yellow-500 ml-2">{openDate}</span>
+					<span className="text-yellow-500 ml-2">
+						{moment.utc(createdTime).local().format('DD/MM/YYYY')}
+					</span>
 				</h4>
 			</div>
 		</div>

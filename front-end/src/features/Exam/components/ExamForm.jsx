@@ -18,7 +18,7 @@
 // 	},
 // };
 
-// function ExamForm({ questions, handleChooseAnswer }) {
+// function ExamForm({ questionList, handleChooseAnswer }) {
 // 	const [loading, setLoading] = useState(false);
 // 	const [isSuccess, setIsSuccess] = useState(false);
 // 	const [submit, setSubmit] = useState(false); // Xử lý hết thời gian
@@ -76,7 +76,7 @@
 // 				onSubmit={handleSubmit(onSubmit)}
 // 				onKeyDown={(e) => checkKeyDown(e)} // Chặn user ấn Enter
 // 			>
-// 				{questions?.map((question, idxQuestion) => (
+// 				{questionList?.map((question, idxQuestion) => (
 // 					<Question
 // 						key={question._id}
 // 						content={question.content}
@@ -183,11 +183,6 @@ import diffTime from '../../../utils/diffTime';
 import { modifiedOption } from '../../../utils/modifiedOption';
 import Question from './Question';
 
-// Create form: question-option-correctOption - 14-10-2021
-// Update form: auto submit when timeout - 19-10-2021
-// Update form: comfirm submit (time is continuous) - 19-10-2021
-// Update form: form actually submits when user click confirm submit button - 11-01-2021
-
 const customStyles = {
 	content: {
 		textAlign: 'center',
@@ -201,7 +196,7 @@ const customStyles = {
 	},
 };
 
-export default function ExamForm({ timeout, questions, idExam }) {
+export default function ExamForm({ timeout, questionList, idExam }) {
 	const navigate = useNavigate();
 	const { examId } = useParams();
 	const [loading, setLoading] = useState(false);
@@ -222,29 +217,29 @@ export default function ExamForm({ timeout, questions, idExam }) {
 	useEffect(() => {
 		const fields = JSON.parse(localStorage.getItem(idExam)); // Lấy dữ liệu "idExam" (idExam là 1 object chứa các đáp án được chọn) từ localStorage
 		if (fields) setValueRadioButton(fields); // set các đáp án được chọn vào đề thì băng hàm setValue của React Hook Form
-		const selectedOptions = []; // tạo mảng selectedOptions để lưu vào Redux
+		const selectedAnswers = []; // tạo mảng selectedAnswers để lưu vào Redux
 		// Chuyển thành 1 mảng option dạng ["A", "B",...]
-		questions?.forEach((e, i) => {
-			if (fields && fields[`option${i}`])
-				selectedOptions.push(
-					fields[`option${i}`] == e.options[0]?._id
+		questionList?.forEach((e, i) => {
+			if (fields && fields[`answer${i}`])
+				selectedAnswers.push(
+					fields[`answer${i}`] == e.answerList[0]?.id
 						? 'A'
-						: fields[`option${i}`] == e.options[1]?._id
+						: fields[`answer${i}`] == e.answerList[1]?.id
 						? 'B'
-						: fields[`option${i}`] == e.options[2]?._id
+						: fields[`answer${i}`] == e.answerList[2]?.id
 						? 'C'
-						: fields[`option${i}`] == e.options[3]?._id
+						: fields[`answer${i}`] == e.answerList[3]?.id
 						? 'D'
 						: null,
 				);
-			else selectedOptions.push(null);
+			else selectedAnswers.push(null);
 		});
 		// Tạo action để dispatch vào Redux (mục đích để tạo mảng đáp án truyền qua component StateBox)
 		const action =
-			questions?.length != null
-				? selectedOptions.some((e) => e === 'A' || e === 'B' || e === 'C' || e === 'D')
-					? initAnswers(selectedOptions)
-					: initAnswers(questions?.length)
+			questionList?.length != null
+				? selectedAnswers.some((e) => e === 'A' || e === 'B' || e === 'C' || e === 'D')
+					? initAnswers(selectedAnswers)
+					: initAnswers(questionList?.length)
 				: initAnswers(0);
 		dispatch(action);
 	}, [idExam]);
@@ -315,15 +310,15 @@ export default function ExamForm({ timeout, questions, idExam }) {
 				onSubmit={handleSubmit(onSubmit)}
 				onKeyDown={(e) => checkKeyDown(e)} // Chặn user ấn Enter
 			>
-				{questions?.map((e, i) => (
+				{questionList?.map((e, i) => (
 					<Question
-						key={e._id}
+						key={e.id}
 						index={i}
 						register={register}
-						label={`option${i}`}
-						content={e.content}
-						idContent={e._id}
-						options={e.options}
+						label={`answer${i}`}
+						content={e?.content}
+						idContent={e?.id}
+						answerList={e?.answerList}
 					/>
 				))}
 				{/* button thật để submit form, user sẽ không click được, khi nào xác nhận
