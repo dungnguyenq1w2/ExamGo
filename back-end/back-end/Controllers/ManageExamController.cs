@@ -36,6 +36,11 @@ namespace back_end.Controllers
             var jwtSecurityToken = handler.ReadJwtToken(accessToken);
 
             int teacherId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+            var teacher = await _context.User.FindAsync(teacherId);
+            if (teacher.UserTypeId != 2)
+            {
+                return  StatusCode(403, $"User '{teacher.Name}' is not a teacher.");
+            }
 
             var examList = await _context.Exam.AsQueryable().ToListAsync();
             examList = examList.Where(e => e.TeacherId == teacherId).ToList();
@@ -56,6 +61,17 @@ namespace back_end.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Exam>> GetExam(int id)
         {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+
+            int teacherId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+            var teacher = await _context.User.FindAsync(teacherId);
+            if (teacher.UserTypeId != 2)
+            {
+                return StatusCode(403, $"User '{teacher.Name}' is not a teacher.");
+            }
+
             List<Question> questionList = (
             from e in _context.Exam
             join q in _context.Question on e.Id equals q.ExamId
@@ -107,8 +123,13 @@ namespace back_end.Controllers
             var jwtSecurityToken = handler.ReadJwtToken(accessToken);
 
             int teacherId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
-            
-           var newExam = new Exam
+            var teacher = await _context.User.FindAsync(teacherId);
+            if (teacher.UserTypeId != 2)
+            {
+                return StatusCode(403, $"User '{teacher.Name}' is not a teacher.");
+            }
+
+            var newExam = new Exam
             {
                 Name = exam.Name,
                 MaxDuration = exam.MaxDuration,
@@ -159,6 +180,16 @@ namespace back_end.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutExam(int id, Exam exam)
         {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+
+            int teacherId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+            var teacher = await _context.User.FindAsync(teacherId);
+            if (teacher.UserTypeId != 2)
+            {
+                return StatusCode(403, $"User '{teacher.Name}' is not a teacher.");
+            }
             if (id != exam.Id)
             {
                 return BadRequest();
@@ -190,6 +221,16 @@ namespace back_end.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Exam>> DeleteExam(int id)
         {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+
+            int teacherId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+            var teacher = await _context.User.FindAsync(teacherId);
+            if (teacher.UserTypeId != 2)
+            {
+                return StatusCode(403, $"User '{teacher.Name}' is not a teacher.");
+            }
             //var Exam = await _context.Exam.FindAsync(id);
             //if (Exam == null)
             //{

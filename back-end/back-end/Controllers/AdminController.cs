@@ -1,5 +1,6 @@
 ﻿using back_end.Data;
 using back_end.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using Syncfusion.Pdf.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +31,17 @@ namespace back_end.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetAccount()
         {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+
+            int adminId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+            var admin = await _context.User.FindAsync(adminId);
+            if (admin.UserTypeId != 2)
+            {
+                return StatusCode(403, $"User '{admin.Name}' is not a admin.");
+            }
+
             return await _context.User.Select(e => new User
             {
                 Id = e.Id,
@@ -48,6 +61,17 @@ namespace back_end.Controllers
         [HttpGet("createUserListPDF")]
         public async Task<IActionResult> CreateUserListPDF(int role = 0)
         {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+
+            int adminId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+            var admin = await _context.User.FindAsync(adminId);
+            if (admin.UserTypeId != 2)
+            {
+                return StatusCode(403, $"User '{admin.Name}' is not a admin.");
+            }
+
             var userList = await _context.User.AsQueryable().ToListAsync();
 
             if (role != 0)
@@ -191,6 +215,17 @@ namespace back_end.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAccount(int id, Account account)
         {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+
+            int adminId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+            var admin = await _context.User.FindAsync(adminId);
+            if (admin.UserTypeId != 2)
+            {
+                return StatusCode(403, $"User '{admin.Name}' is not a admin.");
+            }
+
             if (id != account.UserId)
             {
                 return BadRequest();

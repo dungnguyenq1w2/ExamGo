@@ -28,7 +28,5 @@ namespace back_end.Data
         //public virtual ICollection<ExamDetail> ExamDetail { get; set; }
         [ForeignKey("TeacherId")]
         public virtual User Teacher { get; set; }
-        [ForeignKey("SubjectId")]
-        public virtual Subject Subject { get; set; }
     }
 }

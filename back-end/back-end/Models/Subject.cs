@@ -12,8 +12,8 @@ namespace back_end.Models
         [StringLength(45, ErrorMessage = "Name length must be between 1 and 45.", MinimumLength = 1)]
         public string Name { get; set; }
 
-        [Required]
-        [Range(1, 12, ErrorMessage = "Grade must be between 1 and 12.")]
-        public int Grade { get; set; }
+        //[Required]
+        //[Range(1, 12, ErrorMessage = "Grade must be between 1 and 12.")]
+        //public int Grade { get; set; }
     }
 }
