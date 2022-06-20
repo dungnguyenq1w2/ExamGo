@@ -7,23 +7,23 @@ import { chooseAnswer } from '../../../store/slices/answerSlice';
 // import { useDispatch } from "react-redux";
 // import { chooseAnswer } from "../store/slices/answerSlice";
 
-function Question({ index, register, label, content, idContent, options }) {
+function Question({ index, register, label, content, idContent, answerList }) {
 	const dispatch = useDispatch();
 
-	const handleChooseOption = (e) => {
-		const option = {
+	const handleChooseAnswer = (e) => {
+		const answer = {
 			index: index,
 			value:
-				e.target.value == options[0]._id
+				e.target.value == answerList[0].id
 					? 'A'
-					: e.target.value == options[1]._id
+					: e.target.value == answerList[1].id
 					? 'B'
-					: e.target.value == options[2]._id
+					: e.target.value == answerList[2].id
 					? 'C'
 					: 'D',
 		};
 
-		const action = chooseAnswer(option);
+		const action = chooseAnswer(answer);
 		dispatch(action);
 	};
 
@@ -47,11 +47,11 @@ function Question({ index, register, label, content, idContent, options }) {
 						{...register(label)}
 						// type={checkBox ? 'checkbox' : 'radio'}
 						type="radio"
-						value={options[0]?._id}
-						onClick={handleChooseOption}
+						value={answerList[0]?.id}
+						onClick={handleChooseAnswer}
 					/>
 					<span className="text-lg pr-2 font-bold">A.</span>
-					<p className="text-lg px-2 font-medium">{options[0]?.content}</p>
+					<p className="text-lg px-2 font-medium">{answerList[0]?.content}</p>
 				</label>
 				<label className="flex items-center relative py-1">
 					<input
@@ -59,11 +59,11 @@ function Question({ index, register, label, content, idContent, options }) {
 						{...register(label)}
 						// type={checkBox ? 'checkbox' : 'radio'}
 						type="radio"
-						value={options[1]?._id}
-						onClick={handleChooseOption}
+						value={answerList[1]?.id}
+						onClick={handleChooseAnswer}
 					/>
 					<span className="text-lg pr-2 font-bold">B.</span>
-					<p className="text-lg px-2 font-medium">{options[1]?.content}</p>
+					<p className="text-lg px-2 font-medium">{answerList[1]?.content}</p>
 				</label>
 				<label className="flex items-center relative py-1">
 					<input
@@ -71,11 +71,11 @@ function Question({ index, register, label, content, idContent, options }) {
 						{...register(label)}
 						// type={checkBox ? 'checkbox' : 'radio'}
 						type="radio"
-						value={options[2]?._id}
-						onClick={handleChooseOption}
+						value={answerList[2]?.id}
+						onClick={handleChooseAnswer}
 					/>
 					<span className="text-lg pr-2 font-bold">C.</span>
-					<p className="text-lg px-2 font-medium">{options[2]?.content}</p>
+					<p className="text-lg px-2 font-medium">{answerList[2]?.content}</p>
 				</label>
 				<label className="flex items-center relative py-1">
 					<input
@@ -83,11 +83,11 @@ function Question({ index, register, label, content, idContent, options }) {
 						{...register(label)}
 						// type={checkBox ? 'checkbox' : 'radio'}
 						type="radio"
-						value={options[3]?._id}
-						onClick={handleChooseOption}
+						value={answerList[3]?.id}
+						onClick={handleChooseAnswer}
 					/>
 					<span className="text-lg pr-2 font-bold">D.</span>
-					<p className="text-lg px-2 font-medium">{options[3]?.content}</p>
+					<p className="text-lg px-2 font-medium">{answerList[3]?.content}</p>
 				</label>
 			</div>
 		</div>

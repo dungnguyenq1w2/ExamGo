@@ -1,23 +1,11 @@
 // Done form: question-answer-rightAnswer - 14-10-2021
 
 const modifiedQuestion = (data) => {
-	const arr = data.questions;
-
-	arr.forEach((e, i) => {
-		const optArray = [];
-
-		optArray.push(e["optionA"]);
-		optArray.push(e["optionB"]);
-		optArray.push(e["optionC"]);
-		optArray.push(e["optionD"]);
-
-		delete e["optionA"];
-		delete e["optionB"];
-		delete e["optionC"];
-		delete e["optionD"];
-
-		e["options"] = optArray;
-		e["correctOption"] = e.options[e.correctOption];
+	data['numOfQuestions'] = data.questionList.length;
+	const arr = data.questionList;
+	if (!arr) return;
+	arr.forEach((e, i, arr) => {
+		arr[i].answerList = e.answerList.map((e) => ({ content: e }));
 	});
 
 	//const keys = Object.keys(data.questions).sort();
@@ -38,7 +26,6 @@ const modifiedQuestion = (data) => {
 	// 	obj["answers"] = ar;
 	// 	arr.push(obj);
 	// }
-	// return arr;
 };
 
 export { modifiedQuestion };

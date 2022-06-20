@@ -2,8 +2,9 @@ import React from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import { IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 
-function ManageBody({ examList, handleDeleteExam, pageIndex, handlePaging }) {
+function ManageBody({ examList, handleDeleteExam, pageIndex, handlePaging, loading }) {
 	const navigate = useNavigate();
 	return (
 		<div className="flex-1 lg:flex-[0.8]">
@@ -91,7 +92,71 @@ function ManageBody({ examList, handleDeleteExam, pageIndex, handlePaging }) {
 										</th>
 									</tr>
 								</thead>
-								{examList &&
+								{loading ? (
+									<tbody>
+										<tr className="bg-white border-b transition duration-200 ease-in-out hover:bg-gray-100">
+											<td className="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
+												<div className="h-10 bg-gray-200 rounded col-span-1"></div>
+											</td>
+
+											<td className="text-sm text-gray-900 font-light px-6 py-2 whitespace-nowrap w-10/12">
+												<div className="h-10 bg-gray-200 rounded col-span-1"></div>
+											</td>
+											<td className="text-sm text-gray-900 font-light py-2 whitespace-nowrap">
+												<div className="h-10 bg-gray-200 rounded col-span-1"></div>
+											</td>
+										</tr>
+										<tr className="bg-white border-b transition duration-200 ease-in-out hover:bg-gray-100">
+											<td className="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
+												<div className="h-10 bg-gray-200 rounded col-span-1"></div>
+											</td>
+
+											<td className="text-sm text-gray-900 font-light px-6 py-2 whitespace-nowrap w-10/12">
+												<div className="h-10 bg-gray-200 rounded col-span-1"></div>
+											</td>
+											<td className="text-sm text-gray-900 font-light py-2 whitespace-nowrap">
+												<div className="h-10 bg-gray-200 rounded col-span-1"></div>
+											</td>
+										</tr>
+										<tr className="bg-white border-b transition duration-200 ease-in-out hover:bg-gray-100">
+											<td className="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
+												<div className="h-10 bg-gray-200 rounded col-span-1"></div>
+											</td>
+
+											<td className="text-sm text-gray-900 font-light px-6 py-2 whitespace-nowrap w-10/12">
+												<div className="h-10 bg-gray-200 rounded col-span-1"></div>
+											</td>
+											<td className="text-sm text-gray-900 font-light py-2 whitespace-nowrap">
+												<div className="h-10 bg-gray-200 rounded col-span-1"></div>
+											</td>
+										</tr>
+										<tr className="bg-white border-b transition duration-200 ease-in-out hover:bg-gray-100">
+											<td className="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
+												<div className="h-10 bg-gray-200 rounded col-span-1"></div>
+											</td>
+
+											<td className="text-sm text-gray-900 font-light px-6 py-2 whitespace-nowrap w-10/12">
+												<div className="h-10 bg-gray-200 rounded col-span-1"></div>
+											</td>
+											<td className="text-sm text-gray-900 font-light py-2 whitespace-nowrap">
+												<div className="h-10 bg-gray-200 rounded col-span-1"></div>
+											</td>
+										</tr>
+										<tr className="bg-white border-b transition duration-200 ease-in-out hover:bg-gray-100">
+											<td className="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
+												<div className="h-10 bg-gray-200 rounded col-span-1"></div>
+											</td>
+
+											<td className="text-sm text-gray-900 font-light px-6 py-2 whitespace-nowrap w-10/12">
+												<div className="h-10 bg-gray-200 rounded col-span-1"></div>
+											</td>
+											<td className="text-sm text-gray-900 font-light py-2 whitespace-nowrap">
+												<div className="h-10 bg-gray-200 rounded col-span-1"></div>
+											</td>
+										</tr>
+									</tbody>
+								) : (
+									examList &&
 									examList.map((e, i) => (
 										<tbody key={e.id}>
 											<tr className="bg-white border-b transition duration-200 ease-in-out hover:bg-gray-100">
@@ -102,7 +167,7 @@ function ManageBody({ examList, handleDeleteExam, pageIndex, handlePaging }) {
 												<td className="text-sm text-gray-900 font-light px-6 py-2 whitespace-nowrap w-10/12">
 													<div className="mr-4 w-full">
 														<h5 className="text-lg font-semibold ">
-															{e.title}
+															{e.name}
 															{/* {'Đề ôn thi THPT Quốc gia môn Lịch Sử năm 2021 có đáp án (Đề 1) Đề ôn thi THPT Quốc gia môn'
 														.length > 50
 														? 'Đề ôn thi THPT Quốc gia môn Lịch Sử năm 2021 có đáp án (Đề 1) Đề ôn thi THPT Quốc gia môn'.slice(
@@ -111,15 +176,16 @@ function ManageBody({ examList, handleDeleteExam, pageIndex, handlePaging }) {
 														  ) + '…'
 														: 'Đề ôn thi THPT Quốc gia môn Lịch Sử năm 2021 có đáp án (Đề 1) Đề ôn thi THPT Quốc gia môn'} */}
 														</h5>
-														<div className="flex lg:w-4/5 xl:w-3/5 justify-between">
+														<div className="flex lg:w-4/5 xl:w-3/5 justify-start">
 															<span className="text-sm">
-																Đánh giá: {e.rate}
+																Thời gian: {e.maxDuration} phút
 															</span>
-															<span className="text-sm">
-																Thời gian: {e.minuteLimit} phút
-															</span>
-															<span className="text-sm">
-																Ngày tạo: {e.createdAt}
+															<span className="text-sm ml-10">
+																Ngày tạo:{' '}
+																{moment
+																	.utc(e?.createdTime)
+																	.local()
+																	.format('DD/MM/YYYY')}
 															</span>
 														</div>
 													</div>
@@ -161,7 +227,8 @@ function ManageBody({ examList, handleDeleteExam, pageIndex, handlePaging }) {
 												</td>
 											</tr>
 										</tbody>
-									))}
+									))
+								)}
 							</table>
 						</div>
 					</div>
@@ -191,10 +258,17 @@ function ManageBody({ examList, handleDeleteExam, pageIndex, handlePaging }) {
 								/>
 							</svg>
 						</div>
-						<span>Trang {pageIndex}</span>
+						<span>Trang {pageIndex ? pageIndex : 1}</span>
 						<div
-							className={` border-2 rounded-full p-1 cursor-pointer hover:border-gray-800 ml-2`}
-							onClick={() => handlePaging(pageIndex + 1)}
+							className={`${
+								!examList || examList.length === 0
+									? 'text-gray-400'
+									: 'cursor-pointer hover:border-gray-800'
+							} border-2 rounded-full p-1 ml-2`}
+							onClick={() => {
+								if (examList && examList.length != 0)
+									handlePaging(parseInt(pageIndex) + 1);
+							}}
 						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"

@@ -1,16 +1,9 @@
 import moment from 'moment';
 import { createSearchParams, useNavigate } from 'react-router-dom';
-import { countCorrectAnswer } from '../../../utils/countCorrectAnswer';
 import { subject } from '../../../utils/subject';
 
-function ViewResult({ examReview }) {
+function ViewDetail({ examReview }) {
 	const navigate = useNavigate();
-	const takingTime = moment.utc(examReview?.duration * 60 * 1000).format('HH:mm:ss');
-
-	const arrDiff = takingTime.split(':');
-	const hours = parseInt(arrDiff[0]);
-	const minutes = parseInt(arrDiff[1]);
-	const seconds = parseInt(arrDiff[2]);
 
 	return (
 		<div className="flex justify-center py-20 md:py-14">
@@ -29,29 +22,26 @@ function ViewResult({ examReview }) {
 				<div className="border p-2">
 					<h4 className="text-md text-gray-600 font-semibold">
 						Thời gian:{' '}
-						<span className="text-yellow-500 ">
-							{examReview?.exam?.minuteLimit} phút
-						</span>
+						<span className="text-yellow-500 ">{examReview?.maxDuration} phút</span>
 					</h4>
 					<h4 className="text-md text-gray-600 font-semibold">
 						Số câu:{' '}
-						<span className="text-yellow-500 ">
-							{examReview?.questionResultList?.length}
-						</span>
+						<span className="text-yellow-500 ">{examReview?.numOfQuestions}</span>
 					</h4>
 					<h4 className="text-md text-gray-600 font-semibold">
-						Người đăng: <span className="text-yellow-500 ">{examReview?.teacher}</span>
+						Người đăng:{' '}
+						<span className="text-yellow-500 ">{examReview?.teacher?.name}</span>
 					</h4>
-					{/* <h4 className="text-md text-gray-600 font-semibold">
+					<h4 className="text-md text-gray-600 font-semibold">
 						Ngày đăng:{' '}
 						<span className="text-yellow-500 ">
-							{moment.utc(examReview?.exam?.openedAt).local().format('DD/MM/YYYY')}
+							{moment.utc(examReview?.createdTime).local().format('DD/MM/YYYY')}
 						</span>
-					</h4> */}
+					</h4>
 				</div>
 
 				<div className="text-center my-3"></div>
-				<div className="flex justify-center my-3 lg:my-10">
+				{/* <div className="flex justify-center my-3 lg:my-10">
 					<table className="w-full">
 						<tbody className="bg-blue-400 text-white">
 							<tr>
@@ -67,7 +57,7 @@ function ViewResult({ examReview }) {
 									<p>
 										Nộp lúc{' '}
 										{moment
-											.utc(examReview?.submitTime)
+											.utc(examReview?.submittedAt)
 											.local()
 											.format('DD/MM/YYYY h:mm:ss a')}
 									</p>
@@ -88,28 +78,23 @@ function ViewResult({ examReview }) {
 									{seconds === 0 ? '' : seconds + ' giây'}
 								</td>
 								<td className="text-center font-bold">
-									<span className="text-red-600">
-										{countCorrectAnswer(examReview?.questionResultList)}
-									</span>
-									/{examReview?.questionResultList?.length}
+									<span className="text-red-600">{examReview?.outOf}</span>/
+									{examReview?.exam?.questions?.length}
 								</td>
 							</tr>
 						</tbody>
 					</table>
-				</div>
+				</div> */}
 				<div className="flex justify-center mb-5">
 					<button
 						className="bg-green-400 py-2 px-8 mt-4 mr-3 font-bold text-gray-50 text-lg rounded-lg"
 						onClick={() =>
 							navigate({
-								pathname: '/exam/resultDetail',
-								search: createSearchParams({
-									examResult: JSON.stringify(examReview),
-								}).toString(),
+								pathname: '/exam/take/' + examReview.id,
 							})
 						}
 					>
-						Xem đáp án
+						Làm bài thi
 					</button>
 				</div>
 			</div>
@@ -117,4 +102,4 @@ function ViewResult({ examReview }) {
 	);
 }
 
-export default ViewResult;
+export default ViewDetail;

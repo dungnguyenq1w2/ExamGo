@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import Loading from '../../../components/Loading';
 import ExamItem from '../components/ExamItem';
 import axios from 'axios';
@@ -8,33 +8,8 @@ function ExamList() {
 	// const location = useLocation();
 	// console.log(location);
 
-	const [exams, setExams] = useState([]);
-	//     [
-	// 	{
-	// 		_id: '61e3f41a3b7773d24d08c683',
-	// 		name: 'Đề kiểm tra 15 phút Lịch Sử 12',
-	// 		openedAt: '2022-01-16T08:34:24.636Z',
-	// 		closedAt: '2022-01-16T08:34:24.636Z',
-	// 		creator: {
-	// 			_id: '61cf495623ef54e066d11ebb',
-	// 			name: 'Giáo viên 2',
-	// 		},
-	// 		attemptLimit: 1,
-	// 		minuteLimit: 15,
-	// 		questions: [
-	// 			'61e3f4183b7773d24d08c66d',
-	// 			'61e3f4193b7773d24d08c677',
-	// 			'61e3f41a3b7773d24d08c681',
-	// 			'61e3f45bf5ee57a712a93c0a',
-	// 		],
-	// 		subject: 'Lịch sử',
-	// 		grade: 12,
-	// 		isDeleted: false,
-	// 		__v: 0,
-	// 		isEditable: false,
-	// 		isDone: false,
-	// 	},
-	// ]);
+	const [examList, setExamList] = useState([]);
+
 	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -45,64 +20,87 @@ function ExamList() {
 				const searchParam = searchParams.get('search');
 				const subjectParam = searchParams.get('subject');
 				const pageParam = searchParams.get('page');
-				console.log(searchParam);
+
 				const url = `${process.env.REACT_APP_API_URL}/exam${
 					searchParam ? `?search=${searchParam}` : ''
 				}${subjectParam ? `?subject=${subjectParam}` : ''}${
 					pageParam ? (subjectParam ? `&page=${pageParam}` : `?page=${pageParam}`) : ''
 				}`;
+				const res = await axios.get(url);
+				console.log(res);
+				const data = [
+					{
+						id: 15,
+						name: 'Đề thi 15 phút Lịch Sử',
+						maxDuration: 15,
+						createdTime: '2022-06-08T09:36:36',
+						teacherId: 5,
+						subjectId: 4,
+						isDeleted: 0,
+						isDone: 0,
+						numOfQuestions: 1,
+						questionList: null,
+						teacher: {
+							id: 5,
+							name: 'Lê Ngọc Du 1',
+							email: 'du+test1@gmail.com',
+							phone: '0123456789',
+							dateOfBirth: '0001-01-01T00:00:00',
+							citizenId: null,
+							address: null,
+							userTypeId: 2,
+							userType: null,
+						},
+					},
+					{
+						id: 16,
+						name: 'Đề thi 45 phút Lịch Sử',
+						maxDuration: 45,
+						createdTime: '2022-06-08T09:37:16',
+						teacherId: 5,
+						subjectId: 4,
+						isDeleted: 0,
+						isDone: 0,
+						numOfQuestions: 1,
+						questionList: null,
+						teacher: {
+							id: 5,
+							name: 'Lê Ngọc Du 1',
+							email: 'du+test1@gmail.com',
+							phone: '0123456789',
+							dateOfBirth: '0001-01-01T00:00:00',
+							citizenId: null,
+							address: null,
+							userTypeId: 2,
+							userType: null,
+						},
+					},
+					{
+						id: 17,
+						name: 'Đề thi thử Lịch Sử',
+						maxDuration: 60,
+						createdTime: '2022-06-08T09:37:38',
+						teacherId: 5,
+						subjectId: 4,
+						isDeleted: 0,
+						isDone: 0,
+						numOfQuestions: 1,
+						questionList: null,
+						teacher: {
+							id: 5,
+							name: 'Lê Ngọc Du 1',
+							email: 'du+test1@gmail.com',
+							phone: '0123456789',
+							dateOfBirth: '0001-01-01T00:00:00',
+							citizenId: null,
+							address: null,
+							userTypeId: 2,
+							userType: null,
+						},
+					},
+				];
 
-				const data = {
-					$id: '1',
-					$values: [
-						{
-							$id: '2',
-							id: 15,
-							name: 'Đề thi 15 phút Lịch Sử',
-							maxDuration: 15,
-							createdTime: '2022-06-08T09:36:36',
-							teacherId: 5,
-							subjectId: 4,
-							isDeleted: 0,
-							isDone: 0,
-							numOfQuestions: 1,
-							questionList: null,
-							teacher: null,
-							subject: null,
-						},
-						{
-							$id: '3',
-							id: 16,
-							name: 'Đề thi 45 phút Lịch Sử',
-							maxDuration: 45,
-							createdTime: '2022-06-08T09:37:16',
-							teacherId: 5,
-							subjectId: 4,
-							isDeleted: 0,
-							isDone: 0,
-							numOfQuestions: 1,
-							questionList: null,
-							teacher: null,
-							subject: null,
-						},
-						{
-							$id: '4',
-							id: 17,
-							name: 'Đề thi thử Lịch Sử',
-							maxDuration: 60,
-							createdTime: '2022-06-08T09:37:38',
-							teacherId: 5,
-							subjectId: 4,
-							isDeleted: 0,
-							isDone: 0,
-							numOfQuestions: 1,
-							questionList: null,
-							teacher: null,
-							subject: null,
-						},
-					],
-				};
-
+				setExamList(data);
 				// const token = localStorage.getItem('REFRESH_TOKEN');
 				// const res = await axios.get(url, {
 				// 	headers: {
@@ -110,7 +108,7 @@ function ExamList() {
 				// 			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWQ1MmNmYTc2YTcxNzJlMDFiMTY2ZTgiLCJpYXQiOjE2NTI4NDc2NDcsImV4cCI6MTY1MzEwNjg0N30.7C1fIm7vVjaHBHRhaB7KaxnKDljXXNSnwEvPVvdJztM',
 				// 	},
 				// });
-				const res = await axios.get(url);
+				// const res = await axios.get(url);
 
 				// localStorage.setItem(`time_${examId}`, res.data.minuteLimit);
 				// if (!localStorage.getItem(`startTime_${examId}`))
@@ -118,10 +116,10 @@ function ExamList() {
 				// 		`startTime_${examId}`,
 				// 		moment().format('DD/MM/YYYY HH:mm:ss'),
 				// 	);
-				if (res.data) {
-					console.log(res.data);
-					setExams(res.data.$values);
-				}
+				// if (res.data) {
+				// 	console.log(res.data);
+				// 	// setExams(res.data.$values);
+				// }
 				// setExam(res.data);
 				// setLoading(true);
 			} catch (error) {
@@ -137,7 +135,7 @@ function ExamList() {
 					<div className="xl:w-4/5 bg-gray-200 bg-opacity-40 shadow-md">
 						<div className="flex justify-between items-center sm:px-5 sm:py-3 p-3">
 							<h1 className="text-lg sm:text-2xl lg:text-3xl font-bold text-green-800">
-								Đề thi theo môn
+								Đề thi môn
 							</h1>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -156,7 +154,7 @@ function ExamList() {
 						</div>
 
 						{loading ? (
-							exams.map((e) => (
+							examList.map((e) => (
 								<div
 									key={e.id}
 									className="flex justify-between border-t-2 cursor-pointer px-4 py-1 hover:bg-gray-200"
@@ -165,10 +163,10 @@ function ExamList() {
 										className="w-full"
 										onClick={() =>
 											navigate({
-												pathname: 'take/' + e.id,
-												// search: createSearchParams({
-												//     subject: 'civiceducation',
-												// }).toString(),
+												pathname: '/exam/' + e.id,
+												search: createSearchParams({
+													examDetail: JSON.stringify(e),
+												}).toString(),
 											})
 										}
 									>
@@ -231,7 +229,7 @@ function ExamList() {
 							</>
 						)}
 
-						{loading && exams?.length == 0 && (
+						{loading && examList?.length == 0 && (
 							<h1 className="text-md sm:text-xl lg:text-2xl p-4">
 								Chưa có đề thi của môn
 							</h1>

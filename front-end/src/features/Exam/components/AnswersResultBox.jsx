@@ -1,19 +1,20 @@
 import AnswerResultBox from './AnswerResultBox';
-function AnswersResultBox({ options }) {
+function AnswersResultBox({ questionResultList }) {
+	console.log(questionResultList);
 	return (
 		<div className="grid grid-flow-row grid-cols-5 gap-3 p-2 mb-3 px-5">
-			{options?.map((value, index) => (
+			{questionResultList?.map((value, index) => (
 				<AnswerResultBox
 					key={index}
 					question={index + 1}
-					option={value.option}
-					correctOption={value.question.correctOption}
-					correctOptionChar={
-						value.option?._id == value.question.options[0]?._id
+					chosenAnswerId={value.chosenAnswerId}
+					correctAnswerId={value.correctAnswerId}
+					correctAnswerChar={
+						value.chosenAnswerId == value.answerList[0]?.id
 							? 'A'
-							: value.option?._id == value.question.options[1]?._id
+							: value.chosenAnswerId == value.answerList[1]?.id
 							? 'B'
-							: value.option?._id == value.question.options[2]?._id
+							: value.chosenAnswerId == value.answerList[2]?.id
 							? 'C'
 							: 'D'
 					}

@@ -2,83 +2,148 @@ import axios from 'axios';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { createSearchParams, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import ManageBody from '../components/ManageBody';
 import TeacherInfo from '../components/TeacherInfo';
 
-const examListTest = [
-	{
-		id: 1,
-		title: 'Đề ôn thi THPT Quốc gia môn Lịch sử năm 2021 có đáp án (Đề 3)',
-		minuteLimit: 60,
-		createdAt: '01/01/2022',
-		rate: 4,
-	},
-	{
-		id: 2,
-		title: 'Đề kiểm tra 1 tiết môn Lịch Sử năm 2022',
-		minuteLimit: 60,
-		createdAt: '02/02/2022',
-		rate: 3.5,
-	},
-	{
-		id: 3,
-		title: 'Đề kiểm tra 15 phút môn Lịch Sử năm 2022',
-		minuteLimit: 15,
-		createdAt: '01/20/2022',
-		rate: 4.5,
-	},
-	{
-		id: 4,
-		title: 'Đề thi thử môn Lịch Sử năm 2022',
-		minuteLimit: 60,
-		createdAt: '23/03/2022',
-		rate: 5,
-	},
-	{
-		id: 5,
-		title: 'Đề thi thử lần 2 môn Lịch Sử năm 2022',
-		minuteLimit: 60,
-		createdAt: '27/03/2022',
-		rate: 5,
-	},
-];
+// const TestExamList = [
+// 	{
+// 		id: 18,
+// 		name: 'Đề thi thử Lịch Sử 12',
+// 		maxDuration: 60,
+// 		createdTime: '2022-06-21T00:18:23',
+// 		teacherId: 14,
+// 		subjectId: 6,
+// 		isDeleted: 0,
+// 		isDone: 0,
+// 		numOfQuestions: 0,
+// 		questionList: null,
+// 		teacher: null,
+// 	},
+// 	{
+// 		id: 19,
+// 		name: 'Đề thi thử Lịch Sử 12 1',
+// 		maxDuration: 60,
+// 		createdTime: '2022-06-21T00:18:54',
+// 		teacherId: 14,
+// 		subjectId: 6,
+// 		isDeleted: 0,
+// 		isDone: 0,
+// 		numOfQuestions: 0,
+// 		questionList: null,
+// 		teacher: null,
+// 	},
+// 	{
+// 		id: 20,
+// 		name: 'Đề thi thử Lịch Sử 12 2',
+// 		maxDuration: 60,
+// 		createdTime: '2022-06-21T00:19:16',
+// 		teacherId: 14,
+// 		subjectId: 6,
+// 		isDeleted: 0,
+// 		isDone: 0,
+// 		numOfQuestions: 0,
+// 		questionList: null,
+// 		teacher: null,
+// 	},
+// 	{
+// 		id: 21,
+// 		name: 'Đề thi thử Lịch Sử 12 3',
+// 		maxDuration: 60,
+// 		createdTime: '2022-06-21T00:19:45',
+// 		teacherId: 14,
+// 		subjectId: 6,
+// 		isDeleted: 0,
+// 		isDone: 0,
+// 		numOfQuestions: 0,
+// 		questionList: null,
+// 		teacher: null,
+// 	},
+// 	{
+// 		id: 22,
+// 		name: 'Đề thi thử Lịch Sử 12 4',
+// 		maxDuration: 60,
+// 		createdTime: '2022-06-21T00:20:35',
+// 		teacherId: 14,
+// 		subjectId: 6,
+// 		isDeleted: 0,
+// 		isDone: 0,
+// 		numOfQuestions: 0,
+// 		questionList: null,
+// 		teacher: null,
+// 	},
+// 	,
+// 	{
+// 		id: 21,
+// 		name: 'Đề thi thử Lịch Sử 12 5',
+// 		maxDuration: 60,
+// 		createdTime: '2022-06-21T00:19:45',
+// 		teacherId: 14,
+// 		subjectId: 6,
+// 		isDeleted: 0,
+// 		isDone: 0,
+// 		numOfQuestions: 0,
+// 		questionList: null,
+// 		teacher: null,
+// 	},
+// 	{
+// 		id: 22,
+// 		name: 'Đề thi thử Lịch Sử 12 6',
+// 		maxDuration: 60,
+// 		createdTime: '2022-06-21T00:20:35',
+// 		teacherId: 14,
+// 		subjectId: 6,
+// 		isDeleted: 0,
+// 		isDone: 0,
+// 		numOfQuestions: 0,
+// 		questionList: null,
+// 		teacher: null,
+// 	},
+// ];
 
 function ManageExam() {
+	const navigate = useNavigate();
+
 	const [examList, setExamList] = useState();
-	const [pageIndex, setPageIndex] = useState(1);
+
+	const [searchParams, setSearchParams] = useSearchParams();
+	const pageParam = searchParams.get('page');
+
+	const [pageIndex, setPageIndex] = useState(pageParam);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		// const fetchExam = async () => {
-		// 	try {
-		// 		const url = `${process.env.REACT_APP_API_URL}/exam?page=${pageIndex}`;
+		setLoading(true);
+		const fetchExam = async () => {
+			try {
+				const pageParam = searchParams.get('page');
+				const url = `${process.env.REACT_APP_API_URL}/manageexam${
+					pageParam ? `?page=${pageParam}` : ''
+				}`;
 
-		// 		// const token = localStorage.getItem('REFRESH_TOKEN');
-		// 		// const res = await axios.get(url, {
-		// 		// 	headers: {
-		// 		// 		access_token:
-		// 		// 			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWQ1MmNmYTc2YTcxNzJlMDFiMTY2ZTgiLCJpYXQiOjE2NTI4NDc2NDcsImV4cCI6MTY1MzEwNjg0N30.7C1fIm7vVjaHBHRhaB7KaxnKDljXXNSnwEvPVvdJztM',
-		// 		// 	},
-		// 		// });
-		// 		const res = await axios.get(url);
+				const token = localStorage.getItem('REFRESH_TOKEN');
+				const res = await axios.get(url, {
+					headers: {
+						Authorization:
+							'Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCIsImN0eSI6IkpXVCJ9.eyJuYW1laWQiOiIxNCIsImV4cCI6MTY1NTgzMTUzNX0.2zFePtYNZTTI6DznJafKTkR8AO9KgfLYDOqi4OrL4qap9biC3l_RpzNN63GNpO9niUiYdc_RW7GRjhZmfIL8yw',
+					},
+				});
+				// const res = await axios.get(url);
 
-		// 		// localStorage.setItem(`time_${examId}`, res.data.minuteLimit);
-		// 		// if (!localStorage.getItem(`startTime_${examId}`))
-		// 		// 	localStorage.setItem(
-		// 		// 		`startTime_${examId}`,
-		// 		// 		moment().format('DD/MM/YYYY HH:mm:ss'),
-		// 		// 	);
-		// 		if (res) {
-		// 			console.log(res);
-		// 		}
-		// 		// setExam(res.data);
-		// 		// setLoading(true);
-		// 	} catch (error) {
-		// 		console.log('Failed to fetch exam:', error);
-		// 	}
-		// };
-		// fetchExam();
-		const newExamList = examListTest.slice((pageIndex - 1) * 2, (pageIndex - 1) * 2 + 2);
-		setExamList([...newExamList]);
+				if (res) {
+					console.log(res);
+					setExamList(res.data);
+					setLoading(false);
+				}
+				// setExam(res.data);
+				// setLoading(true);
+			} catch (error) {
+				console.log('Failed to fetch exam:', error);
+			}
+		};
+		fetchExam();
+		// const newExamList = TestExamList.slice((pageIndex - 1) * 5, (pageIndex - 1) * 5 + 5);
+		// setExamList([...newExamList]);
 	}, [pageIndex]);
 
 	const handleDeleteExam = (examId) => {
@@ -90,6 +155,12 @@ function ManageExam() {
 
 	const handlePaging = (page) => {
 		if (page < 1) return;
+		navigate({
+			pathname: '/manageexam',
+			search: createSearchParams({
+				page: page,
+			}).toString(),
+		});
 		setPageIndex(page);
 	};
 
@@ -101,6 +172,7 @@ function ManageExam() {
 				handleDeleteExam={handleDeleteExam}
 				pageIndex={pageIndex}
 				handlePaging={handlePaging}
+				loading={loading}
 			/>
 		</div>
 	);
