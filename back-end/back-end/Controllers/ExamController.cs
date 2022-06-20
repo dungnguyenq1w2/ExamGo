@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using System.IdentityModel.Tokens.Jwt;
 using System;
-
 namespace back_end.Controllers
 {
 
@@ -38,7 +37,7 @@ namespace back_end.Controllers
             {
                 examList = examList.Where(e => e.Name.Contains(search)).ToList();
             }
-            
+
             // Filter by Subject
             if (subjectId > 0)
             {
@@ -75,6 +74,11 @@ namespace back_end.Controllers
 
             int studentId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
 
+            foreach (var exam in examList)
+            {
+                var teacher = await _context.User.FindAsync(exam.TeacherId);
+                exam.Teacher = teacher;
+            }
 
             foreach (var exam in examList)
             {
