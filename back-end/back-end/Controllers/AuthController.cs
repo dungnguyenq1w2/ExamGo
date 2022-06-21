@@ -2,6 +2,7 @@
 using back_end.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,7 @@ namespace back_end.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowAllOrigins")]
     public class AuthController : ControllerBase
     {
         private readonly MyDbContext _context;
@@ -65,7 +67,7 @@ namespace back_end.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(AccountDto request)
+        public async Task<ActionResult<UserLogin>> Login(AccountDto request)
         {
             if (!AccountExists(request.Username))
             {
@@ -76,13 +78,21 @@ namespace back_end.Controllers
 
             if (!VerifyPasswordHash(request.Password, account.PasswordHash, account.PasswordSalt))
             {
-                return BadRequest("Wrong password.");
+                return BadRequest("Wrong username or password.");
             }
 
+            var user = await _context.User.FindAsync(account.UserId);
             string token = CreateToken(account);
-        
-            return Ok(token);
-        }
+
+            return Ok(new UserLogin
+            {
+                Name = user.Name,
+                UserTypeId = user.UserTypeId,
+                Email = user.Email,
+                Phone = user.Phone,
+                Address = user.Address,
+                Token = token,
+            });}
 
         [Authorize]
         [HttpPut("changePassword")]

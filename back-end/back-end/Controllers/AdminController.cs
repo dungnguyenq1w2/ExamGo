@@ -24,6 +24,8 @@ namespace back_end.Controllers
     {
         private readonly MyDbContext _context;
 
+        public static int PAGE_SIZE { get; set; } = 5;
+
         public AdminController(MyDbContext context)
         {
             _context = context;
@@ -31,7 +33,7 @@ namespace back_end.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetAccount()
+        public async Task<ActionResult<IEnumerable<User>>> GetAccount(string search, int role, string sortType, int page = 1)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             var handler = new JwtSecurityTokenHandler();
@@ -44,19 +46,43 @@ namespace back_end.Controllers
                 return StatusCode(403, $"User '{admin.Name}' is not a admin.");
             }
 
-            return await _context.User.Select(e => new User
+            var userList = await _context.User.AsQueryable().ToListAsync();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                search = search.ToLower();
+                userList = userList.Where(e => e.Name.ToLower().Contains(search)).ToList();
+            }
+
+            if (role > 0)
+            {
+                userList = userList.Where(e => e.UserTypeId == role).ToList();
+            }
+
+            if (sortType == "name")
+            {
+                userList = userList.OrderBy(e => e.Name).ToList();
+            }
+            else if (sortType == "email")
+            {
+                userList = userList.OrderBy(e => e.Email).ToList();
+            }    
+
+            userList = userList.Skip((page - 1) * PAGE_SIZE).Take(PAGE_SIZE).ToList();
+
+            userList = userList.Select(e => new User
             {
                 Id = e.Id,
                 Name = e.Name,
                 Email = e.Email,
-                //Phone = e.Phone == null ? e.Phone : null,
-                //DateOfBirth = e.DateOfBirth == DateTime.MinValue? e.DateOfBirth : DateTime.MinValue,
-                //CitizenId = e.CitizenId == null ? e.CitizenId : null,
-                //Address = e.Address == null ? e.Address : null,
+                Phone = e.Phone,
+                DateOfBirth = e.DateOfBirth,
+                CitizenId = e.CitizenId,
+                Address = e.Address == null ? e.Address : null,
                 UserTypeId = e.UserTypeId,
-                UserType = e.UserType,
-                //Account = e.Account,
-            }).ToListAsync();
+            }).ToList();
+
+            return userList;
         }
 
         [Authorize]

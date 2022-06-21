@@ -24,5 +24,11 @@ namespace back_end.Models
         public virtual UserType UserType { get; set; }
 
         //public virtual Account Account { get; set; }
+        //public virtual string Token { get; set; }
+    }
+
+    public class UserLogin : User
+    {
+        public string Token { get; set; }
     }
 }

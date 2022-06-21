@@ -19,7 +19,7 @@ namespace back_end.Controllers
     public class ExamController : ControllerBase
     {
         private readonly MyDbContext _context;
-        public static int PAGE_SIZE { get; set; } = 10;
+        public static int PAGE_SIZE { get; set; } = 5;
         public ExamController(MyDbContext context)
         {
             _context = context;
@@ -32,10 +32,13 @@ namespace back_end.Controllers
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             var examList = await _context.Exam.AsQueryable().ToListAsync();
 
+            examList = examList.Where(e => e.IsDeleted == 0).ToList();
+
             // Search
             if (!string.IsNullOrEmpty(search))
             {
-                examList = examList.Where(e => e.Name.Contains(search)).ToList();
+                search = search.ToLower();
+                examList = examList.Where(e => e.Name.ToLower().Contains(search)).ToList();
             }
 
             // Filter by Subject

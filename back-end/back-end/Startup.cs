@@ -37,6 +37,7 @@ namespace back_end
                 options.AddPolicy("AllowAllOrigins",
                     builder =>
                     {
+                        //builder.WithOrigins("http://localhost:3000");
                         builder.AllowAnyOrigin();
                         builder.AllowAnyHeader();
                         builder.AllowAnyMethod();
@@ -89,7 +90,7 @@ namespace back_end
 
             app.UseRouting();
 
-            app.UseCors("MyPolicy");
+            app.UseCors("AllowAllOrigins");
 
             app.UseAuthentication();
 
