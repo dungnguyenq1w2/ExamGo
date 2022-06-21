@@ -1,8 +1,12 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import Pagination from 'rc-pagination';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import axios from 'axios';
+import { subject } from '../../../utils/subject';
+import moment from 'moment';
+import { parseDurationToTime } from '../../../utils/parseDurationToTime';
 
 // const userInfo = {
 // 	name: "Stone Worker",
@@ -69,11 +73,73 @@ function UserProfile(props) {
 	const navigate = useNavigate();
 	const styleTableHeader = 'px-2 py-1';
 	const styleTableData = 'py-1 px-2 border-b';
-	const handlePaginationClick = () => {};
+
 	const userInfo = useSelector((state) => state.user);
 
-	useEffect(() => {}, []);
+	const [examList, setExamList] = useState();
+	const [record, setRecord] = useState();
+	const [loading, setLoading] = useState(false);
 
+	const [subjectFilter, setSubjectFilter] = useState(0);
+	const [sortFilter, setSortFilter] = useState('point');
+	const [pageIndex, setPageIndex] = useState(1);
+
+	useEffect(() => {
+		const fetchRecord = async () => {
+			try {
+				const url = `${process.env.REACT_APP_API_URL}/user/studentRecord`;
+				const token = localStorage.getItem('TOKEN');
+				const res = await axios.get(url, {
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				});
+
+				if (res.data) {
+					console.log(res.data);
+					setRecord(res.data);
+				}
+			} catch (error) {
+				console.log('Fail to fetch exam', error);
+			}
+		};
+		fetchRecord();
+	}, []);
+
+	useEffect(() => {
+		const fetchExam = async () => {
+			try {
+				setLoading(true);
+				const url = `${process.env.REACT_APP_API_URL}/user/takenExamList?subject=${subjectFilter}&sort=${sortFilter}&page=${pageIndex}`;
+				const token = localStorage.getItem('TOKEN');
+				const res = await axios.get(url, {
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				});
+
+				if (res.data) {
+					console.log(res.data);
+					setExamList(res.data);
+					setLoading(false);
+				}
+			} catch (error) {
+				setLoading(false);
+				console.log('Fail to fetch exam', error);
+			}
+		};
+		fetchExam();
+	}, [subjectFilter, sortFilter, pageIndex]);
+
+	const handlePaging = (page) => {
+		if (page < 1) return;
+		// navigate({
+		// 	search: createSearchParams({
+		// 		page: page,
+		// 	}).toString(),
+		// });
+		setPageIndex(page);
+	};
 	return (
 		<div className="px-12 flex flex-col sm:text-[16px] bg-[#ECF0F4] py-6">
 			<div className="flex flex-wrap justify-between w-full">
@@ -104,7 +170,7 @@ function UserProfile(props) {
 								</div> */}
 							</div>
 							<p className="font-bold text-2xl">
-								{userInfo.name ? userInfo.name : 'Chưa cập nhật'}
+								{userInfo?.name ? userInfo?.name : 'Chưa cập nhật'}
 							</p>
 							{/* <p className="italic text-red-500">{userInfo.quote}</p> */}
 						</div>
@@ -120,7 +186,7 @@ function UserProfile(props) {
 									<path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
 								</svg>
 								<span className="ml-8">
-									{userInfo.email ? userInfo.email : 'Chưa cập nhật'}
+									{userInfo?.email ? userInfo?.email : 'Chưa cập nhật'}
 								</span>
 							</div>
 							<div className="flex items-center">
@@ -134,7 +200,7 @@ function UserProfile(props) {
 									<path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
 								</svg>
 								<span className="ml-8">
-									{userInfo.phone ? userInfo.phone : 'Chưa cập nhật'}
+									{userInfo?.phone ? userInfo?.phone : 'Chưa cập nhật'}
 								</span>
 							</div>
 							<div className="flex items-center">
@@ -147,7 +213,7 @@ function UserProfile(props) {
 									<path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
 								</svg>
 								<span className="ml-8">
-									{userInfo.address ? userInfo.address : 'Chưa cập nhật'}
+									{userInfo?.address ? userInfo?.address : 'Chưa cập nhật'}
 								</span>
 							</div>
 						</div>
@@ -160,19 +226,19 @@ function UserProfile(props) {
 						<li className="flex py-4 px-8 border-b">
 							<div className="basis-[30%] font-semibold">Họ và tên:</div>
 							<div className="basis-[70%]">
-								{userInfo.name ? userInfo.name : 'Chưa cập nhật'}
+								{userInfo?.name ? userInfo?.name : 'Chưa cập nhật'}
 							</div>
 						</li>
 						<li className="flex py-4 px-8 border-b">
 							<div className="basis-[30%] font-semibold">Email</div>
 							<div className="basis-[70%]">
-								{userInfo.email ? userInfo.email : 'Chưa cập nhật'}
+								{userInfo?.email ? userInfo?.email : 'Chưa cập nhật'}
 							</div>
 						</li>
 						<li className="flex py-4 px-8 border-b">
 							<div className="basis-[30%] font-semibold">Điện thoại:</div>
 							<div className="basis-[70%]">
-								{userInfo.phone ? userInfo.phone : 'Chưa cập nhật'}
+								{userInfo?.phone ? userInfo?.phone : 'Chưa cập nhật'}
 							</div>
 						</li>
 						{/* <li className="flex py-4 px-8 border-b">
@@ -186,7 +252,7 @@ function UserProfile(props) {
 						<li className="flex py-4 px-8 border-b">
 							<div className="basis-[30%] font-semibold">Địa chỉ:</div>
 							<div className="basis-[70%]">
-								{userInfo.address ? userInfo.address : 'Chưa cập nhật'}
+								{userInfo?.address ? userInfo?.address : 'Chưa cập nhật'}
 							</div>
 						</li>
 						{/* <li className="flex py-4 px-8 border-b">
@@ -210,27 +276,33 @@ function UserProfile(props) {
 					<ul className="rounded-lg shadow-lg p-8 bg-white">
 						<li className="flex my-2">
 							<p className="basis-[60%] font-semibold">Số đề thi đã làm được:</p>
-							<p>20</p>
+							<p>
+								{record?.numberOfTakenExams === 0
+									? '0'
+									: record?.numberOfTakenExams
+									? record?.numberOfTakenExams
+									: '...'}
+							</p>
 						</li>
 						<li className="flex my-2">
 							<p className="basis-[60%] font-semibold">Điểm trung bình:</p>
-							<p>8.5</p>
+							<p>
+								{record?.averagePoint === 0
+									? '0'
+									: record?.averagePoint
+									? (record?.averagePoint).toFixed(2)
+									: '...'}
+							</p>
 						</li>
 						<li className="flex my-2">
 							<p className="basis-[60%] font-semibold">Thời gian trung bình:</p>
-							<p>30 phút 10 giây</p>
-						</li>
-						<li className="flex my-2">
-							<p className="basis-[60%] font-semibold">Thành tích tốt nhất:</p>
-							<div>
-								<div className="flex justify-between">
-									<span>10 điểm</span>
-									<button className="px-2 bg-green-400 text-white rounded-lg">
-										Xem
-									</button>
-								</div>
-								<p>15 phút 25 giây</p>
-							</div>
+							<p>
+								{record?.averageDuration === 0
+									? '0'
+									: record?.averageDuration
+									? parseDurationToTime(record?.averageDuration)
+									: '...'}
+							</p>
 						</li>
 					</ul>
 				</div>
@@ -241,68 +313,168 @@ function UserProfile(props) {
 						<ul className="flex flex-wrap ml-auto">
 							<li>
 								Môn học:
-								<select className="ml-2">
+								<select
+									className="ml-2"
+									onChange={(e) => setSubjectFilter(e.target.value)}
+								>
 									<option label="Tất cả"></option>
-									<option value="Toán">Toán</option>
-									<option value="Lý">Lý</option>
-									<option value="Hóa">Hóa</option>
-									<option value="Sinh">Sinh</option>
-									<option value="Anh">Anh</option>
-									<option value="Lịch sử">Lịch sử</option>
-									<option value="Địa lý">Địa lý</option>
-									<option value="GDCD">GDCD</option>
+									<option value="1">Toán</option>
+									<option value="2">Anh Văn</option>
+									<option value="3">Vật Lý</option>
+									<option value="4">Hóa Học</option>
+									<option value="5">Sinh Học</option>
+									<option value="6">Lịch sử</option>
+									<option value="7">Địa lý</option>
+									<option value="8">GDCD</option>
 								</select>
 							</li>
 							<li className="ml-4">
 								Sắp xếp theo:
-								<select className="ml-2 outline-none">
-									<option value="Thời điểm hoàn thành">
-										Thời điểm hoàn thành
-									</option>
-									<option value="Thời điểm hoàn thành">Điểm số</option>
-									<option value="Thời điểm hoàn thành">
-										Thời gian hoàn thành
-									</option>
+								<select
+									className="ml-2 outline-none"
+									onChange={(e) => setSortFilter(e.target.value)}
+								>
+									<option value="point">Điểm số</option>{' '}
+									<option value="duration">Thời gian làm bài</option>
 								</select>
 							</li>
 						</ul>
 					</div>
-					<table className="shadow-lg bg-white rounded-lg overflow-hidden">
+					<table className="shadow-lg bg-white rounded-lg overflow-hidden w-full">
 						<thead className="bg-[#FFDE8A] rounded-lg">
 							<tr>
 								<th className={styleTableHeader}>STT</th>
 								<th className={styleTableHeader}>Đề thi</th>
 								<th className={styleTableHeader}>Môn học</th>
-								<th className={styleTableHeader}>
-									Thời điểm hoàn thành Thời gian hoàn thành
-								</th>
+								<th className={styleTableHeader}>Thời gian làm bài</th>
 								<th className={styleTableHeader}>Kết quả</th>
-								<th className={styleTableHeader}></th>
+								<th className={styleTableHeader}>Xử lý</th>
 							</tr>
 						</thead>
 						<tbody>
-							{examsInfo.length > 0 &&
-								examsInfo.map((exam, index) => {
+							{loading ? (
+								<>
+									{Array(5)
+										.fill(0)
+										.map((e, i) => (
+											<tr
+												className="bg-white border-b transition duration-200 ease-in-out hover:bg-gray-100"
+												key={i}
+											>
+												<td className={`${styleTableData} text-center`}>
+													<div className="h-6 bg-gray-200 rounded col-span-1"></div>
+												</td>
+												<td className={styleTableData}>
+													<div className="h-6 bg-gray-200 rounded col-span-1"></div>
+												</td>
+												<td className={styleTableData}>
+													<div className="h-6 bg-gray-200 rounded col-span-1"></div>
+												</td>
+												<td className={styleTableData}>
+													<div className="h-6 bg-gray-200 rounded col-span-1"></div>
+												</td>
+												<td className={styleTableData}>
+													<div className="h-6 bg-gray-200 rounded col-span-1"></div>
+												</td>
+												<td className={styleTableData}>
+													<div className="h-6 bg-gray-200 rounded col-span-3"></div>
+												</td>
+											</tr>
+										))}
+								</>
+							) : (
+								examList?.length > 0 &&
+								examList.map((exam, index) => {
 									return (
 										<tr key={exam.id}>
 											<td className={`${styleTableData} text-center`}>
 												{index + 1}
 											</td>
-											<td className={styleTableData}>{exam.name}</td>
-											<td className={styleTableData}>{exam.subject}</td>
-											<td className={styleTableData}>{exam.completedTime}</td>
-											<td className={styleTableData}>{exam.result}</td>
-											<td className={styleTableData}>
-												<button className="bg-green-500 px-2 py-1 rounded-lg text-white">
+											<td className={styleTableData}>{exam?.name}</td>
+											<td className={`${styleTableData} text-center`}>
+												{subject(exam?.subjectId)}
+											</td>
+											<td className={`${styleTableData} text-center`}>
+												{parseDurationToTime(exam?.studentExam?.duration)}
+											</td>
+											<td className={`${styleTableData} text-center`}>
+												{exam?.studentExam?.point}
+											</td>
+											<td className={`${styleTableData} text-center`}>
+												<button
+													className="bg-green-500 px-2 py-1 rounded-lg text-white text-base"
+													onClick={() =>
+														navigate({
+															pathname: `/exam/result/${exam.id}`,
+														})
+													}
+												>
 													Xem chi tiết
 												</button>
 											</td>
 										</tr>
 									);
-								})}
+								})
+							)}
 						</tbody>
 					</table>
-					{examsInfo.length > 5 && (
+					{!loading && (
+						<div>
+							<div className="flex items-center justify-center mt-5 mb-2 text-base">
+								<div
+									className={`${
+										pageIndex == 1
+											? 'text-gray-400'
+											: 'cursor-pointer hover:border-gray-800'
+									} border-2 rounded-full p-1 mr-2`}
+									onClick={() => handlePaging(pageIndex - 1)}
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										className="h-6 w-6"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+										strokeWidth={2}
+									>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											d="M15 19l-7-7 7-7"
+										/>
+									</svg>
+								</div>
+								<span>Trang {pageIndex ? pageIndex : 1}</span>
+								<div
+									className={`${
+										!examList || examList.length === 0
+											? 'text-gray-400'
+											: 'cursor-pointer hover:border-gray-800'
+									} border-2 rounded-full p-1 ml-2`}
+									onClick={() => {
+										if (examList && examList.length != 0)
+											handlePaging(parseInt(pageIndex) + 1);
+									}}
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										className="h-6 w-6"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+										strokeWidth={2}
+									>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											d="M9 5l7 7-7 7"
+										/>
+									</svg>
+								</div>
+							</div>
+						</div>
+					)}
+					{/* {examList.length > 5 && (
 						<div className="flex items-center justify-center mt-6">
 							<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded mr-1 text-sky-600 font-semibold">
 								Prev
@@ -323,7 +495,7 @@ function UserProfile(props) {
 								Next
 							</button>
 						</div>
-					)}
+					)} */}
 				</div>
 			</div>
 		</div>

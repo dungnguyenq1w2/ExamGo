@@ -67,8 +67,7 @@ function CreateExamForm() {
 
 	// const router = useRouter();
 	const onSubmit = (data) => {
-		modifiedQuestion(data);
-		// console.log(data);
+		data = modifiedQuestion(data);
 		setLoading(true);
 		const createExam = async () => {
 			try {

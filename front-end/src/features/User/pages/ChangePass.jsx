@@ -23,6 +23,7 @@ function ChangePass() {
 			.oneOf([Yup.ref('newPassword')], 'Mật khẩu không khớp'),
 	});
 	const formOptions = { resolver: yupResolver(validationSchema) };
+
 	const {
 		register,
 		handleSubmit,
