@@ -41,6 +41,7 @@ namespace back_end.Controllers
 
             int adminId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
             var admin = await _context.User.FindAsync(adminId);
+
             if (admin.UserTypeId != 3)
             {
                 return StatusCode(403, $"User '{admin.Name}' is not a admin.");

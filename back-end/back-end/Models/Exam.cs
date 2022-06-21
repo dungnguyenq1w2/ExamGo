@@ -29,4 +29,9 @@ namespace back_end.Data
         [ForeignKey("TeacherId")]
         public virtual User Teacher { get; set; }
     }
+
+    public class ExamResult : Exam
+    {
+        public StudentExam StudentExam { get; set; }
+    }
 }

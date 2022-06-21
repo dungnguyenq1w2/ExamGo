@@ -138,7 +138,8 @@ namespace back_end.Controllers
                 CreatedTime = DateTime.Now,
                 TeacherId = teacherId,
                 SubjectId = exam.SubjectId,
-                IsDeleted = 0
+                IsDeleted = 0,
+                NumOfQuestions = exam.NumOfQuestions,
             };
             _context.Exam.Add(newExam);
             _context.SaveChanges();
@@ -152,7 +153,7 @@ namespace back_end.Controllers
                 };
                 _context.Question.Add(newQuestion);
                 _context.SaveChanges();
-                var correctAnswerId = 0;
+                var correctAnswerId = question.CorrectAnswerId;
                 foreach (var answer in question.AnswerList.Select((value, index) => new { index, value }))
                 {
                     var newAnswer = new Answer
