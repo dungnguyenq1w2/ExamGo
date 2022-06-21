@@ -255,7 +255,7 @@ export default function ExamForm({ timeout, questionList, idExam }) {
 		const startTime = localStorage.getItem(`startTime_${idExam}`);
 		const takingTime = diffTime(startTime);
 		data = modifiedSubmitForm(questionList, data, takingTime);
-		console.log(data);
+
 		setLoading(true);
 		const handleSubmitExam = async () => {
 			try {
@@ -270,13 +270,6 @@ export default function ExamForm({ timeout, questionList, idExam }) {
 					},
 				);
 				if (res.data) {
-					// Submit thành công thì xóa các field trong localStorage
-					localStorage.removeItem(`remainTimeSaved_${examId}`);
-					localStorage.removeItem(`currentTimeSaved_${examId}`);
-					localStorage.removeItem(`time_${examId}`);
-					localStorage.removeItem(`startTime_${examId}`);
-					localStorage.removeItem('undefined');
-					localStorage.removeItem(examId);
 					setIsSuccess(true);
 					setTimeout(() => {
 						navigate({
@@ -291,12 +284,12 @@ export default function ExamForm({ timeout, questionList, idExam }) {
 
 		handleSubmitExam();
 		// Submit thành công thì xóa các field trong localStorage
+		localStorage.removeItem(examId);
 		localStorage.removeItem(`remainTimeSaved_${examId}`);
 		localStorage.removeItem(`currentTimeSaved_${examId}`);
 		localStorage.removeItem(`time_${examId}`);
 		localStorage.removeItem(`startTime_${examId}`);
 		localStorage.removeItem('undefined');
-		localStorage.removeItem(examId);
 	};
 
 	const checkKeyDown = (e) => {

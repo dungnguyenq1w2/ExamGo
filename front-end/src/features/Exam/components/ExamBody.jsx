@@ -63,9 +63,6 @@ function ExamBody({ exam }) {
 							onClick={() => {
 								navigate({
 									pathname: 'result/1',
-									// search: createSearchParams({
-									//     subject: 'civiceducation',
-									// }).toString(),
 								});
 							}}
 						>

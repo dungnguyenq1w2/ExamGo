@@ -25,6 +25,7 @@ function ExamResult() {
 				});
 
 				if (res.data) {
+					console.log(res.data);
 					setExamReview(res.data);
 					setLoading(false);
 				}
