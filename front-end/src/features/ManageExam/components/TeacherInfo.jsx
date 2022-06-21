@@ -1,16 +1,18 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function TeacherInfo() {
+function TeacherInfo({ teacher }) {
+	const navigate = useNavigate();
 	return (
 		<div className="hidden lg:block flex-[0.2] py-10 px-6 border-r-2">
 			<div className="flex flex-col items-center mb-8">
 				<img
 					className="rounded-full h-40 w-40 object-cover"
-					src="/images/math.jpg"
+					src="/images/avatar.jpg"
 					alt="avatar"
 				/>
 				<div className="flex flex-col text-center mt-4">
-					<span className="font-bold">Sharon Myoui</span>
+					<span className="font-bold">{teacher?.name}</span>
 					<span className="text-base font-medium text-gray-600">Giáo viên</span>
 				</div>
 			</div>
@@ -30,7 +32,9 @@ function TeacherInfo() {
 								d="m25.754 7.439-1.76 1.375-7.494 5.569-7.494-5.624-1.76-1.375a2.75 2.75 0 0 0-4.496 2.31V25.63a1.87 1.87 0 0 0 1.87 1.87h4.386V16.885l7.494 5.624 7.494-5.624V27.5h4.386a1.87 1.87 0 0 0 1.87-1.87V9.694a2.75 2.75 0 0 0-4.496-2.255Z"
 							/>
 						</svg>
-						<span className="ml-3 text-[18px]">shronmyoui@gmail.com</span>
+						<span className="ml-3 text-[18px]">
+							{teacher.email ? teacher.email : 'Chưa cập nhật'}
+						</span>
 					</div>
 					<div className="flex my-3">
 						<svg
@@ -49,12 +53,14 @@ function TeacherInfo() {
 							/>
 						</svg>
 
-						<span className="ml-3 text-[18px]">0346150333</span>
+						<span className="ml-3 text-[18px]">
+							{teacher.phone ? teacher.phone : 'Chưa cập nhật'}
+						</span>
 					</div>
 					<div className="flex my-3 mb-6">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
-							className="max-h-10 max-w-10"
+							className="max-h-7 max-w-7 "
 							fill="none"
 							viewBox="0 0 24 24"
 							stroke="currentColor"
@@ -68,11 +74,11 @@ function TeacherInfo() {
 						</svg>
 
 						<span className="ml-3 text-[18px]">
-							123/4, Trung Tâm, Thanh Bình, Trảng Bom, Đồng Nai
+							{teacher.address ? teacher.address : 'Chưa cập nhật'}
 						</span>
 					</div>
 					<hr />
-					<div className="flex my-3 mt-6">
+					{/* <div className="flex my-3 mt-6">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="28"
@@ -92,8 +98,6 @@ function TeacherInfo() {
 								</clipPath>
 							</defs>
 						</svg>
-
-						<span className="ml-3 text-[18px]">Toán Học</span>
 					</div>
 					<div className="flex my-3 mb-6 mr-3">
 						<svg
@@ -112,16 +116,15 @@ function TeacherInfo() {
 								d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
 							/>
 						</svg>
-
-						<span className="ml-3 text-[18px]">
-							Trường THPT Thống Nhất A - Đồng Nai
-						</span>
-					</div>
+					</div> */}
 				</div>
 			</div>
 			<hr />
 			<div className="text-center mt-6">
-				<button className="bg-orange-500 text-white py-1 px-4 rounded-xl shadow text-lg font-semibold">
+				<button
+					className="bg-orange-500 text-white py-1 px-4 rounded-xl shadow text-lg font-semibold"
+					onClick={() => navigate('/user/edit')}
+				>
 					Sửa thông tin
 				</button>
 			</div>

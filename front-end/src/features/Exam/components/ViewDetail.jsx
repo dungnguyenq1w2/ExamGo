@@ -6,7 +6,7 @@ function ViewDetail({ examReview }) {
 	const navigate = useNavigate();
 
 	return (
-		<div className="flex justify-center py-20 md:py-14">
+		<div className="flex justify-center py-20 md:py-14 text-base">
 			<div className=" w-full sm:w-2/3 md:w-3/4 lg:w-1/2 mx-3 px-3 py-5 lg:py-12 sm:p-12 md:px-20 bg-gray-300 bg-opacity-25 shadow-lg">
 				<div className="mb-3">
 					<span className="text-3xl font-bold text-green-800 ">

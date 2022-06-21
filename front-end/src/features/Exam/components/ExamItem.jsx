@@ -1,8 +1,28 @@
 import moment from 'moment';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 
-function ExamItem({ id, name, minuteLimit, creator, createdTime, isDone }) {
+function ExamItem({ id, exam, name, minuteLimit, creator, createdTime, isDone }) {
+	const navigate = useNavigate();
+
 	return (
-		<div className="py-2">
+		<div
+			className="py-2"
+			onClick={() => {
+				isDone
+					? navigate({
+							pathname: 'result/' + id,
+							// // search: createSearchParams({
+							// // 	examDetail: JSON.stringify(exam),
+							// }).toString(),
+					  })
+					: navigate({
+							pathname: '/exam/' + id,
+							search: createSearchParams({
+								examDetail: JSON.stringify(exam),
+							}).toString(),
+					  });
+			}}
+		>
 			<div className="flex jutify-between items-center">
 				<div className="flex flex-1 jutify-between items-center">
 					<svg

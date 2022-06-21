@@ -1,8 +1,7 @@
 import axios from 'axios';
-import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { createSearchParams, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import ManageBody from '../components/ManageBody';
 import TeacherInfo from '../components/TeacherInfo';
 
@@ -103,7 +102,7 @@ import TeacherInfo from '../components/TeacherInfo';
 
 function ManageExam() {
 	const navigate = useNavigate();
-
+	const teacher = useSelector((state) => state.user);
 	const [examList, setExamList] = useState();
 
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -111,6 +110,33 @@ function ManageExam() {
 
 	const [pageIndex, setPageIndex] = useState(pageParam);
 	const [loading, setLoading] = useState(true);
+
+	// useEffect(() => {
+	// 	const fetchTeacher = async () => {
+	// 		try {
+	// 			const pageParam = searchParams.get('page');
+	// 			const url = `${process.env.REACT_APP_API_URL}/manageexam${
+	// 				pageParam ? `?page=${pageParam}` : ''
+	// 			}`;
+
+	// 			const token = localStorage.getItem('TOKEN');
+	// 			const res = await axios.get(url, {
+	// 				headers: {
+	// 					Authorization: `Bearer ${token}`,
+	// 				},
+	// 			});
+
+	// 			if (res) {
+	// 				console.log(res);
+	// 				setExamList(res.data);
+	// 				setLoading(false);
+	// 			}
+	// 		} catch (error) {
+	// 			console.log('Failed to fetch teacher info:', error);
+	// 		}
+	// 	};
+	// 	fetchTeacher();
+	// }, []);
 
 	useEffect(() => {
 		setLoading(true);
@@ -121,29 +147,22 @@ function ManageExam() {
 					pageParam ? `?page=${pageParam}` : ''
 				}`;
 
-				const token = localStorage.getItem('REFRESH_TOKEN');
+				const token = localStorage.getItem('TOKEN');
 				const res = await axios.get(url, {
 					headers: {
-						Authorization:
-							'Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCIsImN0eSI6IkpXVCJ9.eyJuYW1laWQiOiIxNCIsImV4cCI6MTY1NTgzMTUzNX0.2zFePtYNZTTI6DznJafKTkR8AO9KgfLYDOqi4OrL4qap9biC3l_RpzNN63GNpO9niUiYdc_RW7GRjhZmfIL8yw',
+						Authorization: `Bearer ${token}`,
 					},
 				});
-				// const res = await axios.get(url);
 
 				if (res) {
-					console.log(res);
 					setExamList(res.data);
 					setLoading(false);
 				}
-				// setExam(res.data);
-				// setLoading(true);
 			} catch (error) {
 				console.log('Failed to fetch exam:', error);
 			}
 		};
 		fetchExam();
-		// const newExamList = TestExamList.slice((pageIndex - 1) * 5, (pageIndex - 1) * 5 + 5);
-		// setExamList([...newExamList]);
 	}, [pageIndex]);
 
 	const handleDeleteExam = (examId) => {
@@ -166,7 +185,7 @@ function ManageExam() {
 
 	return (
 		<div className="flex h-full">
-			<TeacherInfo />
+			<TeacherInfo teacher={teacher} />
 			<ManageBody
 				examList={examList}
 				handleDeleteExam={handleDeleteExam}

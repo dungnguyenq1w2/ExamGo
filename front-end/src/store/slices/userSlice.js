@@ -12,9 +12,13 @@ const user = createSlice({
 			state = null;
 			return state;
 		},
+		edit: (state, action) => {
+			state = action.payload;
+			return state;
+		},
 	},
 });
 
 const { reducer, actions } = user;
-export const { login, logout } = actions;
+export const { login, logout, edit } = actions;
 export default reducer;

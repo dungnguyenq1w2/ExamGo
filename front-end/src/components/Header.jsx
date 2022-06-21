@@ -1,22 +1,24 @@
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { IconButton } from '@mui/material';
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../store/slices/userSlice';
-import DropdownTeacher from './DropdownTeacher';
+import DropdownUser from './DropdownUser';
 
 const Header = () => {
 	const navigate = useNavigate();
 	const [isMenu, setIsMenu] = useState(false);
 	const [isDropdown, setIsDropdown] = useState(false);
 	const dispatch = useDispatch();
-	const [user, setUser] = useState(1);
+	const user = useSelector((state) => state.user);
 
 	const handleLogout = () => {
 		dispatch(logout());
-		localStorage.removeItem('REFRESH_TOKEN');
+		localStorage.removeItem('TOKEN');
+		navigate('/');
+		handleClickDropdownItem();
 	};
 	const handleClickDropdownItem = () => {
 		setIsDropdown(!isDropdown);
@@ -77,15 +79,20 @@ const Header = () => {
 						<div className="flex items-center rounded-xl ">
 							<img
 								// src={user?.avatar}
-								src="/images/math.jpg"
+								src="/images/avatar.jpg"
 								alt="avatar"
 								className="w-10 h-10 rounded-full mr-2"
 							/>
-							<h1>{user?.name}</h1>
 						</div>
 						<div className="flex flex-col w-24 md:w-24 lg:w-36 flex-1 ml-4 md:ml-1 lg:ml-3">
-							<span className="font-semibold">Sharon Myoui</span>
-							<span className="text-[18px] text-gray-600">Giáo viên</span>
+							<span className="font-semibold md:text-lg">{user?.name}</span>
+							<span className="text-[18px] text-gray-600 md:text-base">
+								{user?.userTypeId === 1
+									? 'Học Sinh'
+									: user?.userTypeId === 2
+									? 'Giáo Viên'
+									: 'Quản Tri Viên'}
+							</span>
 						</div>
 						<div
 							className="cursor-pointer ml-1 border border-black rounded-full"
@@ -107,7 +114,11 @@ const Header = () => {
 							</svg>
 						</div>
 						{isDropdown && (
-							<DropdownTeacher handleClickItem={handleClickDropdownItem} />
+							<DropdownUser
+								handleLogout={handleLogout}
+								handleClickItem={handleClickDropdownItem}
+								userType={user?.userTypeId}
+							/>
 						)}
 					</div>
 				) : (

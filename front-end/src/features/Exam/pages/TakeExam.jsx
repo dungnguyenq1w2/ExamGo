@@ -85,88 +85,38 @@ function TakeExam() {
 	// };
 
 	const { examId } = useParams();
-	console.log(examId);
-	const [exam, setExam] = useState({
-		id: 15,
-		name: 'Đề thi 15 phút Lịch Sử',
-		maxDuration: 15,
-		createdTime: null,
-		teacherId: 5,
-		subjectId: 6,
-		isDeleted: 0,
-		isDone: 0,
-		numOfQuestions: 0,
-		questionList: [
-			{
-				id: 15,
-				content: 'Câu hỏi 1',
-				correctAnswerId: 41,
-				examId: 15,
-				answerList: [
-					{
-						id: 41,
-						content: 'Đáp án 1',
-						questionId: 15,
-					},
-					{
-						id: 42,
-						content: 'Đáp án 2',
-						questionId: 15,
-					},
-					{
-						id: 43,
-						content: 'Đáp án 3',
-						questionId: 15,
-					},
-					{
-						id: 44,
-						content: 'Đáp án 4',
-						questionId: 15,
-					},
-				],
-			},
-		],
-		teacher: {
-			id: 5,
-			name: 'Lê Ngọc Du 1',
-			email: 'du+test1@gmail.com',
-			phone: '0123456789',
-			dateOfBirth: '0001-01-01T00:00:00',
-			citizenId: null,
-			address: null,
-			userTypeId: 2,
-			userType: null,
-		},
-	});
-	const [loading, setLoading] = useState(true);
-	localStorage.setItem(`time_${examId}`, exam.maxDuration);
-	if (!localStorage.getItem(`startTime_${examId}`))
-		localStorage.setItem(`startTime_${examId}`, moment().format('DD/MM/YYYY HH:mm:ss'));
+	// console.log(examId);
+	const [exam, setExam] = useState();
+	const [loading, setLoading] = useState(false);
+
 	//Fetch dữ liệu
 	useEffect(() => {
 		const fetchExam = async () => {
 			try {
+				setLoading(true);
 				const url = `${process.env.REACT_APP_API_URL}/exam/take/${examId}`;
 
-				const token = localStorage.getItem('REFRESH_TOKEN');
+				const token = localStorage.getItem('TOKEN');
 				const res = await axios.get(url, {
 					headers: {
-						Authorization:
-							'Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCIsImN0eSI6IkpXVCJ9.eyJuYW1laWQiOiIxMyIsImV4cCI6MTY1NTgzMDAzOX0.pnZUdii2W7qY8XZ7CllMakPhdFGaEXnM_O05m5alrcCegD1DKaE6uHJrZghlbV1WKk799fSmEGgrkh1SvCQ9bQ',
+						Authorization: `Bearer ${token}`,
 					},
 				});
 
-				// localStorage.setItem(`time_${examId}`, res.data.minuteLimit);
-				// if (!localStorage.getItem(`startTime_${examId}`))
-				// 	localStorage.setItem(
-				// 		`startTime_${examId}`,
-				// 		moment().format('DD/MM/YYYY HH:mm:ss'),
-				// 	);
+				if (res.data) {
+					setExam(res.data);
 
-				// setExam(res.data);
-				// setLoading(true);
-				console.log(res);
+					localStorage.setItem(`time_${examId}`, res.data.maxDuration);
+
+					if (!localStorage.getItem(`startTime_${examId}`))
+						localStorage.setItem(
+							`startTime_${examId}`,
+							moment().format('DD/MM/YYYY HH:mm:ss'),
+						);
+					setLoading(false);
+				}
 			} catch (error) {
+				setLoading(false);
 				console.log('Failed to fetch exam:', error);
 			}
 		};
@@ -210,12 +160,12 @@ function TakeExam() {
 		// </div>
 		<div className="min-h-screen">
 			{loading ? (
+				<Loading />
+			) : (
 				<div className="flex justify-between my-10 flex-col md:flex-row">
 					<ExamBody exam={exam} />
-					{/* <StateBox id={exam.id} /> */}
+					<StateBox id={examId} />
 				</div>
-			) : (
-				<Loading />
 			)}
 		</div>
 	);

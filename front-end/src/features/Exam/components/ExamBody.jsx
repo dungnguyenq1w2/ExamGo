@@ -24,7 +24,7 @@ const customStyles = {
 };
 
 function ExamBody({ exam }) {
-	console.log(exam);
+	// console.log(exam);
 	const { timeout } = useSelector((state) => state.time);
 	const navigate = useNavigate();
 	return (

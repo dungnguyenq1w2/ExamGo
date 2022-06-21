@@ -1,4 +1,6 @@
 const subject = (id) => {
+	id = parseInt(id);
+
 	switch (id) {
 		case 1:
 			return 'Toán';

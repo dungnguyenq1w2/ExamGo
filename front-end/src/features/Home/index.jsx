@@ -28,6 +28,7 @@ function HomeFeature(props) {
 								pathname: '/exam',
 								search: createSearchParams({
 									subject: 1,
+									page: 1,
 								}).toString(),
 							})
 						}
@@ -50,6 +51,7 @@ function HomeFeature(props) {
 								pathname: 'exam',
 								search: createSearchParams({
 									subject: 2,
+									page: 1,
 								}).toString(),
 							})
 						}
@@ -72,6 +74,7 @@ function HomeFeature(props) {
 								pathname: 'exam',
 								search: createSearchParams({
 									subject: 3,
+									page: 1,
 								}).toString(),
 							})
 						}
@@ -94,6 +97,7 @@ function HomeFeature(props) {
 								pathname: 'exam',
 								search: createSearchParams({
 									subject: 4,
+									page: 1,
 								}).toString(),
 							})
 						}
@@ -116,6 +120,7 @@ function HomeFeature(props) {
 								pathname: 'exam',
 								search: createSearchParams({
 									subject: 5,
+									page: 1,
 								}).toString(),
 							})
 						}
@@ -138,6 +143,7 @@ function HomeFeature(props) {
 								pathname: 'exam',
 								search: createSearchParams({
 									subject: 6,
+									page: 1,
 								}).toString(),
 							})
 						}
@@ -160,6 +166,7 @@ function HomeFeature(props) {
 								pathname: 'exam',
 								search: createSearchParams({
 									subject: 7,
+									page: 1,
 								}).toString(),
 							})
 						}
@@ -183,6 +190,7 @@ function HomeFeature(props) {
 								pathname: 'exam',
 								search: createSearchParams({
 									subject: 8,
+									page: 1,
 								}).toString(),
 							})
 						}

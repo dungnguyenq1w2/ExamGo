@@ -9,12 +9,13 @@ function ExamDetail() {
 	const [examReview, setExamReview] = useState();
 	useEffect(() => {
 		setExamReview(JSON.parse(searchParams.get('examDetail')));
-	}, [searchParams]);
-	const [loading, setLoading] = useState(true);
+	}, []);
+	const [loading, setLoading] = useState(false);
+
 	return (
 		<div>
 			<section className="w-full min-h-[76.5vh]">
-				{loading ? <ViewDetail examReview={examReview} /> : <Loading />}
+				{loading ? <Loading /> : <ViewDetail examReview={examReview} />}
 			</section>
 		</div>
 	);

@@ -7,8 +7,14 @@ import moment from 'moment';
 function ManageBody({ examList, handleDeleteExam, pageIndex, handlePaging, loading }) {
 	const navigate = useNavigate();
 	return (
-		<div className="flex-1 lg:flex-[0.8]">
+		<div className="flex-1 lg:flex-[0.8] text-lg">
 			<div className="flex items-center justify-between bg-gray-100 p-6">
+				<button
+					className="bg-green-500 text-white font-bold border boder-black rounded-2xl shadow-sm p-1 lg:p-1 xl:px-2"
+					onClick={() => navigate({ pathname: '/manageexam/create' })}
+				>
+					Thêm Đề
+				</button>
 				<div className="bg-white flex w-80 border boder-black rounded-full pl-3 lg:pl-3 xl:pl-5">
 					<input
 						className="text-base bg-transparent w-full lg:text-base outline-none border-0 font-sans"

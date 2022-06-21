@@ -1,6 +1,6 @@
 function ViewQuestionResult({ index, content, chosenAnswerId, correctAnswerId, answerList }) {
 	return (
-		<div className="flex my-4">
+		<div className="flex my-4 text-base">
 			<div className="text-lg text-green-800 font-bold bg-green-50 border-2 border-blue-200 h-1/2 px-2 sm:px-3 py-2 text-center">
 				<h4>Câu {index + 1}</h4>
 				{chosenAnswerId === correctAnswerId ? (
@@ -44,8 +44,8 @@ function ViewQuestionResult({ index, content, chosenAnswerId, correctAnswerId, a
 						<div className="font-medium">
 							<p
 								className={`px-4 py-2 ${
-									chosenAnswerId?.id === answerList[0]?.id
-										? answerList?.id === correctAnswerId
+									chosenAnswerId == answerList[0]?.id
+										? answerList[0]?.id == correctAnswerId
 											? 'bg-green-300'
 											: 'bg-red-300'
 										: null
@@ -55,8 +55,8 @@ function ViewQuestionResult({ index, content, chosenAnswerId, correctAnswerId, a
 							</p>
 							<p
 								className={`px-4 py-2 ${
-									answerList?.id === answerList[1]?.id
-										? answerList?.id === correctAnswerId
+									chosenAnswerId == answerList[1]?.id
+										? answerList[1]?.id == correctAnswerId
 											? 'bg-green-300'
 											: 'bg-red-300'
 										: null
@@ -66,8 +66,8 @@ function ViewQuestionResult({ index, content, chosenAnswerId, correctAnswerId, a
 							</p>
 							<p
 								className={`px-4 py-2 ${
-									answerList?.id === answerList[2]?.id
-										? answerList?.id === correctAnswerId
+									chosenAnswerId == answerList[2]?.id
+										? answerList[2]?.id == correctAnswerId
 											? 'bg-green-300'
 											: 'bg-red-300'
 										: null
@@ -77,8 +77,8 @@ function ViewQuestionResult({ index, content, chosenAnswerId, correctAnswerId, a
 							</p>
 							<p
 								className={`px-4 py-2 ${
-									answerList?.id === answerList[3]?.id
-										? answerList?.id === correctAnswerId
+									chosenAnswerId == answerList[3]?.id
+										? answerList[3]?.id == correctAnswerId
 											? 'bg-green-300'
 											: 'bg-red-300'
 										: null
@@ -90,7 +90,7 @@ function ViewQuestionResult({ index, content, chosenAnswerId, correctAnswerId, a
 					</div>
 				</div>
 				<div className="mt-2 p-2 bg-blue-200 text-lg text-blue-700 font-semibold">
-					Đáp án:{' '}
+					Đáp án đúng:{' '}
 					<span className="text-blue-800 font-bold">
 						{answerList.find((e) => e.id === correctAnswerId).content}
 					</span>

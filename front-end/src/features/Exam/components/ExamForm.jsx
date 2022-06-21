@@ -180,7 +180,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { initAnswers } from '../../../store/slices/answerSlice';
 import diffTime from '../../../utils/diffTime';
-import { modifiedOption } from '../../../utils/modifiedOption';
+import { modifiedSubmitForm } from '../../../utils/modifiedSubmitForm';
 import Question from './Question';
 
 const customStyles = {
@@ -254,24 +254,33 @@ export default function ExamForm({ timeout, questionList, idExam }) {
 	const onSubmit = (data) => {
 		const startTime = localStorage.getItem(`startTime_${idExam}`);
 		const takingTime = diffTime(startTime);
-		data = modifiedOption(data, takingTime);
+		data = modifiedSubmitForm(questionList, data, takingTime);
+		console.log(data);
 		setLoading(true);
 		const handleSubmitExam = async () => {
 			try {
+				const token = localStorage.getItem('TOKEN');
 				const res = await axios.post(
-					`${process.env.REACT_APP_API_URL}/exams/${examId}/take`,
+					`${process.env.REACT_APP_API_URL}/exam/take/${examId}`,
 					data,
 					{
 						headers: {
-							access_token: localStorage.getItem('REFRESH_TOKEN'),
+							Authorization: `Bearer ${token}`,
 						},
 					},
 				);
 				if (res.data) {
+					// Submit thành công thì xóa các field trong localStorage
+					localStorage.removeItem(`remainTimeSaved_${examId}`);
+					localStorage.removeItem(`currentTimeSaved_${examId}`);
+					localStorage.removeItem(`time_${examId}`);
+					localStorage.removeItem(`startTime_${examId}`);
+					localStorage.removeItem('undefined');
+					localStorage.removeItem(examId);
 					setIsSuccess(true);
 					setTimeout(() => {
 						navigate({
-							pathname: `result/${examId}`,
+							pathname: `/exam/result/${examId}`,
 						});
 					}, 1000);
 				}

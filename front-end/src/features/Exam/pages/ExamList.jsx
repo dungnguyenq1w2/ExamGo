@@ -4,112 +4,45 @@ import { createSearchParams, useNavigate, useSearchParams } from 'react-router-d
 import Loading from '../../../components/Loading';
 import ExamItem from '../components/ExamItem';
 import axios from 'axios';
+import { subject } from '../../../utils/subject';
+
 function ExamList() {
 	// const location = useLocation();
 	// console.log(location);
 
 	const [examList, setExamList] = useState([]);
 
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
 	const [searchParams, setSearchParams] = useSearchParams();
+
+	const searchParam = searchParams.get('search');
+	const subjectParam = searchParams.get('subject');
+	const pageParam = searchParams.get('page');
+	const [pageIndex, setPageIndex] = useState(pageParam);
 
 	useEffect(() => {
 		const fetchExam = async () => {
 			try {
-				const searchParam = searchParams.get('search');
-				const subjectParam = searchParams.get('subject');
-				const pageParam = searchParams.get('page');
+				setLoading(true);
 
 				const url = `${process.env.REACT_APP_API_URL}/exam${
 					searchParam ? `?search=${searchParam}` : ''
 				}${subjectParam ? `?subject=${subjectParam}` : ''}${
 					pageParam ? (subjectParam ? `&page=${pageParam}` : `?page=${pageParam}`) : ''
 				}`;
-				const res = await axios.get(url);
-				console.log(res);
-				const data = [
-					{
-						id: 15,
-						name: 'Đề thi 15 phút Lịch Sử',
-						maxDuration: 15,
-						createdTime: '2022-06-08T09:36:36',
-						teacherId: 5,
-						subjectId: 4,
-						isDeleted: 0,
-						isDone: 0,
-						numOfQuestions: 1,
-						questionList: null,
-						teacher: {
-							id: 5,
-							name: 'Lê Ngọc Du 1',
-							email: 'du+test1@gmail.com',
-							phone: '0123456789',
-							dateOfBirth: '0001-01-01T00:00:00',
-							citizenId: null,
-							address: null,
-							userTypeId: 2,
-							userType: null,
-						},
-					},
-					{
-						id: 16,
-						name: 'Đề thi 45 phút Lịch Sử',
-						maxDuration: 45,
-						createdTime: '2022-06-08T09:37:16',
-						teacherId: 5,
-						subjectId: 4,
-						isDeleted: 0,
-						isDone: 0,
-						numOfQuestions: 1,
-						questionList: null,
-						teacher: {
-							id: 5,
-							name: 'Lê Ngọc Du 1',
-							email: 'du+test1@gmail.com',
-							phone: '0123456789',
-							dateOfBirth: '0001-01-01T00:00:00',
-							citizenId: null,
-							address: null,
-							userTypeId: 2,
-							userType: null,
-						},
-					},
-					{
-						id: 17,
-						name: 'Đề thi thử Lịch Sử',
-						maxDuration: 60,
-						createdTime: '2022-06-08T09:37:38',
-						teacherId: 5,
-						subjectId: 4,
-						isDeleted: 0,
-						isDone: 0,
-						numOfQuestions: 1,
-						questionList: null,
-						teacher: {
-							id: 5,
-							name: 'Lê Ngọc Du 1',
-							email: 'du+test1@gmail.com',
-							phone: '0123456789',
-							dateOfBirth: '0001-01-01T00:00:00',
-							citizenId: null,
-							address: null,
-							userTypeId: 2,
-							userType: null,
-						},
-					},
-				];
 
-				setExamList(data);
-				// const token = localStorage.getItem('REFRESH_TOKEN');
-				// const res = await axios.get(url, {
-				// 	headers: {
-				// 		access_token:
-				// 			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWQ1MmNmYTc2YTcxNzJlMDFiMTY2ZTgiLCJpYXQiOjE2NTI4NDc2NDcsImV4cCI6MTY1MzEwNjg0N30.7C1fIm7vVjaHBHRhaB7KaxnKDljXXNSnwEvPVvdJztM',
-				// 	},
-				// });
-				// const res = await axios.get(url);
+				const token = localStorage.getItem('TOKEN');
+				const res = await axios.get(url, {
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				});
 
+				if (res.data) {
+					setExamList(res.data);
+					setLoading(false);
+				}
 				// localStorage.setItem(`time_${examId}`, res.data.minuteLimit);
 				// if (!localStorage.getItem(`startTime_${examId}`))
 				// 	localStorage.setItem(
@@ -124,10 +57,23 @@ function ExamList() {
 				// setLoading(true);
 			} catch (error) {
 				console.log('Failed to fetch exam:', error);
+				setLoading(false);
 			}
 		};
 		fetchExam();
-	}, []);
+	}, [pageIndex]);
+
+	const handlePaging = (page) => {
+		if (page < 1) return;
+		navigate({
+			search: createSearchParams({
+				subject: subjectParam,
+				page: page,
+			}).toString(),
+		});
+		setPageIndex(page);
+	};
+
 	return (
 		<div>
 			<section className="flex py-5 px-5 min-h-screen">
@@ -135,7 +81,7 @@ function ExamList() {
 					<div className="xl:w-4/5 bg-gray-200 bg-opacity-40 shadow-md">
 						<div className="flex justify-between items-center sm:px-5 sm:py-3 p-3">
 							<h1 className="text-lg sm:text-2xl lg:text-3xl font-bold text-green-800">
-								Đề thi môn
+								Đề thi môn {subject(subjectParam)}
 							</h1>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -154,24 +100,23 @@ function ExamList() {
 						</div>
 
 						{loading ? (
+							<>
+								<Loading />
+								<Loading />
+								<Loading />
+								<Loading />
+								<Loading />
+							</>
+						) : (
 							examList.map((e) => (
 								<div
 									key={e.id}
 									className="flex justify-between border-t-2 cursor-pointer px-4 py-1 hover:bg-gray-200"
 								>
-									<div
-										className="w-full"
-										onClick={() =>
-											navigate({
-												pathname: '/exam/' + e.id,
-												search: createSearchParams({
-													examDetail: JSON.stringify(e),
-												}).toString(),
-											})
-										}
-									>
+									<div className="w-full">
 										<ExamItem
 											id={e.id}
+											exam={e}
 											name={e.name}
 											minuteLimit={e.maxDuration}
 											creator={e.teacher.name}
@@ -223,18 +168,72 @@ function ExamList() {
 									)} */}
 								</div>
 							))
-						) : (
-							<>
-								<Loading />
-							</>
 						)}
 
-						{loading && examList?.length == 0 && (
+						{!loading && examList?.length == 0 && (
 							<h1 className="text-md sm:text-xl lg:text-2xl p-4">
-								Chưa có đề thi của môn
+								{pageIndex === 1
+									? 'Chưa có đề thi của môn' + subject(subjectParam)
+									: 'Không còn đề thi'}
 							</h1>
 						)}
 					</div>
+					{!loading && (
+						<div>
+							<div className="flex items-center justify-center mt-5 mb-2 text-base">
+								<div
+									className={`${
+										pageIndex == 1
+											? 'text-gray-400'
+											: 'cursor-pointer hover:border-gray-800'
+									} border-2 rounded-full p-1 mr-2`}
+									onClick={() => handlePaging(pageIndex - 1)}
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										className="h-6 w-6"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+										strokeWidth={2}
+									>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											d="M15 19l-7-7 7-7"
+										/>
+									</svg>
+								</div>
+								<span>Trang {pageIndex ? pageIndex : 1}</span>
+								<div
+									className={`${
+										!examList || examList.length === 0
+											? 'text-gray-400'
+											: 'cursor-pointer hover:border-gray-800'
+									} border-2 rounded-full p-1 ml-2`}
+									onClick={() => {
+										if (examList && examList.length != 0)
+											handlePaging(parseInt(pageIndex) + 1);
+									}}
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										className="h-6 w-6"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+										strokeWidth={2}
+									>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											d="M9 5l7 7-7 7"
+										/>
+									</svg>
+								</div>
+							</div>
+						</div>
+					)}
 				</div>
 
 				<div className="hidden lg:block border-l-2 border-gray-200 pl-10 pr-3 mb-10">
