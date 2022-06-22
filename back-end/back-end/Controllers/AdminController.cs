@@ -32,8 +32,8 @@ namespace back_end.Controllers
         }
 
         [Authorize]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetAccount(string search, int role, string sortType, int page = 1)
+        [HttpGet("userList")]
+        public async Task<ActionResult<IEnumerable<User>>> GetUserList(string search, int role, string sort, int page = 1)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             var handler = new JwtSecurityTokenHandler();
@@ -60,14 +60,14 @@ namespace back_end.Controllers
                 userList = userList.Where(e => e.UserTypeId == role).ToList();
             }
 
-            if (sortType == "name")
+            if (sort == "name")
             {
                 userList = userList.OrderBy(e => e.Name).ToList();
             }
-            else if (sortType == "email")
+            else if (sort == "email")
             {
                 userList = userList.OrderBy(e => e.Email).ToList();
-            }    
+            }
 
             userList = userList.Skip((page - 1) * PAGE_SIZE).Take(PAGE_SIZE).ToList();
 
@@ -84,6 +84,52 @@ namespace back_end.Controllers
             }).ToList();
 
             return userList;
+        }
+
+        [Authorize]
+        [HttpPut("user/{id}")]
+        public async Task<IActionResult> PutAccount(int id, Account account)
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+
+            int adminId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+            var admin = await _context.User.FindAsync(adminId);
+            if (admin.UserTypeId != 3)
+            {
+                return StatusCode(403, $"User '{admin.Name}' is not a admin.");
+            }
+
+            if (id != account.UserId)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(account).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AccountExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        private bool AccountExists(int id)
+        {
+            return _context.Account.Any(e => e.UserId == id);
         }
 
         [Authorize]
@@ -213,7 +259,7 @@ namespace back_end.Controllers
             var bytes = pdfDocument.Save();
 
             // file name: Example: user-list_student_2022-06-18T15-00-19.pdf
-            var fileName = "user-list_" + (role == 1 ? "student" : role == 2 ? "teacher" : role == 3 ? "admin" : "all") + DateTime.Now.ToString("s") + ".pdf";
+            var fileName = "user-list_" + (role == 1 ? "student_" : role == 2 ? "teacher_" : role == 3 ? "admin_" : "all_") + DateTime.Now.ToString("s") + ".pdf";
 
             // close pdf document
             pdfDocument.Close();
@@ -222,8 +268,8 @@ namespace back_end.Controllers
         }
 
         [Authorize]
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAccount(int id, Account account)
+        [HttpGet("examList")]
+        public async Task<ActionResult<IEnumerable<ExamWithTakenCount>>> GetExamList(string search, int subject, string sort, int page = 1)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             var handler = new JwtSecurityTokenHandler();
@@ -231,40 +277,58 @@ namespace back_end.Controllers
 
             int adminId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
             var admin = await _context.User.FindAsync(adminId);
+
             if (admin.UserTypeId != 3)
             {
                 return StatusCode(403, $"User '{admin.Name}' is not a admin.");
             }
 
-            if (id != account.UserId)
+            var examList = await _context.Exam.AsQueryable().ToListAsync();
+
+            if (!string.IsNullOrEmpty(search))
             {
-                return BadRequest();
+                search = search.ToLower();
+                examList = examList.Where(e => e.Name.ToLower().Contains(search)).ToList();
             }
 
-            _context.Entry(account).State = EntityState.Modified;
-
-            try
+            if (subject > 0)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AccountExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                examList = examList.Where(e => e.SubjectId == subject).ToList();
             }
 
-            return NoContent();
-        }
+            var examWithTakenCountList = examList.Select(e => new ExamWithTakenCount
+            {
+                Id = e.Id,
+                Name = e.Name,
+                MaxDuration = e.MaxDuration,
+                CreatedTime = e.CreatedTime,
+                IsDeleted = e.IsDeleted,
+                TeacherId = e.TeacherId,
+                SubjectId = e.SubjectId,
+                Teacher = e.Teacher,
+            }).ToList();
 
-        private bool AccountExists(int id)
-        {
-            return _context.Account.Any(e => e.UserId == id);
+            foreach(var examWithTakenCount in examWithTakenCountList)
+            {
+                var studentExamList = await _context.Student_Exam.Where(e => e.ExamId == examWithTakenCount.Id).ToListAsync();
+                examWithTakenCount.takenCount = studentExamList.Count();
+                var teacher = await _context.User.FindAsync(examWithTakenCount.TeacherId);
+                examWithTakenCount.Teacher = teacher;
+            }
+
+            if (sort == "numberOfTaken")
+            {
+                examWithTakenCountList = examWithTakenCountList.OrderBy(e => e.takenCount).ToList();
+            }
+            else if (sort == "name")
+            {
+                examWithTakenCountList = examWithTakenCountList.OrderBy(e => e.Name).ToList();
+            }
+
+            examWithTakenCountList = examWithTakenCountList.Skip((page - 1) * PAGE_SIZE).Take(PAGE_SIZE).ToList();
+
+
+            return examWithTakenCountList;
         }
     }
 }

@@ -34,4 +34,10 @@ namespace back_end.Data
     {
         public StudentExam StudentExam { get; set; }
     }
+
+    // Exam có thêm số lần đã được làm
+    public class ExamWithTakenCount : Exam
+    {
+        public int takenCount { get; set; }
+    }
 }
