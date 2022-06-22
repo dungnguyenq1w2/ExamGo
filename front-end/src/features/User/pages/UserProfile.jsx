@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
-import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
-import Pagination from 'rc-pagination';
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
 import axios from 'axios';
-import { subject } from '../../../utils/subject';
-import moment from 'moment';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { parseDurationToTime } from '../../../utils/parseDurationToTime';
+import { subject } from '../../../utils/subject';
 
 // const userInfo = {
 // 	name: "Stone Worker",
@@ -18,7 +15,7 @@ import { parseDurationToTime } from '../../../utils/parseDurationToTime';
 // 	gender: 1,
 // }
 
-const examsInfo = [];
+// const examsInfo = [];
 // 	{
 // 		id: 1,
 // 		name: 'Đề thi thử THPT môn Lịch sử năm học 2021-2022',
@@ -501,14 +498,14 @@ function UserProfile(props) {
 		</div>
 	);
 }
-{
-	/* <div className="flex items-center justify-center mt-6">
-							<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded mr-1 text-sky-600 font-semibold">Prev</button>
-							<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded mr-1 font-bold bg-indigo-600 text-white">1</button>
-							<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded mr-1 font-bold">2</button>
-							<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded mr-1 font-bold">3</button>
-							<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded mr-1 font-bold">4</button>
-							<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded text-sky-600 font-semibold">Next</button>
-						</div> */
-}
+// {
+// 	/* <div className="flex items-center justify-center mt-6">
+// 							<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded mr-1 text-sky-600 font-semibold">Prev</button>
+// 							<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded mr-1 font-bold bg-indigo-600 text-white">1</button>
+// 							<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded mr-1 font-bold">2</button>
+// 							<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded mr-1 font-bold">3</button>
+// 							<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded mr-1 font-bold">4</button>
+// 							<button className="border-3 border-stone-400 px-3 py-1 bg-white border rounded text-sky-600 font-semibold">Next</button>
+// 						</div> */
+// }
 export default UserProfile;

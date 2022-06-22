@@ -8,7 +8,7 @@ import TakeExam from './pages/TakeExam';
 
 function ExamFeature(props) {
 	return (
-		<div className="exam">
+		<div className="min-h-[80vh]">
 			<Routes>
 				<Route path="/" element={<ExamList />} />
 				<Route path=":examId" element={<ExamDetail />} />

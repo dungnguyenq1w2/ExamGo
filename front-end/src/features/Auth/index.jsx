@@ -5,10 +5,12 @@ import SignUp from './pages/SignUp';
 
 function AuthFeature(props) {
 	return (
-		<Routes>
-			<Route path="signin" element={<SignIn />} />
-			<Route path="signup" element={<SignUp />} />
-		</Routes>
+		<div className="min-h-[80vh] flex items-center justify-center">
+			<Routes>
+				<Route path="signin" element={<SignIn />} />
+				<Route path="signup" element={<SignUp />} />
+			</Routes>
+		</div>
 	);
 }
 

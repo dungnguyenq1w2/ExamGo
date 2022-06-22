@@ -12,17 +12,14 @@ function App() {
 	return (
 		<div className="">
 			<Header />
-			<div className="min-h-[76vh]">
-				<Routes>
-					<Route path="/" element={<HomeFeature />} />
-					<Route path="user/*" element={<UserFeature />} />
-					<Route path="exam/*" element={<ExamFeature />} />
-					<Route path="manageexam/*" element={<ManageExamFeature />} />
-					<Route path="auth/*" element={<AuthFeature />} />
-					<Route path="admin/*" element={<AdminFeature />} />
-				</Routes>
-			</div>
-
+			<Routes>
+				<Route path="/" element={<HomeFeature />} />
+				<Route path="user/*" element={<UserFeature />} />
+				<Route path="exam/*" element={<ExamFeature />} />
+				<Route path="manageexam/*" element={<ManageExamFeature />} />
+				<Route path="admin/*" element={<AdminFeature />} />
+				<Route path="auth/*" element={<AuthFeature />} />
+			</Routes>
 			<Footer />
 		</div>
 	);

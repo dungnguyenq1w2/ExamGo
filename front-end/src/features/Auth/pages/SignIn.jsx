@@ -50,7 +50,7 @@ function SignIn() {
 
 	return (
 		<div>
-			<div className="mx-auto rounded-lg shadow-lg mt-12 max-w-lg">
+			<div className="rounded-lg shadow-lg w-[300px] sm:w-[400px] md:w-[500px]">
 				<div className="w-full text-center uppercase text-white py-1 rounded-t-lg bg-orange-500">
 					Đăng nhập
 				</div>

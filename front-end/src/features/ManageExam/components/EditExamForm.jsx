@@ -4,63 +4,10 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import EditQuestion from './EditQuestion';
 
 function EditExamForm({ exam }) {
-	// const arr = [
-	// 	{
-	// 		question: "What is your name?",
-	// 		correctAnswer: "A",
-	// 		answers: ["Nguyễn Văn A", "Phạm Thị B", "Lê Văn C", "Trần Thị D "],
-	// 	},
-	// 	{
-	// 		question: "How old are you?",
-	// 		correctAnswer: "C",
-	// 		answers: ["12", "18", "20", "22"],
-	// 	},
-	// 	{
-	// 		question: "Where are you live?",
-	// 		correctAnswer: "B",
-	// 		answers: ["TP. Hồ Chí Minh", "Đồng Nai", "Bình Dương", "Khánh Hoà"],
-	// 	},
-	// 	{
-	// 		question: "Which major are you studying? ",
-	// 		correctAnswer: "D",
-	// 		answers: [
-	// 			"Computer Sience",
-	// 			"Information Systems",
-	// 			"Information Technology",
-	// 			"Software Engineering",
-	// 		],
-	// 	},
-	// 	{
-	// 		question: "What is your name?",
-	// 		correctAnswer: "A",
-	// 		answers: ["Nguyễn Văn A", "Phạm Thị B", "Lê Văn C", "Trần Thị D "],
-	// 	},
-	// 	{
-	// 		question: "How old are you?",
-	// 		correctAnswer: "C",
-	// 		answers: ["12", "18", "20", "22"],
-	// 	},
-	// 	{
-	// 		question: "Where are you live?",
-	// 		correctAnswer: "B",
-	// 		answers: ["TP. Hồ Chí Minh", "Đồng Nai", "Bình Dương", "Khánh Hoà"],
-	// 	},
-	// 	{
-	// 		question: "Which major are you studying? ",
-	// 		correctAnswer: "D",
-	// 		answers: [
-	// 			"Computer Sience",
-	// 			"Information Systems",
-	// 			"Information Technology",
-	// 			"Software Engineering",
-	// 		],
-	// 	},
-	// ];
-
 	const [name, setName] = useState('');
-	const [minuteLimit, setMinuteLimit] = useState('');
-	const [subject, setSubject] = useState('');
-	const [grade, setGrade] = useState('');
+	const [maxDuration, setMaxDuration] = useState('');
+	const [subjectId, setSubjectId] = useState();
+	// const [grade, setGrade] = useState('');
 
 	const {
 		register,
@@ -82,24 +29,24 @@ function EditExamForm({ exam }) {
 
 	useEffect(() => {
 		setName(exam.name);
-		setMinuteLimit(exam.minuteLimit);
-		setSubject(exam.subject);
-		setGrade(exam.grade);
+		setMaxDuration(exam.maxDuration);
+		setSubjectId(exam.subjectId);
+		// setGrade(exam.grade);
 
-		exam.questions?.forEach((e) => {
+		exam.questionList?.forEach((e) => {
 			append({
 				content: e.content,
-				correctOption: e.correctOption,
-				options: e.options,
+				correctAnswer: e.correctAnswer,
+				answerList: e.answerList,
 			});
 		});
 	}, [exam]);
 
 	useEffect(() => {
 		setValue('name', name);
-		setValue('minuteLimit', minuteLimit);
-		setValue('subject', subject);
-		setValue('grade', grade);
+		setValue('maxDuration', maxDuration);
+		setValue('subjectId', subjectId);
+		// setValue('grade', grade);
 	}, [name]);
 
 	const onSubmit = (data) => {
@@ -147,10 +94,10 @@ function EditExamForm({ exam }) {
 					<div className="mt-8 sm:mt-0 flex flex-col relative mx-2 w-ms-40">
 						<select
 							required
-							{...register('minuteLimit')}
+							{...register('maxDuration')}
 							className="mb-1 md:mb-0 border-2 bg-transparent text-lg py-1 pl-2 focus:outline-none rounded peer"
-							value={minuteLimit}
-							onChange={(e) => setMinuteLimit(e.target.value)}
+							value={maxDuration}
+							onChange={(e) => setMaxDuration(e.target.value)}
 						>
 							<option value=""></option>
 							<option value="15">15 phút</option>
@@ -168,28 +115,28 @@ function EditExamForm({ exam }) {
 					<div className="mt-8 sm:mt-0 flex flex-col relative mx-2 w-ms-40">
 						<select
 							required
-							{...register('subject')}
+							{...register('subjectId')}
 							className="mb-1 md:mb-0 border-2 bg-transparent text-lg py-1 pl-2 focus:outline-none rounded peer"
-							value={subject}
-							onChange={(e) => setSubject(e.target.value)}
+							value={subjectId}
+							onChange={(e) => setSubjectId(e.target.value)}
 						>
 							<option></option>
-							<option value="Toán">Toán</option>
-							<option value="Ngữ văn">Ngữ Văn</option>
-							<option value="Tiếng anh">Tiếng Anh</option>
-							<option value="Vật lý">Vật Lý</option>
-							<option value="Hóa học">Hóa Học</option>
-							<option value="Sinh học">Sinh Học</option>
-							<option value="Lịch sử">Lịch Sử</option>
-							<option value="Địa lý">Địa Lý</option>
-							<option value="Giáo dục công dân">Giáo Dục Công Dân</option>
+							<option value="1">Toán</option>
+							{/* <option value="2">Ngữ Văn</option> */}
+							<option value="2">Tiếng Anh</option>
+							<option value="3">Vật Lý</option>
+							<option value="4">Hóa Học</option>
+							<option value="5">Sinh Học</option>
+							<option value="6ử">Lịch Sử</option>
+							<option value="7">Địa Lý</option>
+							<option value="8">Giáo Dục Công Dân</option>
 						</select>
 						<label className="absolute top-2 left-2 duration-200 font-medium text-gray-400 transition ease transform peer-valid:-translate-y-8 peer-focus:-translate-y-8 peer-valid:text-gray-700 peer-focus:text-gray-700">
 							Môn thi
 						</label>
 					</div>
 
-					<div className="mt-8 md:mt-0 flex flex-col relative mx-2 w-ms-40">
+					{/* <div className="mt-8 md:mt-0 flex flex-col relative mx-2 w-ms-40">
 						<select
 							required
 							{...register('grade')}
@@ -209,7 +156,7 @@ function EditExamForm({ exam }) {
 						<label className="absolute top-2 left-2 duration-200 font-medium text-gray-400 transition ease transform peer-focus:-translate-y-8 peer-valid:-translate-y-8 peer-valid:text-gray-700 peer-focus:text-gray-700">
 							Lớp
 						</label>
-					</div>
+					</div> */}
 				</div>
 			</div>
 			<ul className="w-full flex flex-col items-center b">
@@ -226,20 +173,20 @@ function EditExamForm({ exam }) {
 							<EditQuestion
 								register={register}
 								errors={errors}
-								label={`questions.${index}.`}
+								label={`questionList.${index}.`}
 								content={item.content}
-								correctOption={
-									item.correctOption === ''
+								correctAnswerId={
+									item.correctAnswerId === ''
 										? ''
-										: item.correctOption?._id === item.options[0]?._id
+										: item.correctAnswerId === item.answerList[0]?._id
 										? '0'
-										: item.correctOption?._id === item.options[1]?._id
+										: item.correctAnswerId === item.answerList[1]?._id
 										? '1'
-										: item.correctOption?._id === item.options[2]?._id
+										: item.correctAnswerId === item.answerList[2]?._id
 										? '2'
 										: '3'
 								}
-								options={item.options}
+								answerList={item.answerList}
 							/>
 
 							<div className="text-center">
@@ -275,8 +222,8 @@ function EditExamForm({ exam }) {
 									onClick={() =>
 										insert(index + 1, {
 											content: '',
-											correctOption: '',
-											options: '',
+											correctAnswerId: '',
+											answerList: '',
 										})
 									}
 								>
@@ -364,8 +311,8 @@ function EditExamForm({ exam }) {
 						onClick={() => {
 							append({
 								content: '',
-								correctOption: '',
-								options: '',
+								correctAnswerId: '',
+								answerList: '',
 							});
 						}}
 					>
