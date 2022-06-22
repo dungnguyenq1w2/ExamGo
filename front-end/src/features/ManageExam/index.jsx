@@ -11,7 +11,7 @@ function ManageExamFeature(props) {
 			<Routes>
 				<Route path="/" element={<ManageExam />} />
 				<Route path="/create" element={<CreateExam />} />
-				<Route path="/edit/:id" element={<EditExam />} />
+				<Route path="/edit/:examId" element={<EditExam />} />
 			</Routes>
 		</div>
 	);

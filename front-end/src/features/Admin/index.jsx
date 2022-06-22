@@ -5,6 +5,7 @@ import AddUser from './pages/AddUser';
 import EditUser from './pages/EditUser';
 import Statistics from './pages/Statistics';
 import UserList from './pages/UserList';
+import ExamList from './pages/ExamList';
 
 // <li className="px-6 py-2 border-b border-gray-300 w-full hover:bg-gray-500 hover:text-white">
 // 	<NavLink
@@ -36,9 +37,9 @@ function AdminFeature(props) {
 								viewBox="0 0 20 20"
 								fill="currentColor"
 							>
-								<path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+								<path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
 							</svg>
-							Trang chủ
+							Thống kê
 						</li>
 					</NavLink>
 					<NavLink
@@ -60,7 +61,7 @@ function AdminFeature(props) {
 						</li>
 					</NavLink>
 					<NavLink
-						to="statistics"
+						to="exams"
 						className={({ isActive }) =>
 							isActive ? 'block bg-blue-500 text-white' : 'font-xl'
 						}
@@ -69,27 +70,28 @@ function AdminFeature(props) {
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								className="h-6 w-6 mr-2"
-								viewBox="0 0 20 20"
-								fill="currentColor"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								strokeWidth={2}
 							>
-								<path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
+								/>
 							</svg>
-							Xem thống kê
+							Quản lý đề thi
 						</li>
 					</NavLink>
 				</ul>
-				<div className="flex px-6 py-5 justify-center">
-					<button className="text-xl border px-2 py-1 border-orange-500 rounded-lg text-orange-500 hover:text-white hover:bg-orange-500">
-						Đăng xuất
-					</button>
-				</div>
 			</div>
 			<Routes>
-				<Route path="/" element={<Dashboard />} />
-				<Route path="add" element={<AddUser />} />
-				<Route path="edit" element={<EditUser />} />
+				<Route path="/" element={<Statistics />} />
+				<Route path="/users/add" element={<AddUser />} />
+				<Route path="/users/edit" element={<EditUser />} />
 				<Route path="users" element={<UserList />} />
-				<Route path="statistics" element={<Statistics />} />
+				<Route path="exams" element={<ExamList />} />
 			</Routes>
 		</div>
 	);

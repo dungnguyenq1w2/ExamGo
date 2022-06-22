@@ -272,6 +272,8 @@ export default function ExamForm({ timeout, questionList, idExam }) {
 				if (res.data) {
 					setIsSuccess(true);
 					setTimeout(() => {
+						localStorage.removeItem(examId);
+
 						navigate({
 							pathname: `/exam/result/${examId}`,
 						});
@@ -284,7 +286,6 @@ export default function ExamForm({ timeout, questionList, idExam }) {
 
 		handleSubmitExam();
 		// Submit thành công thì xóa các field trong localStorage
-		localStorage.removeItem(examId);
 		localStorage.removeItem(`remainTimeSaved_${examId}`);
 		localStorage.removeItem(`currentTimeSaved_${examId}`);
 		localStorage.removeItem(`time_${examId}`);

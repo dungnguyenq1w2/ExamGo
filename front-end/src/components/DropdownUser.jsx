@@ -154,20 +154,53 @@ function DropdownUser({ handleLogout, handleClickItem, userType }) {
 						onClick={handleClickItem}
 					>
 						<svg
-							className="mr-2"
 							xmlns="http://www.w3.org/2000/svg"
-							width="30"
-							height="30"
+							className="h-6 w-6 mr-2"
+							viewBox="0 0 20 20"
+							fill="currentColor"
+						>
+							<path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+						</svg>
+
+						<span className="mt-1 ">Thống kê</span>
+					</Link>
+					<Link
+						to="/admin/users"
+						className="flex items-center py-1 pl-6 pr-12 cursor-pointer hover:bg-blue-300"
+						onClick={handleClickItem}
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							className="h-6 w-6 mr-2"
+							viewBox="0 0 20 20"
+							fill="currentColor"
+						>
+							<path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+						</svg>
+
+						<span className="mt-1 ">Quản lý người dùng</span>
+					</Link>
+					<Link
+						to="/admin/exams"
+						className="flex items-center py-1 pl-6 pr-12 cursor-pointer hover:bg-blue-300"
+						onClick={handleClickItem}
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							className="h-6 w-6 mr-2"
 							fill="none"
-							viewBox="0 0 26 25"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							strokeWidth={2}
 						>
 							<path
-								fill="#000"
-								d="M7.8 2.5h10.4c.69 0 1.35.263 1.838.732.488.47.762 1.105.762 1.768v15c0 .663-.274 1.299-.762 1.768a2.654 2.654 0 0 1-1.838.732H7.8c-.69 0-1.35-.263-1.839-.732A2.452 2.452 0 0 1 5.2 20V5c0-.663.274-1.299.761-1.768A2.654 2.654 0 0 1 7.8 2.5Zm0 1.25c-.345 0-.675.132-.92.366-.243.235-.38.552-.38.884v15c0 .331.137.65.38.884.245.234.575.366.92.366h10.4c.345 0 .675-.132.92-.366A1.23 1.23 0 0 0 19.5 20V5c0-.332-.137-.65-.38-.884a1.327 1.327 0 0 0-.92-.366H7.8Zm9.1 4.375a.61.61 0 0 1-.15.4.656.656 0 0 1-.383.215l-.117.01h-6.5a.665.665 0 0 1-.44-.163.608.608 0 0 1-.08-.84.654.654 0 0 1 .403-.237l.117-.01h6.5c.172 0 .338.066.46.183.121.117.19.276.19.442Zm0 4.375a.61.61 0 0 1-.15.4.656.656 0 0 1-.383.215l-.117.01h-6.5a.665.665 0 0 1-.44-.163.608.608 0 0 1-.08-.84.654.654 0 0 1 .403-.237l.117-.01h6.5c.172 0 .338.066.46.183.121.117.19.276.19.442Zm0 4.375a.61.61 0 0 1-.15.4.656.656 0 0 1-.383.215l-.117.01h-6.5a.665.665 0 0 1-.44-.163.608.608 0 0 1-.08-.84.654.654 0 0 1 .403-.237l.117-.01h6.5c.172 0 .338.066.46.183.121.117.19.276.19.442Z"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
 							/>
 						</svg>
 
-						<span className="mt-1 ">Dashboard</span>
+						<span className="mt-1 ">Quản lý đề thi</span>
 					</Link>
 				</div>
 			)}

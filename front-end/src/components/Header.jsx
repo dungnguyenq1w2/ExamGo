@@ -91,7 +91,7 @@ const Header = () => {
 									? 'Học Sinh'
 									: user?.userTypeId === 2
 									? 'Giáo Viên'
-									: 'Quản Tri Viên'}
+									: 'Quản Trị Viên'}
 							</span>
 						</div>
 						<div

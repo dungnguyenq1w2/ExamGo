@@ -23,20 +23,20 @@ function EditExamForm({ exam }) {
 
 	const { fields, append, remove, move, insert } = useFieldArray({
 		control, // control props comes from useForm (optional: if you are using FormContext)
-		name: 'questions', // unique name for your Field Array
+		name: 'questionList', // unique name for your Field Array
 		// keyName: "id", default to "id", you can change the key name
 	});
 
 	useEffect(() => {
-		setName(exam.name);
-		setMaxDuration(exam.maxDuration);
-		setSubjectId(exam.subjectId);
+		setName(exam?.name);
+		setMaxDuration(exam?.maxDuration);
+		setSubjectId(exam?.subjectId);
 		// setGrade(exam.grade);
 
-		exam.questionList?.forEach((e) => {
+		exam?.questionList?.forEach((e) => {
 			append({
 				content: e.content,
-				correctAnswer: e.correctAnswer,
+				correctAnswerId: e.correctAnswerId,
 				answerList: e.answerList,
 			});
 		});
@@ -69,7 +69,7 @@ function EditExamForm({ exam }) {
 		// };
 		// updateExam();
 	};
-
+	console.log(fields);
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
 			<div className="p-10 border rounded flex flex-col xl:flex-row items-center bg-green-50 text-base">
@@ -176,13 +176,13 @@ function EditExamForm({ exam }) {
 								label={`questionList.${index}.`}
 								content={item.content}
 								correctAnswerId={
-									item.correctAnswerId === ''
+									item.correctAnswerId == ''
 										? ''
-										: item.correctAnswerId === item.answerList[0]?._id
+										: item.correctAnswerId == item.answerList[0]?.id
 										? '0'
-										: item.correctAnswerId === item.answerList[1]?._id
+										: item.correctAnswerId == item.answerList[1]?.id
 										? '1'
-										: item.correctAnswerId === item.answerList[2]?._id
+										: item.correctAnswerId == item.answerList[2]?.id
 										? '2'
 										: '3'
 								}

@@ -65,7 +65,7 @@ function SignUp() {
 								const action = login(user);
 								dispatch(action);
 								setLoading(false);
-								navigate(-1);
+								navigate('/');
 							} else {
 							}
 						} catch (error) {
