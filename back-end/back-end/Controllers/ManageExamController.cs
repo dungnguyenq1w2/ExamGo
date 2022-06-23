@@ -27,23 +27,23 @@ namespace back_end.Controllers
             _context = context;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Exam>>> GetRetrieveExam(int page = 1)
         {
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
-            var handler = new JwtSecurityTokenHandler();
-            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+            //var accessToken = await HttpContext.GetTokenAsync("access_token");
+            //var handler = new JwtSecurityTokenHandler();
+            //var jwtSecurityToken = handler.ReadJwtToken(accessToken);
 
-            int teacherId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
-            var teacher = await _context.User.FindAsync(teacherId);
-            if (teacher.UserTypeId != 2)
-            {
-                return  StatusCode(403, $"User '{teacher.Name}' is not a teacher.");
-            }
+            //int teacherId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+            //var teacher = await _context.User.FindAsync(teacherId);
+            //if (teacher.UserTypeId != 2)
+            //{
+            //    return StatusCode(403, $"User '{teacher.Name}' is not a teacher.");
+            //}
 
             var examList = await _context.Exam.AsQueryable().ToListAsync();
-            examList = examList.Where(e => e.TeacherId == teacherId).ToList();
+            examList = examList.Where(e => e.TeacherId == 10).ToList();
 
             examList = examList.Skip((page - 1) * PAGE_SIZE).Take(PAGE_SIZE).ToList();
 
@@ -58,20 +58,20 @@ namespace back_end.Controllers
             }).ToList();
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Exam>> GetExam(int id)
         {
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
-            var handler = new JwtSecurityTokenHandler();
-            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+            //var accessToken = await HttpContext.GetTokenAsync("access_token");
+            //var handler = new JwtSecurityTokenHandler();
+            //var jwtSecurityToken = handler.ReadJwtToken(accessToken);
 
-            int teacherId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
-            var teacher = await _context.User.FindAsync(teacherId);
-            if (teacher.UserTypeId != 2)
-            {
-                return StatusCode(403, $"User '{teacher.Name}' is not a teacher.");
-            }
+            //int teacherId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+            //var teacher = await _context.User.FindAsync(teacherId);
+            //if (teacher.UserTypeId != 2)
+            //{
+            //    return StatusCode(403, $"User '{teacher.Name}' is not a teacher.");
+            //}
 
             List<Question> questionList = (
             from e in _context.Exam
@@ -116,27 +116,27 @@ namespace back_end.Controllers
             };
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         public async Task<ActionResult<Exam>> PostExam(Exam exam)
         {
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
-            var handler = new JwtSecurityTokenHandler();
-            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+            //var accessToken = await HttpContext.GetTokenAsync("access_token");
+            //var handler = new JwtSecurityTokenHandler();
+            //var jwtSecurityToken = handler.ReadJwtToken(accessToken);
 
-            int teacherId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
-            var teacher = await _context.User.FindAsync(teacherId);
-            if (teacher.UserTypeId != 2)
-            {
-                return StatusCode(403, $"User '{teacher.Name}' is not a teacher.");
-            }
+            //int teacherId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+            //var teacher = await _context.User.FindAsync(teacherId);
+            //if (teacher.UserTypeId != 2)
+            //{
+            //    return StatusCode(403, $"User '{teacher.Name}' is not a teacher.");
+            //}
 
             var newExam = new Exam
             {
                 Name = exam.Name,
                 MaxDuration = exam.MaxDuration,
                 CreatedTime = DateTime.Now,
-                TeacherId = teacherId,
+                TeacherId = 10,
                 SubjectId = exam.SubjectId,
                 IsDeleted = 0,
                 NumOfQuestions = exam.NumOfQuestions,
@@ -179,26 +179,76 @@ namespace back_end.Controllers
             }, newExam);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutExam(int id, Exam exam)
         {
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
-            var handler = new JwtSecurityTokenHandler();
-            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+            //var accessToken = await HttpContext.GetTokenAsync("access_token");
+            //var handler = new JwtSecurityTokenHandler();
+            //var jwtSecurityToken = handler.ReadJwtToken(accessToken);
 
-            int teacherId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
-            var teacher = await _context.User.FindAsync(teacherId);
-            if (teacher.UserTypeId != 2)
-            {
-                return StatusCode(403, $"User '{teacher.Name}' is not a teacher.");
-            }
+            //int teacherId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+            //var teacher = await _context.User.FindAsync(teacherId);
+            //if (teacher.UserTypeId != 2)
+            //{
+            //    return StatusCode(403, $"User '{teacher.Name}' is not a teacher.");
+            //}
             if (id != exam.Id)
             {
                 return BadRequest();
             }
 
             _context.Entry(exam).State = EntityState.Modified;
+
+            foreach (var question in exam.QuestionList.ToList())
+            {
+                if (question.ExamId == -1)
+                {
+                    foreach (var answer in question.AnswerList)
+                    {
+                        _context.Answer.Remove(answer);
+                    }
+                    _context.Question.Remove(question);
+                    await _context.SaveChangesAsync();
+                    continue;
+                }
+
+                if (question.Id != 0)
+                {
+                    _context.Entry(question).State = EntityState.Modified;
+                    foreach (var answer in question.AnswerList)
+                    {
+                        _context.Entry(answer).State = EntityState.Modified;
+                    }
+                }
+                else
+                {
+                    var newQuestion = new Question
+                    {
+                        Content = question.Content,
+                        ExamId = exam.Id,
+                    };
+                    _context.Question.Add(newQuestion);
+                    _context.SaveChanges();
+                    var correctAnswerId = question.CorrectAnswerId;
+                    foreach (var addAnswer in question.AnswerList.Select((value, index) => new { index, value }))
+                    {
+                        var newAnswer = new Answer
+                        {
+                            Content = addAnswer.value.Content,
+                            QuestionId = newQuestion.Id,
+                        };
+                        _context.Answer.Add(newAnswer);
+                        _context.SaveChanges();
+                        if (correctAnswerId == addAnswer.index)
+                            correctAnswerId = newAnswer.Id;
+                    }
+
+                    newQuestion.CorrectAnswerId = correctAnswerId;
+                    _context.Entry(newQuestion).State = EntityState.Modified;
+                    exam.QuestionList.Remove(question);
+                }
+            }
 
             try
             {
@@ -216,11 +266,10 @@ namespace back_end.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
-        // DELETE: api/Exam/5
-        [Authorize]
+        //[Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Exam>> DeleteExam(int id)
         {
