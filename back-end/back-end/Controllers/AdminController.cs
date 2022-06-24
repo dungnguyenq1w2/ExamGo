@@ -11,7 +11,10 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -154,10 +157,6 @@ namespace back_end.Controllers
                 userList = userList.Where(e => e.UserTypeId == role).ToList();
             }
 
-            System.Diagnostics.Debug.WriteLine(userList);
-
-
-
             HtmlToPdf converter = new HtmlToPdf();
 
             PdfTextSection pageNumberingText = new PdfTextSection(0, 20, "Page {page_number} of {total_pages}", new Font("Arial", 10, FontStyle.Bold));
@@ -255,16 +254,17 @@ namespace back_end.Controllers
             pdfDocument.AddTemplate(pdfDocument.Pages[0].ClientRectangle.Width, 100);
             //pdfDocument.AddPage();
 
-            // save pdf document
-            var bytes = pdfDocument.Save();
-
             // file name: Example: user-list_student_2022-06-18T15-00-19.pdf
             var fileName = "user-list_" + (role == 1 ? "student_" : role == 2 ? "teacher_" : role == 3 ? "admin_" : "all_") + DateTime.Now.ToString("s") + ".pdf";
+
+            // save pdf document
+            var bytes = pdfDocument.Save();
 
             // close pdf document
             pdfDocument.Close();
 
             return File(bytes, "application/pdf", fileName);
+
         }
 
         [Authorize]
@@ -329,6 +329,83 @@ namespace back_end.Controllers
 
 
             return examWithTakenCountList;
+        }
+
+        [Authorize]
+        [HttpPut("editUser/{id}")]
+        public async Task<IActionResult> PutUser(int id, User user)
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+
+            int adminId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+            var admin = await _context.User.FindAsync(adminId);
+
+            if (admin.UserTypeId != 3)
+            {
+                return StatusCode(403, $"User '{admin.Name}' is not a admin.");
+            }
+
+            // _context.Entry(user).State = EntityState.Modified;
+            var editUser = _context.User.FirstOrDefault(e => e.Id == id);
+
+            if (editUser != null)
+            {
+                editUser.Name = user.Name;
+                editUser.Email = user.Email;
+                editUser.Phone = user.Phone;
+                editUser.DateOfBirth = user.DateOfBirth;
+                editUser.CitizenId = user.CitizenId;
+                editUser.Address = user.Address;
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+            return Ok("Successfully change your information");
+        }
+
+        [Authorize]
+        [HttpDelete("deleteUser/{id}")]
+        public async Task<ActionResult<User>> DeleteUser(int id)
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+
+            int adminId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+            var admin = await _context.User.FindAsync(adminId);
+
+            if (admin.UserTypeId != 3)
+            {
+                return StatusCode(403, $"User '{admin.Name}' is not a admin.");
+            }
+
+            var user = await _context.Exam.FindAsync(id);
+            if (user == null)
+            {
+                return BadRequest();
+            }
+            user.IsDeleted = 1;
+            _context.Entry(user).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+            return Ok("User deleted");
         }
     }
 }

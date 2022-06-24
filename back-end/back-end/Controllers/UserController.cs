@@ -43,6 +43,7 @@ namespace back_end.Controllers
             return user;
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> PutUser(User user)
         {
@@ -92,6 +93,7 @@ namespace back_end.Controllers
         // POST: api/Account
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
@@ -102,6 +104,7 @@ namespace back_end.Controllers
         }
 
         // DELETE: api/Account/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<User>> DeleteUser(int id)
         {

@@ -18,10 +18,8 @@ namespace back_end.Models
         public string? CitizenId { get; set; } = null!;
         public string? Address { get; set; } = null!;
         [Required]
-        public int UserTypeId { get; set; } 
-
-        [ForeignKey("UserTypeId")]
-        public virtual UserType UserType { get; set; }
+        public int UserTypeId { get; set; }
+        public int IsDeleted { get; set; }
 
         //public virtual Account Account { get; set; }
         //public virtual string Token { get; set; }
