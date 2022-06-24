@@ -308,7 +308,7 @@ namespace back_end.Controllers
                 Teacher = e.Teacher,
             }).ToList();
 
-            foreach(var examWithTakenCount in examWithTakenCountList)
+            foreach (var examWithTakenCount in examWithTakenCountList)
             {
                 var studentExamList = await _context.Student_Exam.Where(e => e.ExamId == examWithTakenCount.Id).ToListAsync();
                 examWithTakenCount.takenCount = studentExamList.Count();
@@ -406,6 +406,84 @@ namespace back_end.Controllers
             }
 
             return Ok("User deleted");
+        }
+
+        [Authorize]
+        [HttpGet("statistics")]
+        public async Task<ActionResult<IEnumerable<StudentRecordStatistics>>> GetStudentStatistic()
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+
+            int adminId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+            var admin = await _context.User.FindAsync(adminId);
+
+            if (admin.UserTypeId != 3)
+            {
+                return StatusCode(403, $"User '{admin.Name}' is not a admin.");
+            }
+
+            var studentList = await _context.User.Where(e => e.UserTypeId == 1).ToListAsync();
+
+            var studentRecordList = new List<StudentRecordStatistics>();
+            //var studentResultList
+            //var examList = await _context.Exam.ToListAsync();
+            var examList = await _context.Exam.AsQueryable().ToListAsync();
+
+            //examList = examList.Where(e => e.IsDeleted == 0).ToList();
+
+            foreach (var student in studentList)
+            {
+
+                var examResultList = examList.Select(e => new ExamResult
+                {
+                    Id = e.Id,
+                    StudentExam = null,
+                }).ToList();
+
+                foreach (var examResult in examResultList)
+                {
+                    var studentExam = await _context.Student_Exam.FindAsync(student.Id, examResult.Id);
+                    if (studentExam == null)
+                    {
+                        continue;
+                    }
+
+                    //examResult.IsDone = (studentExam==null?0:1);
+                    examResult.StudentExam = studentExam;
+                }
+
+                examResultList = examResultList.Where(e => e.StudentExam != null).ToList();
+                //if (flag == 1)
+                //{
+                //    continue;
+                //}    
+
+                int count = examResultList.Count();
+
+                if (count == 0)
+                {
+                    continue;
+                }
+
+
+                double averagePoint = examResultList.Sum(e => e.StudentExam.Point) / count;
+                int averageDuration = (int)(Math.Ceiling(examResultList.Sum(e => (double)(e.StudentExam.Duration)) / count));
+
+                studentRecordList.Add(new StudentRecordStatistics
+                {
+                    NumberOfTakenExams = count,
+                    AveragePoint = averagePoint,
+                    AverageDuration = averageDuration,
+                    User = student,
+                });
+            }
+
+            studentRecordList = studentRecordList.OrderByDescending(e => e.AveragePoint).ThenByDescending(e => e.NumberOfTakenExams).ThenBy(e => e.AverageDuration).ToList();
+            studentRecordList = studentRecordList.Take(10).ToList();
+
+            return studentRecordList;
         }
     }
 }

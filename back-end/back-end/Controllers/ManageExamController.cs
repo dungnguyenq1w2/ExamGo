@@ -29,7 +29,7 @@ namespace back_end.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Exam>>> GetRetrieveExam(int page = 1)
+        public async Task<ActionResult<IEnumerable<Exam>>> GetRetrieveExam(string search, int page = 1)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             var handler = new JwtSecurityTokenHandler();
@@ -43,7 +43,13 @@ namespace back_end.Controllers
             }
 
             var examList = await _context.Exam.AsQueryable().ToListAsync();
-            examList = examList.Where(e => e.TeacherId == 10).ToList();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                examList = examList.Where(e => e.Name.ToLower().Contains(search.ToLower())).ToList();
+            }
+
+            examList = examList.Where(e => e.TeacherId == teacherId && e.IsDeleted == 0).ToList();
 
             examList = examList.Skip((page - 1) * PAGE_SIZE).Take(PAGE_SIZE).ToList();
 
@@ -55,6 +61,8 @@ namespace back_end.Controllers
                 CreatedTime = e.CreatedTime,
                 TeacherId = e.TeacherId,
                 SubjectId = e.SubjectId,
+                IsTaken = e.IsTaken,
+                NumOfQuestions = e.NumOfQuestions,
             }).ToList();
         }
 
@@ -136,7 +144,7 @@ namespace back_end.Controllers
                 Name = exam.Name,
                 MaxDuration = exam.MaxDuration,
                 CreatedTime = DateTime.Now,
-                TeacherId = 10,
+                TeacherId = teacherId,
                 SubjectId = exam.SubjectId,
                 IsDeleted = 0,
                 NumOfQuestions = exam.NumOfQuestions,
@@ -267,7 +275,7 @@ namespace back_end.Controllers
                 }
             }
 
-            return Ok();
+            return Ok("Success");
         }
 
         [Authorize]
@@ -284,21 +292,13 @@ namespace back_end.Controllers
             {
                 return StatusCode(403, $"User '{teacher.Name}' is not a teacher.");
             }
-            //var Exam = await _context.Exam.FindAsync(id);
-            //if (Exam == null)
-            //{
-            //    return NotFound();
-            //}
 
-            //_context.Exam.Remove(Exam);
-            //await _context.SaveChangesAsync();
-
-            //return Exam;
             var exam = await _context.Exam.FindAsync(id);
             if (exam == null)
             {
                 return BadRequest();
             }
+
             exam.IsDeleted = 1;
             _context.Entry(exam).State = EntityState.Modified;
 

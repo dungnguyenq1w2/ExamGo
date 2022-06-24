@@ -25,6 +25,7 @@ namespace back_end.Data
         public int IsDone { get; set; }
         public int NumOfQuestions { get; set; }
         public List<Question> QuestionList { get; set; }
+        public int IsTaken { get; set; }
         //public virtual ICollection<ExamDetail> ExamDetail { get; set; }
         [ForeignKey("TeacherId")]
         public virtual User Teacher { get; set; }

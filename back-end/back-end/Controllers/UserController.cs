@@ -137,7 +137,7 @@ namespace back_end.Controllers
 
             var examList = await _context.Exam.AsQueryable().ToListAsync();
 
-            examList = examList.Where(e => e.IsDeleted == 0).ToList();
+            //examList = examList.Where(e => e.IsDeleted == 0).ToList();
 
             if (subject > 0)
             {
