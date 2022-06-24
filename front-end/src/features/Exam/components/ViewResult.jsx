@@ -1,16 +1,11 @@
 import moment from 'moment';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 import { countCorrectAnswer } from '../../../utils/countCorrectAnswer';
+import { parseDurationToTime } from '../../../utils/parseDurationToTime';
 import { subject } from '../../../utils/subject';
 
 function ViewResult({ examReview }) {
 	const navigate = useNavigate();
-	const takingTime = moment.utc(examReview?.duration * 1000).format('HH:mm:ss');
-
-	const arrDiff = takingTime.split(':');
-	const hours = parseInt(arrDiff[0]);
-	const minutes = parseInt(arrDiff[1]);
-	const seconds = parseInt(arrDiff[2]);
 
 	return (
 		<div className="flex justify-center py-20 md:py-14 text-base">
@@ -29,9 +24,7 @@ function ViewResult({ examReview }) {
 				<div className="border p-2">
 					<h4 className="text-md text-gray-600 font-semibold">
 						Thời gian:{' '}
-						<span className="text-yellow-500 ">
-							{examReview?.exam?.minuteLimit} phút
-						</span>
+						<span className="text-yellow-500 ">{examReview?.maxDuration} phút</span>
 					</h4>
 					<h4 className="text-md text-gray-600 font-semibold">
 						Số câu:{' '}
@@ -67,25 +60,14 @@ function ViewResult({ examReview }) {
 									<p>
 										Nộp lúc{' '}
 										{moment
-											.utc(examReview?.submitTime)
+											.utc(examReview?.startTime)
 											.local()
+											.add(examReview?.duration, 'seconds')
 											.format('DD/MM/YYYY h:mm:ss a')}
 									</p>
 								</td>
 								<td className="text-center">
-									{hours === 0
-										? null
-										: hours < 10
-										? hours + ' giờ '
-										: hours + ' phút '}
-									{minutes === 0
-										? hours > 0
-											? ' '
-											: null
-										: minutes < 10
-										? minutes + ' phút '
-										: minutes + ' phút'}
-									{seconds === 0 ? '' : seconds + ' giây'}
+									{parseDurationToTime(examReview?.duration)}
 								</td>
 								<td className="text-center font-bold">
 									<span className="text-red-600">

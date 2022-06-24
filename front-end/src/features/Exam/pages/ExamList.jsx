@@ -61,7 +61,7 @@ function ExamList() {
 			}
 		};
 		fetchExam();
-	}, [pageIndex]);
+	}, [searchParam, subjectParam, pageIndex]);
 
 	const handlePaging = (page) => {
 		if (page < 1) return;

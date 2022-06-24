@@ -72,19 +72,20 @@ function EditExamForm({ examId, exam }) {
 
 	const onSubmit = (data) => {
 		data = modifiedEditForm(data, exam);
-
+		console.log(data);
 		const updateExam = async () => {
+			setIsSuccess(false);
 			setLoading(true);
 			try {
 				const url = `${process.env.REACT_APP_API_URL}/manageexam/${examId}`;
 				const token = localStorage.getItem('TOKEN');
-				const res = await axios.put(url, {
+				const res = await axios.put(url, data, {
 					headers: {
 						Authorization: `Bearer ${token}`,
 					},
 				});
 
-				if (res.data) {
+				if (res.data == 'Success') {
 					setIsSuccess(true);
 					setTimeout(() => {
 						navigate({
@@ -94,7 +95,7 @@ function EditExamForm({ examId, exam }) {
 				}
 			} catch (error) {
 				setLoading(false);
-				console.log('Failed to fetch exam:', error);
+				console.log('Failed to update exam:', error);
 			}
 		};
 		updateExam();
@@ -377,7 +378,7 @@ function EditExamForm({ examId, exam }) {
 							className="block px-2 py-1 bg-blue-400 rounded text-xl text-white font-semibold"
 							type="submit"
 						>
-							Sửa Đề
+							Cập Nhật Đề
 						</button>
 					</div>
 				</ul>

@@ -3,7 +3,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { IconButton } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { createSearchParams, Link, useNavigate } from 'react-router-dom';
 import { logout } from '../store/slices/userSlice';
 import DropdownUser from './DropdownUser';
 
@@ -13,6 +13,7 @@ const Header = () => {
 	const [isDropdown, setIsDropdown] = useState(false);
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.user);
+	const [search, setSearch] = useState('');
 
 	const handleLogout = () => {
 		dispatch(logout());
@@ -67,9 +68,21 @@ const Header = () => {
 						<input
 							className="w-full text-base md:w-28 md:text-sm lg:w-52 lg:text-base xl:w-80 outline-none border-0 font-sans"
 							type="text"
+							value={search}
+							onChange={(e) => setSearch(e.target.value)}
 							placeholder="Tên đề thi ..."
 						/>
-						<IconButton color="primary">
+						<IconButton
+							color="primary"
+							onClick={() =>
+								navigate({
+									pathname: '/exam',
+									search: createSearchParams({
+										search: search,
+									}).toString(),
+								})
+							}
+						>
 							<SearchIcon />
 						</IconButton>
 					</div>

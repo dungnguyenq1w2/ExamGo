@@ -10,22 +10,7 @@ import {
 import { Document } from "react-pdf";
 
 function UserList() {
-    // <div className="mb-4 flex-col">
-    //     <div className="absolute pointer-events-auto">
-    //         <svg
-    //             className="absolute text-slate-400 h-5 w-5"
-    //             viewBox="0 0 20 20"
-    //             fill="currentColor"
-    //         >
-    //             <path
-    //                 fill-rule="evenodd"
-    //                 d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-    //                 clip-rule="evenodd"
-    //             />
-    //         </svg>
-    //     </div>
-    //     <input type="text" placeholder="Search"></input>
-    // </div>
+
     const navigate = useNavigate();
     const [pdf, setPdf] = useState();
     const [loading, setLoading] = useState(false);
@@ -74,34 +59,11 @@ function UserList() {
                 responseType: "arraybuffer",
             });
             if (res.data) {
-                // console.log(res.data);
-                // setPdf(res.data);
-                // const base64WithoutPrefix = res.data.substr(
-                //     "data:application/pdf;base64,".length
-                // );
 
-                // const bytes = Buffer.from(base64WithoutPrefix, "base64");
-                // let length = bytes.length;
-                // let out = new Uint8Array(length);
-
-                // while (length--) {
-                //     out[length] = bytes.charCodeAt(length);
-                // }
                 console.log(res.data);
-                // const binaryString = window.atob(res.data);
-                // const binaryLen = binaryString.length;
-                // const bytes = new Uint8Array(binaryLen);
-                // for (let i = 0; i < binaryLen; i++) {
-                //     const ascii = binaryString.charCodeAt(i);
-                //     bytes[i] = ascii;
-                // }
                 const file = new Blob([res.data], { type: "application/pdf" });
                 console.log(file);
-                // Build a URL from the file
-                const fileURL = URL.createObjectURL(file);
-                // setPdf(fileURL);
-                // console.log(fileURL);
-                // Open the URL on new Window
+                const fileURL = URL.createObjectURL(file)
                 window.open(fileURL);
             }
         } catch (error) {

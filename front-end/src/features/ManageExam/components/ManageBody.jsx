@@ -1,11 +1,21 @@
-import React from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import { IconButton } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { subject } from '../../../utils/subject';
 
-function ManageBody({ examList, handleDeleteExam, pageIndex, handlePaging, loading }) {
+function ManageBody({
+	examList,
+	handleSearchExam,
+	handleDeleteExam,
+	pageIndex,
+	handlePaging,
+	loading,
+}) {
 	const navigate = useNavigate();
+	const [search, setSearch] = useState('');
+
 	return (
 		<div className="flex-1 lg:flex-[0.8] text-lg">
 			<div className="flex items-center justify-between bg-gray-100 p-6">
@@ -19,54 +29,13 @@ function ManageBody({ examList, handleDeleteExam, pageIndex, handlePaging, loadi
 					<input
 						className="text-base bg-transparent w-full lg:text-base outline-none border-0 font-sans"
 						type="text"
+						value={search}
+						onChange={(e) => setSearch(e.target.value)}
 						placeholder="Tên đề thi quản lý ..."
 					/>
-					<IconButton color="primary">
+					<IconButton color="primary" onClick={() => handleSearchExam(search)}>
 						<SearchIcon />
 					</IconButton>
-				</div>
-				<div className="flex">
-					<div className="flex justify-center mr-6">
-						<div className="mb-3 xl:w-20">
-							<select
-								name="year"
-								id="year"
-								className="form-select block w-20 px-3
-								py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding
-								bg-no-repeat border border-solid border-gray-300 rounded transition
-								ease-in-out m-0 focus:text-gray-700 focus:bg-white
-								focus:border-blue-600 focus:outline-none"
-								aria-label="Default select
-								example"
-							>
-								<option defaultValue>Year</option>
-								<option value="1">2018</option>
-								<option value="2">2019</option>
-								<option value="3">2020</option>
-								<option value="4">2021</option>
-								<option value="5">2022</option>
-							</select>
-						</div>
-					</div>
-					<div className="flex justify-center ">
-						<div className="mb-3 xl:w-24">
-							<select
-								name="year"
-								id="year"
-								className="form-select block w-24 px-3
-								py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding
-								bg-no-repeat border border-solid border-gray-300 rounded transition
-								ease-in-out m-0 focus:text-gray-700 focus:bg-white
-								focus:border-blue-600 focus:outline-none"
-								aria-label="Default select
-								example"
-							>
-								<option defaultValue>Sort</option>
-								<option value="1">A - Z</option>
-								<option value="2">Name</option>
-							</select>
-						</div>
-					</div>
 				</div>
 			</div>
 
@@ -173,7 +142,9 @@ function ManageBody({ examList, handleDeleteExam, pageIndex, handlePaging, loadi
 												<td className="text-sm text-gray-900 font-light px-6 py-2 whitespace-nowrap w-10/12">
 													<div className="mr-4 w-full">
 														<h5 className="text-lg font-semibold ">
-															{e.name}
+															{e.name.length > 50
+																? e.name.slice(0, 50 - 1) + '…'
+																: e.name}
 															{/* {'Đề ôn thi THPT Quốc gia môn Lịch Sử năm 2021 có đáp án (Đề 1) Đề ôn thi THPT Quốc gia môn'
 														.length > 50
 														? 'Đề ôn thi THPT Quốc gia môn Lịch Sử năm 2021 có đáp án (Đề 1) Đề ôn thi THPT Quốc gia môn'.slice(
@@ -184,6 +155,12 @@ function ManageBody({ examList, handleDeleteExam, pageIndex, handlePaging, loadi
 														</h5>
 														<div className="flex lg:w-4/5 xl:w-3/5 justify-start">
 															<span className="text-sm">
+																Môn: {subject(e.subjectId)}
+															</span>
+															<span className="text-sm ml-10">
+																Số câu: {e.numOfQuestions}
+															</span>
+															<span className="text-sm ml-10">
 																Thời gian: {e.maxDuration} phút
 															</span>
 															<span className="text-sm ml-10">
@@ -198,21 +175,37 @@ function ManageBody({ examList, handleDeleteExam, pageIndex, handlePaging, loadi
 												</td>
 												<td className="text-sm text-gray-900 font-light py-2 whitespace-nowrap">
 													<div className="flex flex-col items-center">
-														<svg
-															onClick={() => navigate(`edit/${e.id}`)}
-															xmlns="http://www.w3.org/2000/svg"
-															className="h-5 w-5 inline-block hover:scale-125 mb-2 cursor-pointer"
-															fill="none"
-															viewBox="0 0 24 24"
-															stroke="currentColor"
-															strokeWidth={2}
-														>
-															<path
-																strokeLinecap="round"
-																strokeLinejoin="round"
-																d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-															/>
-														</svg>
+														<div className="relative group">
+															<svg
+																onClick={() =>
+																	!e.isTaken
+																		? navigate(`edit/${e.id}`)
+																		: null
+																}
+																xmlns="http://www.w3.org/2000/svg"
+																className={`h-5 w-5 inline-block hover:scale-125 mb-2 cursor-pointer ${
+																	!e.isTaken
+																		? null
+																		: 'cursor-not-allowed'
+																}`}
+																fill="none"
+																viewBox="0 0 24 24"
+																stroke="currentColor"
+																strokeWidth={2}
+															>
+																<path
+																	strokeLinecap="round"
+																	strokeLinejoin="round"
+																	d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+																/>
+															</svg>
+															{!!e.isTaken && (
+																<span className="invisible px-4 bg-gray-500 text-white text-center rounded absolute z-10 top-1 right-[120%] after:absolute after:top-1/2 after:left-[96%] after:-mt-1 after:border-4 after:border-gray-500 after:rotate-45 group-hover:visible">
+																	Không thể chỉnh sửa vì đề đã
+																	được làm
+																</span>
+															)}
+														</div>
 
 														<svg
 															onClick={() => handleDeleteExam(e.id)}

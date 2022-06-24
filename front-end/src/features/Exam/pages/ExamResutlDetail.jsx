@@ -1,7 +1,8 @@
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { countCorrectAnswer } from '../../../utils/countCorrectAnswer';
+import { parseDurationToTime } from '../../../utils/parseDurationToTime';
 import AnswersResultBox from '../components/AnswersResultBox';
 import ViewQuestionResult from '../components/ViewQuestionResult';
 
@@ -17,12 +18,7 @@ function ExamResultDetail() {
 	// 	// console.log(location.search.slice(1));
 	// 	// setExam(JSON.parse(location.search.slice(10)));
 	// }, [location]);
-	const takingTime = moment.utc(exam?.duration * 60 * 1000).format('HH:mm:ss');
 
-	const arrDiff = takingTime.split(':');
-	const hours = parseInt(arrDiff[0]);
-	const minutes = parseInt(arrDiff[1]);
-	const seconds = parseInt(arrDiff[2]);
 	return (
 		<div>
 			<div className="min-h-screen flex-1 flex flex-col ml-8 md:ml-40 mr-8 md:mr-20 my-10 py-10 px-4 md:px-10 bg-gray-200 bg-opacity-25">
@@ -50,19 +46,7 @@ function ExamResultDetail() {
 							<div className="flex py-0.5 text-lg bg-blue-100">
 								<h3 className="text-right w-1/3 pr-2 font-bold">Thời gian</h3>
 								<h3 className=" w-2/3 pl-2">
-									{hours === 0
-										? null
-										: hours < 10
-										? hours + ' giờ '
-										: hours + ' phút '}
-									{minutes === 0
-										? hours > 0
-											? ' '
-											: null
-										: minutes < 10
-										? minutes + ' phút '
-										: minutes + ' phút'}
-									{seconds === 0 ? '' : seconds + ' giây'}
+									{parseDurationToTime(exam?.duration)}
 								</h3>
 							</div>
 							<div className="flex py-0.5 text-lg bg-blue-50">
