@@ -21,6 +21,13 @@ function ExamList() {
 	const pageParam = searchParams.get('page');
 	const [pageIndex, setPageIndex] = useState(pageParam);
 
+	// const scrollToTop = () => {
+	//     window.scrollTo({ top: 0, behavior: "smooth" });
+	// };
+	useEffect(() => {
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	}, []);
+
 	useEffect(() => {
 		const fetchExam = async () => {
 			try {
@@ -41,7 +48,9 @@ function ExamList() {
 
 				if (res.data) {
 					setExamList(res.data);
-					setLoading(false);
+					setTimeout(() => {
+						setLoading(false);
+					}, 600);
 				}
 				// localStorage.setItem(`time_${examId}`, res.data.minuteLimit);
 				// if (!localStorage.getItem(`startTime_${examId}`))
@@ -76,25 +85,25 @@ function ExamList() {
 
 	return (
 		<div>
-			<section className="flex py-5 px-5 min-h-screen">
-				<div className="flex-1 py-5 md:py-10 p-0 sm:px-5 md:px-20 ">
-					<div className="xl:w-4/5 bg-gray-200 bg-opacity-40 shadow-md">
-						<div className="flex justify-between items-center sm:px-5 sm:py-3 p-3">
-							<h1 className="text-lg sm:text-2xl lg:text-3xl font-bold text-green-800">
+			<section className='flex py-5 px-5 min-h-screen'>
+				<div className='flex-1 py-5 md:py-10 p-0 sm:px-5 md:px-20 '>
+					<div className='xl:w-4/5 bg-gray-200 bg-opacity-40 shadow-md'>
+						<div className='flex justify-between items-center sm:px-5 sm:py-3 p-3'>
+							<h1 className='text-lg sm:text-2xl lg:text-3xl font-bold text-green-800'>
 								Đề thi môn {subject(subjectParam)}
 							</h1>
 							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								className="h-6 w-6"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke="currentColor"
+								xmlns='http://www.w3.org/2000/svg'
+								className='h-6 w-6'
+								fill='none'
+								viewBox='0 0 24 24'
+								stroke='currentColor'
 							>
 								<path
-									strokeLinecap="round"
-									strokeLinejoin="round"
+									strokeLinecap='round'
+									strokeLinejoin='round'
 									strokeWidth={2}
-									d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+									d='M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z'
 								/>
 							</svg>
 						</div>
@@ -111,9 +120,9 @@ function ExamList() {
 							examList.map((e) => (
 								<div
 									key={e.id}
-									className="flex justify-between border-t-2 cursor-pointer px-4 py-1 hover:bg-gray-200"
+									className='flex justify-between border-t-2 cursor-pointer px-4 py-1 hover:bg-gray-200'
 								>
-									<div className="w-full">
+									<div className='w-full'>
 										<ExamItem
 											id={e.id}
 											exam={e}
@@ -171,7 +180,7 @@ function ExamList() {
 						)}
 
 						{!loading && examList?.length == 0 && (
-							<h1 className="text-md sm:text-xl lg:text-2xl p-4">
+							<h1 className='text-md sm:text-xl lg:text-2xl p-4'>
 								{pageIndex === 1
 									? 'Chưa có đề thi của môn' + subject(subjectParam)
 									: 'Không còn đề thi'}
@@ -180,7 +189,7 @@ function ExamList() {
 					</div>
 					{!loading && (
 						<div>
-							<div className="flex items-center justify-center mt-5 mb-2 text-base">
+							<div className='flex items-center justify-center mt-5 mb-2 text-base'>
 								<div
 									className={`${
 										pageIndex == 1
@@ -190,17 +199,17 @@ function ExamList() {
 									onClick={() => handlePaging(pageIndex - 1)}
 								>
 									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										className="h-6 w-6"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
+										xmlns='http://www.w3.org/2000/svg'
+										className='h-6 w-6'
+										fill='none'
+										viewBox='0 0 24 24'
+										stroke='currentColor'
 										strokeWidth={2}
 									>
 										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											d="M15 19l-7-7 7-7"
+											strokeLinecap='round'
+											strokeLinejoin='round'
+											d='M15 19l-7-7 7-7'
 										/>
 									</svg>
 								</div>
@@ -217,17 +226,17 @@ function ExamList() {
 									}}
 								>
 									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										className="h-6 w-6"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
+										xmlns='http://www.w3.org/2000/svg'
+										className='h-6 w-6'
+										fill='none'
+										viewBox='0 0 24 24'
+										stroke='currentColor'
 										strokeWidth={2}
 									>
 										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											d="M9 5l7 7-7 7"
+											strokeLinecap='round'
+											strokeLinejoin='round'
+											d='M9 5l7 7-7 7'
 										/>
 									</svg>
 								</div>
@@ -236,11 +245,11 @@ function ExamList() {
 					)}
 				</div>
 
-				<div className="hidden lg:block border-l-2 border-gray-200 pl-10 pr-3 mb-10">
-					<h1 className="text-2xl font-bold text-green-800 mb-3">Đề thi theo môn học</h1>
-					<div className="grid grid-cols-1 gap-3 place-items-center">
+				<div className='hidden lg:block border-l-2 border-gray-200 pl-10 pr-3 mb-10'>
+					<h1 className='text-2xl font-bold text-green-800 mb-3'>Đề thi theo môn học</h1>
+					<div className='grid grid-cols-1 gap-3 place-items-center'>
 						<div
-							className="border border-gray-300 cursor-pointer"
+							className='border border-gray-300 cursor-pointer'
 							// onClick={() => {
 							// 	setLoading(false);
 							// 	router.push({
@@ -252,14 +261,14 @@ function ExamList() {
 							// }}
 						>
 							<img
-								className="object-cover w-64 h-16"
-								src="/images/math.jpg"
-								alt="math"
+								className='object-cover w-64 h-16'
+								src='/images/math.jpg'
+								alt='math'
 							/>
-							<h3 className="text-center w-full py-1 text-md ">Toán</h3>
+							<h3 className='text-center w-full py-1 text-md '>Toán</h3>
 						</div>
 						<div
-							className="border border-gray-300 cursor-pointer"
+							className='border border-gray-300 cursor-pointer'
 							// onClick={() => {
 							// 	setLoading(false);
 							// 	router.push({
@@ -271,14 +280,14 @@ function ExamList() {
 							// }}
 						>
 							<img
-								className="object-cover w-64 h-16"
-								src="/images/english.jpg"
-								alt="english"
+								className='object-cover w-64 h-16'
+								src='/images/english.jpg'
+								alt='english'
 							/>
-							<h3 className="text-center w-full py-1 text-md ">Tiếng Anh</h3>
+							<h3 className='text-center w-full py-1 text-md '>Tiếng Anh</h3>
 						</div>
 						<div
-							className="border border-gray-300 cursor-pointer"
+							className='border border-gray-300 cursor-pointer'
 							// onClick={() => {
 							// 	setLoading(false);
 							// 	router.push({
@@ -290,14 +299,14 @@ function ExamList() {
 							// }}
 						>
 							<img
-								className="object-cover w-64 h-16"
-								src="/images/physics.jpg"
-								alt="physics"
+								className='object-cover w-64 h-16'
+								src='/images/physics.jpg'
+								alt='physics'
 							/>
-							<h3 className="text-center w-full py-1 text-md ">Vật Lý</h3>
+							<h3 className='text-center w-full py-1 text-md '>Vật Lý</h3>
 						</div>
 						<div
-							className="border border-gray-300 cursor-pointer"
+							className='border border-gray-300 cursor-pointer'
 							// onClick={() => {
 							// 	setLoading(false);
 							// 	router.push({
@@ -309,14 +318,14 @@ function ExamList() {
 							// }}
 						>
 							<img
-								className="object-cover w-64 h-16"
-								src="/images/chemistry.jpg"
-								alt="chemistry"
+								className='object-cover w-64 h-16'
+								src='/images/chemistry.jpg'
+								alt='chemistry'
 							/>
-							<h3 className="text-center w-full py-1 text-md ">Hóa Học</h3>
+							<h3 className='text-center w-full py-1 text-md '>Hóa Học</h3>
 						</div>
 						<div
-							className="border border-gray-300 cursor-pointer"
+							className='border border-gray-300 cursor-pointer'
 							// onClick={() => {
 							// 	setLoading(false);
 							// 	router.push({
@@ -328,14 +337,14 @@ function ExamList() {
 							// }}
 						>
 							<img
-								className="object-cover w-64 h-16"
-								src="/images/biology.jpg"
-								alt="biology"
+								className='object-cover w-64 h-16'
+								src='/images/biology.jpg'
+								alt='biology'
 							/>
-							<h3 className="text-center w-full py-1 text-md ">Sinh Học</h3>
+							<h3 className='text-center w-full py-1 text-md '>Sinh Học</h3>
 						</div>
 						<div
-							className="border border-gray-300 cursor-pointer"
+							className='border border-gray-300 cursor-pointer'
 							// onClick={() => {
 							// 	setLoading(false);
 							// 	router.push({
@@ -347,14 +356,14 @@ function ExamList() {
 							// }}
 						>
 							<img
-								className="object-cover w-64 h-16"
-								src="/images/history.jpg"
-								alt="history"
+								className='object-cover w-64 h-16'
+								src='/images/history.jpg'
+								alt='history'
 							/>
-							<h3 className="text-center w-full py-1 text-md ">Lịch Sử</h3>
+							<h3 className='text-center w-full py-1 text-md '>Lịch Sử</h3>
 						</div>
 						<div
-							className="border border-gray-300 cursor-pointer"
+							className='border border-gray-300 cursor-pointer'
 							// onClick={() => {
 							// 	setLoading(false);
 							// 	router.push({
@@ -366,15 +375,15 @@ function ExamList() {
 							// }}
 						>
 							<img
-								className="object-cover w-64 h-16"
-								src="/images/geography.jpg"
-								alt="geography"
+								className='object-cover w-64 h-16'
+								src='/images/geography.jpg'
+								alt='geography'
 							/>
-							<h3 className="text-center w-full py-1 text-md">Địa Lý</h3>
+							<h3 className='text-center w-full py-1 text-md'>Địa Lý</h3>
 						</div>
 
 						<div
-							className="border border-gray-300 cursor-pointer"
+							className='border border-gray-300 cursor-pointer'
 							// onClick={() => {
 							// 	setLoading(false);
 							// 	router.push({
@@ -386,11 +395,11 @@ function ExamList() {
 							// }}
 						>
 							<img
-								className="object-cover w-64 h-16"
-								src="/images/civiceducation.jpg"
-								alt="civic education"
+								className='object-cover w-64 h-16'
+								src='/images/civiceducation.jpg'
+								alt='civic education'
 							/>
-							<h3 className="text-center w-full py-1 text-md ">Giáo Dục Công Dân</h3>
+							<h3 className='text-center w-full py-1 text-md '>Giáo Dục Công Dân</h3>
 						</div>
 					</div>
 				</div>

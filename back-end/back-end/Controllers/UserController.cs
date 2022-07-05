@@ -183,7 +183,7 @@ namespace back_end.Controllers
             // Pagination
             if (page > 0)
             {
-                examList = examList.Skip((page - 1) * PAGE_SIZE).Take(PAGE_SIZE).ToList();
+                examResultList = examResultList.Skip((page - 1) * PAGE_SIZE).Take(PAGE_SIZE).ToList();
             }
 
             return examResultList;

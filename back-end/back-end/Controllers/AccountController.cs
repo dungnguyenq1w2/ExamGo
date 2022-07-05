@@ -22,7 +22,7 @@ namespace back_end.Controllers
             _context = context;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Account>>> GetAccount()
         {

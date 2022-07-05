@@ -12,7 +12,7 @@ function ExamList() {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const pageParam = searchParams.get('page');
 
-	const [pageIndex, setPageIndex] = useState(pageParam);
+	const [pageIndex, setPageIndex] = useState(pageParam || 1);
 	const [loading, setLoading] = useState(true);
 	useEffect(() => {
 		setLoading(true);
@@ -52,7 +52,7 @@ function ExamList() {
 	const handlePaging = (page) => {
 		if (page < 1) return;
 		navigate({
-			pathname: '/manageexam',
+			pathname: '/admin/exams',
 			search: createSearchParams({
 				page: page,
 			}).toString(),
@@ -60,7 +60,7 @@ function ExamList() {
 		setPageIndex(page);
 	};
 	return (
-		<div className="w-full">
+		<div className='w-full'>
 			<ManageBody
 				examList={examList}
 				handleDeleteExam={handleDeleteExam}
