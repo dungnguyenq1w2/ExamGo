@@ -82,58 +82,59 @@ namespace back_end.Controllers
                 Phone = e.Phone,
                 DateOfBirth = e.DateOfBirth,
                 CitizenId = e.CitizenId,
-                Address = e.Address == null ? e.Address : null,
+                Address = e.Address,
                 UserTypeId = e.UserTypeId,
+                IsDeleted = e.IsDeleted,
             }).ToList();
 
             return userList;
         }
 
-        [Authorize]
-        [HttpPut("user/{id}")]
-        public async Task<IActionResult> PutAccount(int id, Account account)
-        {
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
-            var handler = new JwtSecurityTokenHandler();
-            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+        //[Authorize]
+        //[HttpPut("user/{id}")]
+        //public async Task<IActionResult> PutAccount(int id, Account account)
+        //{
+        //    var accessToken = await HttpContext.GetTokenAsync("access_token");
+        //    var handler = new JwtSecurityTokenHandler();
+        //    var jwtSecurityToken = handler.ReadJwtToken(accessToken);
 
-            int adminId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
-            var admin = await _context.User.FindAsync(adminId);
-            if (admin.UserTypeId != 3)
-            {
-                return StatusCode(403, $"User '{admin.Name}' is not a admin.");
-            }
+        //    int adminId = Int32.Parse(jwtSecurityToken.Claims.First(claim => claim.Type == "nameid").Value);
+        //    var admin = await _context.User.FindAsync(adminId);
+        //    if (admin.UserTypeId != 3)
+        //    {
+        //        return StatusCode(403, $"User '{admin.Name}' is not a admin.");
+        //    }
 
-            if (id != account.UserId)
-            {
-                return BadRequest();
-            }
+        //    if (id != account.UserId)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            _context.Entry(account).State = EntityState.Modified;
+        //    _context.Entry(account).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AccountExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!AccountExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
-        private bool AccountExists(int id)
-        {
-            return _context.Account.Any(e => e.UserId == id);
-        }
+        //private bool AccountExists(int id)
+        //{
+        //    return _context.Account.Any(e => e.UserId == id);
+        //}
 
         [Authorize]
         [HttpGet("createUserListPDF")]
@@ -373,8 +374,8 @@ namespace back_end.Controllers
         }
 
         [Authorize]
-        [HttpDelete("deleteUser/{id}")]
-        public async Task<ActionResult<User>> DeleteUser(int id)
+        [HttpPut("changeUserState1/{id}")]
+        public async Task<ActionResult<User>> ChangeUserState(int id)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             var handler = new JwtSecurityTokenHandler();
@@ -388,12 +389,12 @@ namespace back_end.Controllers
                 return StatusCode(403, $"User '{admin.Name}' is not a admin.");
             }
 
-            var user = await _context.Exam.FindAsync(id);
+            var user = await _context.User.FindAsync(id);
             if (user == null)
             {
                 return BadRequest();
             }
-            user.IsDeleted = 1;
+            user.IsDeleted ^= 1; //0->1 and vice versa; another way: user.IsDeleted = 1 - user.IsDeleted
             _context.Entry(user).State = EntityState.Modified;
 
             try
@@ -402,6 +403,14 @@ namespace back_end.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
+                //if (!_context.User.Any(e => e.Id == id))
+                //{
+                //    return NotFound();
+                //}
+                //else
+                //{
+                //    throw;
+                //}
                 throw;
             }
 

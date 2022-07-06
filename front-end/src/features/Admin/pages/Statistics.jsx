@@ -31,7 +31,7 @@ function Statistics() {
 
 	return (
 		<div className='flex justify-center mx-auto'>
-			<div className='flex justify-center ml-44 mt-2'>
+			<div className='flex justify-center mt-2'>
 				<div className='flex flex-col'>
 					<div className='overflow-x-auto sm:-mx-6 lg:-mx-8'>
 						<div className='py-2 inline-block min-w-full sm:px-6 lg:px-8'>

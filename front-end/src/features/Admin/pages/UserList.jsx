@@ -1,6 +1,21 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import Modal from 'react-modal/lib/components/Modal';
 import { createSearchParams, NavLink, useNavigate, useSearchParams } from 'react-router-dom';
+import EditUser from './EditUser';
+
+const customStyles = {
+	content: {
+		// textAlign: 'center',
+		padding: '20px 10px',
+		top: '50%',
+		left: '50%',
+		right: 'auto',
+		bottom: 'auto',
+		marginRight: '-50%',
+		transform: 'translate(-50%, -50%)',
+	},
+};
 
 function UserList() {
 	const navigate = useNavigate();
@@ -9,19 +24,21 @@ function UserList() {
 	const [loadingPdf, setLoadingPdf] = useState(false);
 	const [userList, setUserList] = useState();
 	const [userDelete, setUserDelete] = useState();
+	const [userEdit, setUserEdit] = useState();
+	const [editPopup, setEditPopup] = useState(false);
+	const [deleteIndex, setDeleteIndex] = useState();
 	const [searchParams, setSearchParams] = useSearchParams();
 	const pageParam = searchParams.get('page');
 
 	const [pageIndex, setPageIndex] = useState(pageParam || 1);
+	const [userTypeFilter, setUserTypeFilter] = useState(0);
 
 	useEffect(() => {
 		setLoading(true);
 		const fetchUser = async () => {
 			try {
-				const pageParam = searchParams.get('page');
-				const url = `${process.env.REACT_APP_API_URL}/admin/userlist${
-					pageParam ? `?page=${pageParam}` : ''
-				}`;
+				// const pageParam = searchParams.get('page');
+				const url = `${process.env.REACT_APP_API_URL}/admin/userlist?role=${userTypeFilter}&page=${pageIndex}`;
 
 				const token = localStorage.getItem('TOKEN');
 				const res = await axios.get(url, {
@@ -39,12 +56,12 @@ function UserList() {
 			}
 		};
 		fetchUser();
-	}, [pageIndex]);
+	}, [userTypeFilter, pageIndex]);
 
 	const exportPDF = async () => {
 		setLoadingPdf(true);
 		try {
-			const url = `${process.env.REACT_APP_API_URL}/admin/createUserListPDF`;
+			const url = `${process.env.REACT_APP_API_URL}/admin/createUserListPDF?role=${userTypeFilter}`;
 
 			const token = localStorage.getItem('TOKEN');
 			const res = await axios.get(url, {
@@ -66,22 +83,24 @@ function UserList() {
 		}
 	};
 
-	const handleDeleteUser = async (userId) => {
+	const handleChangeUserState = async (userId) => {
 		const idxUser = userList.findIndex((e) => e.id === userId);
 		const newUserList = [...userList];
-		newUserList.splice(idxUser, 1);
+		newUserList[idxUser].isDeleted = 1 - newUserList[idxUser].isDeleted; // 0->1 and vice versa
 		setUserList([...newUserList]);
-
 		try {
-			const url = `${process.env.REACT_APP_API_URL}/admin/deleteUser/${userId}`;
+			const url = `${process.env.REACT_APP_API_URL}/admin/changeUserState1/${userId}`;
 
 			const token = localStorage.getItem('TOKEN');
-			const res = await axios.delete(url, {
+			const res = await axios.put(url, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
 			});
-			console.log(res.data);
+
+			if (res.data) {
+				console.log(res.data);
+			}
 		} catch (error) {
 			console.log('Failed to delete user:', error);
 		}
@@ -100,7 +119,7 @@ function UserList() {
 
 	const [confirmDeleteState, setConfirmDeleteState] = useState(false);
 	return (
-		<div className='flex justify-center ml-44 mt-2'>
+		<div className='flex justify-center ml-80 mt-2'>
 			<div className='flex flex-col'>
 				<div className='overflow-x-auto sm:-mx-6 lg:-mx-8'>
 					<div className='py-2 inline-block min-w-full sm:px-6 lg:px-8'>
@@ -113,31 +132,28 @@ function UserList() {
 								<div className='flex justify-around space-x-10'>
 									<div className='space-x-2'>
 										<span className='text-base font-bold'>Vai trò:</span>
-										<select className='text-base border border-gray-200 rounded'>
-											<option value='Tất cả' selected>
+										<select
+											className='text-base border border-gray-200 rounded'
+											onChange={(e) => setUserTypeFilter(e.target.value)}
+										>
+											<option value='0' selected>
 												Tất cả
 											</option>
-											<option value='Học sinh'>Học sinh</option>
-											<option value='Giáo viên'>Giáo viên</option>
-										</select>
-									</div>
-									<div className='space-x-2'>
-										<span className='text-base font-bold'>Sắp xếp theo:</span>
-										<select className='text-base border border-gray-200 rounded'>
-											<option value='Họ tên'>Họ tên</option>
-											<option value='Email'>Email</option>
+											<option value='1'>Học sinh</option>
+											<option value='2'>Giáo viên</option>
+											<option value='3'>Quản trị viên</option>
 										</select>
 									</div>
 								</div>
 							</div>
 							<div className='flex'>
-								<div className=''>
+								{/*<div className=''>
 									<NavLink to='/admin/users/add'>
 										<button className='bg-blue-500 hover:bg-blue-400 text-white text-base font-bold py-1 px-2 border-b-4 border-blue-700 hover:border-blue-500 rounded'>
 											Thêm tài khoản
 										</button>
 									</NavLink>
-								</div>
+								</div>*/}
 								<div className='ml-5 flex'>
 									<button
 										className='bg-blue-500 hover:bg-blue-400 text-white text-base font-bold py-1 px-2 border-b-4 border-blue-700 hover:border-blue-500 rounded'
@@ -193,6 +209,12 @@ function UserList() {
 										</th>
 										<th
 											scope='col'
+											className='text-base font-medium text-white px-6 py-4 text-left'
+										>
+											Tình trạng
+										</th>
+										<th
+											scope='col'
 											className='text-sm font-medium text-white px-6 py-4 text-center'
 										>
 											Xử lý
@@ -244,23 +266,81 @@ function UserList() {
 															? 'Giáo Viên'
 															: 'Quản Trị Viên'}
 													</td>
+													<td className='text-base text-gray-900 font-base px-6 py-4 whitespace-nowrap w-1/5'>
+														{e?.isDeleted === 1
+															? 'Đã khóa'
+															: 'Hoạt động'}
+													</td>
 													<td className='text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap'>
 														{e?.userTypeId !== 3 && (
 															<div className='flex items-center justify-center space-x-4'>
-																<NavLink to='/admin/users/edit'>
-																	<button className='bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-green-700 hover:border-green-500 rounded-lg'>
-																		Chỉnh sửa
-																	</button>
-																</NavLink>
+																<button
+																	className='bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-green-700 hover:border-green-500 rounded-lg'
+																	onClick={() => {
+																		setUserEdit(e);
+																		setEditPopup(true);
+																	}}
+																>
+																	<svg
+																		xmlns='http://www.w3.org/2000/svg'
+																		className='h-6 w-6'
+																		fill='none'
+																		viewBox='0 0 24 24'
+																		stroke='currentColor'
+																		strokeWidth={2}
+																	>
+																		<path
+																			strokeLinecap='round'
+																			strokeLinejoin='round'
+																			d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
+																		/>
+																	</svg>
+																</button>
 																<button
 																	className='bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-red-700 hover:border-red-500 rounded-lg'
 																	type='button'
 																	onClick={() => {
 																		setUserDelete(e.id);
+																		setDeleteIndex(
+																			userList.findIndex(
+																				(user) =>
+																					user.id === e.id
+																			)
+																		);
 																		setConfirmDeleteState(true);
 																	}}
 																>
-																	Xóa
+																	{e?.isDeleted === 1 ? (
+																		<svg
+																			xmlns='http://www.w3.org/2000/svg'
+																			className='h-6 w-6'
+																			fill='none'
+																			viewBox='0 0 24 24'
+																			stroke='currentColor'
+																			strokeWidth={2}
+																		>
+																			<path
+																				strokeLinecap='round'
+																				strokeLinejoin='round'
+																				d='M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z'
+																			/>
+																		</svg>
+																	) : (
+																		<svg
+																			xmlns='http://www.w3.org/2000/svg'
+																			className='h-6 w-6'
+																			fill='none'
+																			viewBox='0 0 24 24'
+																			stroke='currentColor'
+																			strokeWidth={2}
+																		>
+																			<path
+																				strokeLinecap='round'
+																				strokeLinejoin='round'
+																				d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'
+																			/>
+																		</svg>
+																	)}
 																</button>
 															</div>
 														)}
@@ -377,6 +457,16 @@ function UserList() {
 					</div>
 				</div>
 			</div>
+			{editPopup && (
+				<Modal
+					isOpen={editPopup}
+					style={customStyles}
+					contentLabel='Modal'
+					ariaHideApp={false}
+				>
+					<EditUser userEdit={userEdit} setEditPopup={setEditPopup} />
+				</Modal>
+			)}
 			{confirmDeleteState ? (
 				<div className=''>
 					<div className='justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none'>
@@ -411,7 +501,11 @@ function UserList() {
 								</div>
 								<div className='relative px-6 flex-auto'>
 									<p className='my-4 text-slate-500 text-lg leading-relaxed'>
-										Bạn có chắc chắn muốn xóa tài khoản này chứ?
+										Bạn có chắc chắn muốn{' '}
+										{userList[deleteIndex]?.isDeleted === 1
+											? 'mở khóa'
+											: 'khóa'}{' '}
+										tài khoản này chứ?
 									</p>
 								</div>
 								<div className='flex items-center justify-center border-t border-solid border-slate-200 rounded-b'>
@@ -420,7 +514,7 @@ function UserList() {
 											className='bg-transparent text-red-500 font-bold text-xl px-6 py-3 rounded outline-none'
 											type='button'
 											onClick={() => {
-												handleDeleteUser(userDelete);
+												handleChangeUserState(userDelete);
 												setConfirmDeleteState(false);
 											}}
 										>

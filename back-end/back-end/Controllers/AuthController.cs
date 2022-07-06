@@ -75,6 +75,7 @@ namespace back_end.Controllers
             }
 
             var account = await _context.Account.FirstOrDefaultAsync(a => a.Username == request.Username);
+            
 
             if (!VerifyPasswordHash(request.Password, account.PasswordHash, account.PasswordSalt))
             {
@@ -82,6 +83,10 @@ namespace back_end.Controllers
             }
 
             var user = await _context.User.FindAsync(account.UserId);
+            if (user.IsDeleted == 1)
+            {
+                return StatusCode(403, $"Account '{request.Username}' was blocked.");
+            }
             string token = CreateToken(account);
 
             return Ok(new UserLogin

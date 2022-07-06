@@ -46,6 +46,11 @@ function SignIn() {
 						setLoading(false);
 						setError('Sai tên đăng nhập hoặc mật khẩu');
 					}, 600);
+				} else if (error.toString().includes('403')) {
+					setTimeout(() => {
+						setLoading(false);
+						setError('Tài khoản đã bị khóa bởi Admin');
+					}, 600);
 				}
 			}
 		};
